@@ -1,0 +1,21 @@
+
+#PKG_LIBS = $(shell "${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" -e "")
+
+
+OFILES=base/cc.o base/otrav.o base/common.o base/debug.o \
+    col/col.o data/dataset.o file/textfile.o \
+    fx/fx.o fx/datanode.o fx/stopwatch.o \
+    la/uselapack.o \
+    math/discrete.o
+
+
+PKG_CPPFLAGS += -DDISABLE_DISK_MATRIX -DSCALE_NORMAL -I. -I..
+PKG_CFLAGS +=  -Wno-strict-aliasing -Wno-unused-variable -Wno-unused-function -Wno-variadic-macros -Wno-long-long -Wno-format
+PKG_CXXFLAGS +=  -std=gnu++0x -Wno-strict-aliasing -Wno-unused-variable -Wno-unused-function -Wno-variadic-macros -Wno-long-long -Wno-format
+
+PKG_LIBS += $(OFILES) $(BLAS_LIBS) $(LAPACK_LIBS)
+
+
+all: $(OFILES) libmain.o fscm.o
+$(SHLIB): $(OFILES) libmain.o fscm.o
+

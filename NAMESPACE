@@ -1,0 +1,54 @@
+import("splines", "MASS", "Matrix", "fda","methods", "flexclust",
+       "wavethresh", "parallel", "grDevices")
+importFrom("graphics", "abline", "arrows", "axis", "legend", "lines",
+           "mtext", "par", "points", "rasterImage", "sunflowerplot",
+           "text", "title")
+importFrom("stats", "approxfun", "as.dist", "cmdscale", "cutree",
+           "dnorm", "hclust", "kmeans", "lm.fit", "mad", "na.omit",
+           "optimize", "qnorm", "rmultinom", "rnorm", "time")
+importFrom("utils", "read.csv", "read.csv2", "read.table", "write.table")
+
+
+importFrom("car", "Recode") #relabeling in functions.R
+importFrom("kernlab", "inchol")#FSCM
+importFrom("fields", "stationary.cov")#FSCM
+importFrom("calibrate", "textxy")#plotFSCM
+importFrom("cluster", "pam")
+importFrom("sm", "h.select", "sm.regression")
+importFrom("caTools", "trapz")
+importFrom("plyr", "rbind.fill")
+
+
+export("funcit",
+       "sampleFuncy",
+       "regFuncy",
+       "makeCommonTime",
+       "plotFuncy",
+       "fpca",
+       "dist2centers",
+       "relabel", 
+       "label2lowerk",
+       "accordance",
+       "rIMethods",
+       "relabelMethods",
+       "getUniCl"
+       )
+
+exportClasses("fpcCtrl",
+              "funcyCtrl"
+              )
+
+
+exportMethods("calcTime",
+              "Cluster",
+              "Data",
+              "Center",
+              "formatFuncy",
+              "plot",
+              "props",
+              "randIndex",
+              "summary"
+              )
+
+useDynLib("funcy")
+

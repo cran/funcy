@@ -1,0 +1,57 @@
+SUPPLEMENTARY PACKAGE
+In order to use method "pace" in regFuncy, the additional package funcyOctave must be installed.
+funcyOctave is an interface to the MATLAB package PACE conducting a functional principal component analysis by conditional estimation (PACE).
+It can be downloaded from the website:
+
+http://statistik.boku.ac.at/download/
+
+
+COPYRIGHT STATUS
+
+Some of this code comes from existing algorithms. All authors give permission to include their code into the package.
+
+
+Complete files that were integrated into funcy:
+------------------------------------------------------------
+-classesCurvclust.R
+-curvclust.R
+
+https://cran.r-project.org/src/contrib/Archive/curvclust/
+
+Madison Giacofci and Sophie Lambert-Lacroix and Guillemette Marot
+and Franck Picard. Wavelet-based clustering for mixed-effects functional models in high dimension. Biometrics. 69. 2011
+
+-Rfscm.R
+
+http://www2.isye.gatech.edu/~nserban/clusteringresearch.html
+
+Nicoleta Serban and Huijing Jiang.Clustering Random Curves Under Spatial Interdependence With Application to Service Accessibility. Technometrics. 54 (2). 108--119. 2012
+
+------------------------------------------------------------
+Chunks of existing code that was integrated into funcy:
+-fitfclust.R
+
+http://www-bcf.usc.edu/~gareth/research/fclust
+
+Gareth James and Catherine A. Sugar. Clustering for Sparsely
+Sampled Functional Data. Journal of the American Statistical
+Association. 98 (462). 297--408. 2003
+
+
+-distclust.R
+
+http://lib.stat.cmu.edu/aoas/172/functions.txt
+
+Jie Peng and Hans-Georg Mueller. Distance-based clustering of sparsely observed stochastic processes, with applications to online auctions. The Annals
+ of Applied Statistics. 2 (3). 1056--1077, 200
+
+
+-iterSubspace.R
+
+http://onlinelibrary.wiley.com/journal/10.1111/%28ISSN%291467-9868/homepage/69_4.htm
+
+Chiou Jeng-Min and Pai-Ling Li. Functional clustering and
+identifying substructures of longitudinal data. Journal of the
+Royal Statistical Scociety: Series B. 69 (4). 679--699. 2007
+
+
