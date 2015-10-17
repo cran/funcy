@@ -247,7 +247,7 @@ const fx_module_doc fx__timer_doc = {
 };
 
 
-
+/*
 static void fx__write_path(fx_module *entry, FILE *stream)
 {
   if (entry->parent) {
@@ -256,9 +256,11 @@ static void fx__write_path(fx_module *entry, FILE *stream)
   }
   fprintf(stream, "%s", entry->key);
 }
+*/
 
-__attribute((noreturn))
-static void fx__print_fatal_msg(const char *file, const char *func, int line,
+//__attribute((noreturn))
+
+/*static void fx__print_fatal_msg(const char *file, const char *func, int line,
                                 const char *prefix, fx_module *entry,
                                 const char *suffix, ...)
 {
@@ -268,6 +270,7 @@ static void fx__print_fatal_msg(const char *file, const char *func, int line,
                       fl_msg_color[FL_MSG_FATAL]);
   fl_print_msg_loc(file, func, line);
 
+    *//*
   va_start(vl, suffix);
   vfprintf(stderr, prefix, vl);
   fx__write_path(entry, stderr);
@@ -275,10 +278,13 @@ static void fx__print_fatal_msg(const char *file, const char *func, int line,
   va_end(vl);
 
   fprintf(stderr, "\n");
+     *//*
 
   fl_abort();
 }
+*/
 
+/*
 static void fx__print_msg(const char *file, const char *func, int line,
                           fl_msg_t msg_type, const char *prefix,
                           fx_module *entry, const char *suffix, ...)
@@ -290,6 +296,8 @@ static void fx__print_msg(const char *file, const char *func, int line,
     fl_print_msg_loc(file, func, line);
   }
 
+    */
+/*
   va_start(vl, suffix);
   vfprintf(stderr, prefix, vl);
   fx__write_path(entry, stderr);
@@ -297,6 +305,8 @@ static void fx__print_msg(const char *file, const char *func, int line,
   va_end(vl);
 
   fprintf(stderr, "\n");
+     *//*
+
 
   if (msg_type < FL_MSG_NOTIFY_STAR) {
     if (msg_type == FL_MSG_FATAL || abort_on_nonfatal) {
@@ -306,6 +316,7 @@ static void fx__print_msg(const char *file, const char *func, int line,
     }
   }
 }
+*/
 
 /*
 #define FX__FATAL(prefix, entry, msg_params...) \
@@ -325,9 +336,6 @@ static void fx__print_msg(const char *file, const char *func, int line,
     } else NOP
 */
 
-#define FX__FATAL(prefix, entry, msg_params...) NOP
-#define FX__NONFATAL(prefix, entry, msg_params...) NOP
-#define FX__SEMIFATAL(success, prefix, entry, msg_params...) NOP
 
 int fx_module_is_type(fx_module *entry, fx_mod_t mod_type)
 {
@@ -343,7 +351,7 @@ int fx_module_is_type(fx_module *entry, fx_mod_t mod_type)
 static success_t fx__check_mod_type(const char *header, fx_mod_t mod_type,
                                     fx_module *entry)
 {
-  if (unlikely(!fx_module_is_type(entry, mod_type))) {
+  if ((!fx_module_is_type(entry, mod_type))) {
     if (entry->mod_type < FX_PARAM) {
       if (fx_docs_nagging) {
 	/*	FX__NONFATAL("%s %s \"", entry, "\" is not documented.",
@@ -351,8 +359,8 @@ static success_t fx__check_mod_type(const char *header, fx_mod_t mod_type,
       }
       return SUCCESS_WARN;
     } else {
-      FX__NONFATAL("%s %s \"", entry, "\" is documented as a %s.",
-          header, fx_mod_name[mod_type], fx_mod_name[entry->mod_type]);
+      //FX__NONFATAL("%s %s \"", entry, "\" is documented as a %s.",
+      //    header, fx_mod_name[mod_type], fx_mod_name[entry->mod_type]);
       return SUCCESS_FAIL;
     }
   }
@@ -362,14 +370,14 @@ static success_t fx__check_mod_type(const char *header, fx_mod_t mod_type,
 static success_t fx__check_val_type(const char *header, fx_val_t val_type,
                                     fx_module *entry)
 {
-  if (unlikely(entry->val_type != val_type)) {
+  if ((entry->val_type != val_type)) {
     if (entry->val_type < 0) {
-      FX__NONFATAL("%s %s \"", entry, "\" is of custom type.",
-          header, fx_val_name[val_type]);
+      //FX__NONFATAL("%s %s \"", entry, "\" is of custom type.",
+      //    header, fx_val_name[val_type]);
       return SUCCESS_FAIL;
     } else {
-      FX__NONFATAL("%s %s \"", entry, "\" is of type %s.",
-          header, fx_val_name[val_type], fx_val_name[entry->val_type]);
+      //FX__NONFATAL("%s %s \"", entry, "\" is of type %s.",
+      //    header, fx_val_name[val_type], fx_val_name[entry->val_type]);
       return SUCCESS_WARN;
     }
   }
@@ -383,12 +391,14 @@ static double fx__scan_double_impl(fx_module *entry, const char *val,
 {
   double retval = 0.0;
 
-  if (unlikely(sscanf(val, "%lf", &retval) != 1)) {
+  if ((sscanf(val, "%lf", &retval) != 1)) {
+      /*
     FX__SEMIFATAL(success_ptr,
         "%c%s \"", entry, "\" is not a double%s: \"%s\".",
         toupper(*fx_mod_name[entry->mod_type]),
         fx_mod_name[entry->mod_type] + 1,
         list ? " list" : "", entry->val);
+        */
   }
 
   return retval;
@@ -401,11 +411,13 @@ static long long fx__scan_int_impl(fx_module *entry, const char *val,
   long long retval = 0;
 
   if (sscanf(val, FMT_LONG_LONG, &retval) != 1) {
+      /*
     FX__SEMIFATAL(success_ptr,
         "%c%s \"", entry, "\" is not an int%s: \"%s\".",
         toupper(*fx_mod_name[entry->mod_type]),
         fx_mod_name[entry->mod_type] + 1,
         list ? " list" : "", entry->val);
+        */
   }
 
   return retval;
@@ -419,11 +431,13 @@ static int fx__scan_bool_impl(fx_module *entry, const char *val,
   if (strchr("1tTyY", val[0])) {
     retval = 1;
   } else if (!strchr("0fFnN", val[0])) {
+      /*
     FX__SEMIFATAL(success_ptr,
         "%c%s \"", entry, "\" is not a bool%s: \"%s\".",
         toupper(*fx_mod_name[entry->mod_type]),
         fx_mod_name[entry->mod_type] + 1,
         list ? " list" : "", entry->val);
+        */
   }
 
   return retval;
@@ -460,11 +474,13 @@ static size_t fx__list_size(fx_module *entry, size_t req_size,
   }
 
   if (req_size && count != req_size) {
+      /*
     FX__SEMIFATAL(success_ptr,
         "%c%s \"", entry, "\" is not of length %d: \"%s\".",
         toupper(*fx_mod_name[entry->mod_type]),
         fx_mod_name[entry->mod_type] + 1,
         req_size, entry->val);
+        */
   }
 
   return count;
@@ -883,9 +899,11 @@ static fx_module *fx__param_req(fx_module *mod, const char *key,
 {
   fx_module *retval = fx__get_entry(mod, key, FX_REQUIRED, val_type);
 
+    /*
   if (!retval->val) {
     FX__FATAL("Required parameter \"", retval, "\" is unspecified.");
   }
+     */
 
   return retval;
 }
@@ -1324,9 +1342,11 @@ static fx_module *fx__get_result(fx_module *mod, const char *key,
 {
   fx_module *retval = fx__get_entry(mod, key, FX_RESULT, val_type);
 
+    /*
   if (!retval->val) {
     FX__FATAL("Accessed result \"", retval, "\" is unspecified.");
   }
+     */
 
   return retval;
 }
@@ -1660,7 +1680,7 @@ success_t fx_help(const fx_module_doc *doc, const char *key, const char *origkey
 
   if (*key == '\0') {
     retval = SUCCESS_PASS;
-    printf("%s\n", doc->text);
+    //printf("%s\n", doc->text);
   }
 
   if (doc->entries) {
@@ -1682,7 +1702,7 @@ success_t fx_help(const fx_module_doc *doc, const char *key, const char *origkey
     }
     if(has == 1) {
       if (*key == '\0') {
-        printf("Parameters:\n");
+        //printf("Parameters:\n");
       }
 
       for (entry_doc = doc->entries; entry_doc->key; ++entry_doc) {
@@ -1692,24 +1712,28 @@ success_t fx_help(const fx_module_doc *doc, const char *key, const char *origkey
             if(entry_doc->mod_type == FX_PARAM || entry_doc->mod_type == FX_REQUIRED) {
               if (entry_doc->val_type < 0) {
                 if(*origkey != '\0') {
-                  printf("  --%s/%s, %s:\n", origkey, entry_doc->key,
-                         fx_mod_name[entry_doc->mod_type]);
+                  //printf("  --%s/%s, %s:\n", origkey, entry_doc->key,
+                  //       fx_mod_name[entry_doc->mod_type]);
                 } else {
-                  printf("  --%s, %s:\n", entry_doc->key,
-                         fx_mod_name[entry_doc->mod_type]);
+                  //printf("  --%s, %s:\n", entry_doc->key,
+                  //       fx_mod_name[entry_doc->mod_type]);
                 }
               } else {
                 if(*origkey != '\0') {
+                    /*
                   printf("  --%s/%s, %s:\n", entry_doc->key,
                        fx_val_name[entry_doc->val_type],
                        fx_mod_name[entry_doc->mod_type]);
+                       */
                 } else {
+                    /*
                   printf("  --%s=(%s), %s:\n", entry_doc->key,
                        fx_val_name[entry_doc->val_type],
                        fx_mod_name[entry_doc->mod_type]);
+                       */
                 }
               }
-              printf("   %s\n", entry_doc->text);
+              //printf("   %s\n", entry_doc->text);
             }
           }
         }
@@ -1730,7 +1754,7 @@ success_t fx_help(const fx_module_doc *doc, const char *key, const char *origkey
     }
     if(has == 1) {
       if (*key == '\0') {
-        printf("Results:\n");
+        //printf("Results:\n");
       }
 
       for(entry_doc = doc->entries; entry_doc->key; ++entry_doc) {
@@ -1739,13 +1763,17 @@ success_t fx_help(const fx_module_doc *doc, const char *key, const char *origkey
             retval = SUCCESS_PASS;
             if(entry_doc->mod_type == FX_TIMER || entry_doc->mod_type == FX_RESULT) {
               if(*origkey != '\0') {
+                  /*
                 printf("  /%s/%s, %s:\n", origkey, entry_doc->key,
                   fx_mod_name[entry_doc->mod_type]);
+                   */
               } else {
+                  /*
                 printf("  /%s, %s:\n", entry_doc->key,
                   fx_mod_name[entry_doc->mod_type]);
+                   */
               }
-              printf("   %s\n", entry_doc->text);
+              //printf("   %s\n", entry_doc->text);
             }
           }
         }
@@ -1757,7 +1785,7 @@ success_t fx_help(const fx_module_doc *doc, const char *key, const char *origkey
     const fx_submodule_doc *submod_doc;
 
     if (*key == '\0') {
-      printf("Submodules:\n");
+      //printf("Submodules:\n");
     }
 
     for (submod_doc = doc->submodules; submod_doc->key; ++submod_doc) {
@@ -1768,17 +1796,17 @@ success_t fx_help(const fx_module_doc *doc, const char *key, const char *origkey
       } else if (submod_doc->text) {
         if (fx__match_prefix(submod_doc->key, key)) {
           retval = SUCCESS_PASS;
-          printf("  %s:\n    %s\n", submod_doc->key, submod_doc->text);
+          //printf("  %s:\n    %s\n", submod_doc->key, submod_doc->text);
         }
       }
     }
   }
 
-  printf("===============================\n");
+  //printf("===============================\n");
   return retval;
 }
 
-__attribute__((noreturn))
+//__attribute__((noreturn))
 static void fx__std_help(const char *prog, const char *help,
                          const fx_module_doc *doc)
 {
@@ -1787,16 +1815,16 @@ static void fx__std_help(const char *prog, const char *help,
   if (doc) {
     success = fx_help(doc, help, help);
   } else {
-    NONFATAL("Program \"%s\" is not documented.\n", prog);
+    //NONFATAL("Program \"%s\" is not documented.\n", prog);
     success = SUCCESS_WARN;
   }
   success |= fx_help(&fx__std_doc, help, help);
 
   if (!PASSED(success)) {
-    NONFATAL("No documentation available for \"%s\".\n", help);
+    //NONFATAL("No documentation available for \"%s\".\n", help);
   }
 
-  exit(1);
+  //exit(1);
 }
 
 
@@ -1851,7 +1879,7 @@ static void fx__parse_cmd_line(fx_module *root, int argc, char *argv[])
 
   for (i = 0; i < argc; ++i) {
     if (argv[i][0] != '-' && argv[i][1] != '-') {
-      NONFATAL("Ignoring argument missing \"--\": \"%s\".", argv[i]);
+      //NONFATAL("Ignoring argument missing \"--\": \"%s\".", argv[i]);
     } else {
       char *arg = strdup(argv[i] + 2);
       char *val = strchr(arg, '=');
@@ -1867,8 +1895,8 @@ static void fx__parse_cmd_line(fx_module *root, int argc, char *argv[])
 
       entry = datanode_lookup_expert(root, arg, 1);
       if (entry->val) {
-        FX__NONFATAL("Repeated \"--", entry, "=%s\" overwriting \"%s\".",
-            val, entry->val);
+        //FX__NONFATAL("Repeated \"--", entry, "=%s\" overwriting \"%s\".",
+        //    val, entry->val);
         free(entry->val);
       }
       entry->val = strdup(val);
@@ -1885,21 +1913,24 @@ static void fx__load_param_files(fx_module *root)
 
   while (size--) {
     FILE *stream = fopen(*load++, "r");
-    if (likely(stream)) {
+    if ((stream)) {
       datanode_read(root, stream, NULL, 0);
     } else {
-      FATAL("Cannot open file for \"--fx/load=%s\".", *(load - 1));
+      //FATAL("Cannot open file for \"--fx/load=%s\".", *(load - 1));
     }
     fclose(stream);
   }
 }
 
+/*
 static success_t fx__check_param(fx_module *param)
 {
   success_t success = SUCCESS_PASS;
   size_t size = 0;
 
-  /* Note: Params can't be FX_CUSTOM */
+  */
+/* Note: Params can't be FX_CUSTOM *//*
+
   switch (param->val_type) {
   case FX_STR:
     break;
@@ -1927,17 +1958,20 @@ static success_t fx__check_param(fx_module *param)
 
   return success;
 }
+*/
 
+
+/*
 static success_t fx__check_inputs(fx_module *mod)
 {
   fx_module *child;
   success_t success = SUCCESS_PASS;
 
   if (mod->mod_type == FX_REQUIRED && !mod->val) {
-    FX__NONFATAL("Required parameter \"", mod, "\" is unspecified.");
+    //FX__NONFATAL("Required parameter \"", mod, "\" is unspecified.");
     success = SUCCESS_FAIL;
   } else if (mod->mod_type == FX_RESERVED && mod->val) {
-    FX__NONFATAL("Reserved parameter \"", mod, "\" must not be specified.");
+    //FX__NONFATAL("Reserved parameter \"", mod, "\" must not be specified.");
     success = SUCCESS_FAIL;
   } else if (mod->val) {
     success = fx__check_mod_type("Input", FX_PARAM, mod);
@@ -1952,6 +1986,7 @@ static success_t fx__check_inputs(fx_module *mod)
 
   return success;
 }
+*/
 
 static void fx__report_sys(fx_module *sys)
 {
@@ -2034,9 +2069,10 @@ fx_module *fx_init(int argc, char *argv[], const fx_module_doc *doc)
     if (fx_param_bool(root, "fx/no_docs_nagging", 0)) {
       fx_docs_nagging = 0;
     }
+    /*
     MUST_NOT_FAIL_MSG(fx__check_inputs(root),
         "There were problems with input parameters; try --help.");
-
+    */
     fx__report_sys(fx_submodule(root, "info/sys"));
     fx__read_debug_params(fx_submodule(root, "debug"));
 
@@ -2044,7 +2080,7 @@ fx_module *fx_init(int argc, char *argv[], const fx_module_doc *doc)
       fx__attempt_speedup(root);
     }
   } else {
-    NONFATAL("No arguments supplied!");
+    //NONFATAL("No arguments supplied!");
     fx__std_help(argv[0], fx_param_str_req(root, "help"), doc);
   }
 
@@ -2158,7 +2194,7 @@ static void fx__output_results(fx_module *root)
 
   /* Still pipe to stdout unless explicitly silenced */
   if (!fx_param_bool(root, "fx/silent", 0)) {
-    datanode_write(root, stdout, type_char);
+    //datanode_write(root, stdout, type_char);
   }
 }
 
@@ -2173,8 +2209,10 @@ void fx_done(fx_module *root)
     fx_root = NULL;
   }
 
+    /*
   DEBUG_ASSERT_MSG(root != NULL,
       "Cannot call fx_done without first calling fx_init.");
+      */
 
   fx__stop_timers(root, &now);
 

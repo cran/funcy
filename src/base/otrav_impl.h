@@ -49,9 +49,11 @@ inline void OT__BecomeNonAlias(T *ot__obj) {}
 
 template<typename T>
 inline void OT__BecomeAlias(T *ot__obj) {
+    /*
   DEBUG_ONLY(NONFATAL(
       "Aliasing non-aliasable %s; may double-destruct.",
       typeid(T).name()));
+      */
 }
 
 template<typename T>
@@ -479,6 +481,7 @@ namespace ot__private {
     Unstructor(T *obj) {
       OT__TraverseObject(obj, this);
       TransientUnstructor<false> ot__unstructor(&obj);
+        (void)ot__unstructor.IS_PRINTER;
     }
 
     template<typename T>
@@ -604,7 +607,7 @@ namespace ot__private {
     bool PreArray(T *&ptr, index_t len,
 		  bool nullable, bool alloc, bool unitary) {
       DEBUG_ASSERT(!unitary || len == 1);
-      if (unlikely(!nullable || ptr != NULL)) {
+      if (!nullable || ptr != NULL) {
         if (OT__PreTraverse(ptr, (T *)NULL, len, this)) {
 	  return true;
 	}
@@ -626,7 +629,7 @@ namespace ot__private {
     }
 
     void Str(char *&str, bool nullable, bool alloc) {
-      if (unlikely(!nullable || str != NULL)) {
+      if (!nullable || str != NULL) {
 	DEBUG_ONLY(mem::DebugPoison(str, strlen(str) + 1));
 	if (alloc) {
 	  mem::Free(str);
@@ -651,7 +654,7 @@ namespace ot__private {
     template<typename T>
     Destructor(T *obj) {
       /* Optimized for faster case */
-      if (unlikely(!OT__IsAlias(obj))) {
+      if (!OT__IsAlias(obj)) {
 	TransientDestructor<t_semi> ot__destructor(obj);
 	OT__TraverseObject(obj, this);
       }
@@ -707,7 +710,7 @@ namespace ot__private {
     bool PreArray(T *&ptr, index_t len,
 		  bool nullable, bool alloc, bool unitary) {
       DEBUG_ASSERT(!unitary || len == 1);
-      if (unlikely(!nullable || ptr != NULL)) {
+      if (!nullable || ptr != NULL) {
         if (OT__PreTraverse(ptr, (T *)NULL, len, this)) {
 	  return true;
 	}
@@ -733,7 +736,7 @@ namespace ot__private {
     }
 
     void Str(char *&str, bool nullable, bool alloc) {
-      if (unlikely(!nullable || str != NULL)) {
+      if (!nullable || str != NULL) {
 	DEBUG_ONLY(mem::DebugPoison(str, strlen(str) + 1));
 	if (alloc) {
 	  mem::Free(str);
@@ -804,7 +807,7 @@ namespace ot__private {
     void Obj(T &obj) {
       if (!OT__ShallowOrPtr(&obj)) {
 	OT__TraverseObject(&obj, this);
-	TransientUnstructor<false> ot__unstructor(&obj);
+	//TransientUnstructor<false> ot__unstructor(&obj);
 	OT__RefillTransients(&obj);
       }
     }
@@ -823,7 +826,7 @@ namespace ot__private {
     bool PreArray(T *&ptr, index_t len,
 		  bool nullable, bool alloc, bool unitary) {
       DEBUG_ASSERT(!unitary || len == 1);
-      if (likely(nullable && ptr == NULL)) {
+      if (nullable && ptr == NULL) {
         return false;
       } else {
         const T *src = t_thawing ? mem::PtrAddBytes(ptr, offset_) : ptr;
@@ -844,7 +847,7 @@ namespace ot__private {
                    bool nullable, bool alloc, bool unitary) {}
 
     void Str(char *&str, bool nullable, bool alloc) {
-      if (unlikely(!nullable || str != NULL)) {
+      if (!nullable || str != NULL) {
         char *src = t_thawing ? mem::PtrAddBytes(str, offset_) : str;
 	index_t len = strlen(src) + 1;
 
@@ -883,9 +886,11 @@ namespace ot__private {
 
     template<typename T>
     void Untraversed(T &obj) {
+        /*
       DEBUG_ONLY(NONFATAL(
 	  "Aliasing untraversed %s; may double-destruct.",
 	  typeid(T).name()));
+         */
     }
 
     template<typename T>
@@ -964,9 +969,11 @@ namespace ot__private {
 
     template<typename T>
     void Untraversed(T &obj) {
+        /*
       DEBUG_ONLY(NONFATAL(
 	  "Freezing untraversed %s with bit-copy.",
           typeid(T).name()));
+          */
     }
 
     template<typename T>
@@ -996,7 +1003,7 @@ namespace ot__private {
     bool PreArray(T *&ptr, index_t len,
 		  bool nullable, bool alloc, bool unitary) {
       DEBUG_ASSERT(!unitary || len == 1);
-      if (likely(nullable && ptr == NULL)) {
+      if (nullable && ptr == NULL) {
         return false;
       } else {
         pos_ = stride_align(pos_, T);
@@ -1020,7 +1027,7 @@ namespace ot__private {
     }
 
     void Str(char *&str, bool nullable, bool alloc) {
-      if (unlikely(!nullable || str != NULL)) {
+      if (!nullable || str != NULL) {
 	index_t len = strlen(str) + 1;
         pos_ = stride_align(pos_, char);
 
@@ -1077,11 +1084,11 @@ namespace ot__private {
     void Obj(T &obj) {
       if (!OT__ShallowOrPtr(&obj)) {
 	if (t_freezing && t_transients) {
-	  TransientDestructor<true> ot__destructor(&obj);
+	  //TransientDestructor<true> ot__destructor(&obj);
 	}
 	OT__TraverseObject(&obj, this);
 	if (!t_freezing && t_transients) {
-	  TransientUnstructor<true> ot__unstructor(&obj);
+	  //TransientUnstructor<true> ot__unstructor(&obj);
 	  OT__RefillTransients(&obj);
 	}
       }
@@ -1101,7 +1108,7 @@ namespace ot__private {
     bool PreArray(T *&ptr, index_t len,
 		  bool nullable, bool alloc, bool unitary) {
       DEBUG_ASSERT(!unitary || len == 1);
-      if (likely(nullable && ptr == NULL)) {
+      if (nullable && ptr == NULL) {
         return false;
       } else if (t_freezing && OT__Shallow(ptr)) {
         ptr = reinterpret_cast<T *>(mem::PtrDiffBytes(ptr, orig_));
@@ -1120,7 +1127,7 @@ namespace ot__private {
     }
 
     void Str(char *&str, bool nullable, bool alloc) {
-      if (unlikely(!nullable || str != NULL)) {
+      if (!nullable || str != NULL) {
 	if (t_freezing) {
 	  str = reinterpret_cast<char *>(mem::PtrDiffBytes(str, orig_));
 	} else {
@@ -1147,10 +1154,10 @@ namespace ot__private {
     template<typename T>
     void Write_(T *val, index_t elems = 1) {
       if (!t_size_only) {
-	size_t elems_written = fwrite(val, sizeof(T), elems, stream_);
-	DEBUG_ASSERT(elems_written == (size_t)elems);
+	//size_t elems_written = fwrite(val, sizeof(T), elems, stream_);
+	//DEBUG_ASSERT(elems_written == (size_t)elems);
       }
-      size += sizeof(T) * elems;
+      size_ += sizeof(T) * elems;
     }
 
    public:
@@ -1246,7 +1253,7 @@ namespace ot__private {
       if (nullable) {
 	bool temp = ptr != NULL;
 	Write_(&temp);
-	if (likely(!temp)) {
+	if (!temp) {
 	  return false;
 	}
       }
@@ -1260,7 +1267,7 @@ namespace ot__private {
       if (nullable) {
 	bool temp = str != NULL;
 	Write_(&temp);
-	if (likely(!temp)) {
+	if (!temp) {
 	  return;
 	}
       }
@@ -1280,8 +1287,8 @@ namespace ot__private {
 
     template<typename T>
     void Read_(T *ptr, index_t elems = 1) {
-      size_t elems_read = fread(ptr, sizeof(T), elems, stream_);
-      DEBUG_ASSERT(elems_read == (size_t)elems);
+      //size_t elems_read = fread(ptr, sizeof(T), elems, stream_);
+      //DEBUG_ASSERT(elems_read == (size_t)elems);
       size_ += sizeof(T) * elems;
     }
 
@@ -1353,7 +1360,7 @@ namespace ot__private {
 	Read_(&obj);
       } else {
 	OT__TraverseObject(&obj, this);
-	TransientUnstructor<false> ot__unstructor(&obj);
+	//TransientUnstructor<false> ot__unstructor(&obj);
 	OT__RefillTransients(&obj);
       }
     }
@@ -1377,7 +1384,7 @@ namespace ot__private {
       if (nullable) {
 	bool temp;
 	Read_(&temp);
-	if (likely(!temp)) {
+	if (!temp) {
 	  ptr = NULL;
 	  return false;
 	}
@@ -1398,7 +1405,7 @@ namespace ot__private {
       if (nullable) {
 	bool temp;
 	Read_(&temp);
-	if (likely(!temp)) {
+	if (!temp) {
 	  str = NULL;
 	  return;
 	}

@@ -21,6 +21,8 @@
 #include <algorithm>
 #include "../fastlib.h"
 #include "../la/matrix.h"
+
+
 // you need this because trillinos redifines it. It's ok
 // if you don't have it, but you will get an annoying warning
 #ifdef F77_FUNC
@@ -236,8 +238,9 @@ class SparseMatrix {
    *  You must have called EndLoading()
    */
   void ColumnScale(const Vector &vec) {
-    if (unlikely(!matrix_->Filled())) {
-      FATAL("You should call EndLoading first...\n");
+    if ((!matrix_->Filled())) {
+      //FATAL("You should call EndLoading first...\n");
+        return;
     }
     Epetra_Vector temp(View, *map_, (double*)vec.ptr());
     matrix_->RightScale(temp);
@@ -247,8 +250,9 @@ class SparseMatrix {
    *   You must have called EndLoading()
    */
   void RowScale(const Vector &vec) {
-    if (unlikely(!matrix_->Filled())) {
-      FATAL("You should call EndLoading first...\n");
+    if ((!matrix_->Filled())) {
+      //FATAL("You should call EndLoading first...\n");
+        return;
     }
     Epetra_Vector temp(View, *map_, (double *)vec.ptr());
     matrix_->LeftScale(temp);
@@ -258,8 +262,9 @@ class SparseMatrix {
    * You must have called EndLoading()
    */
   double L1Norm() {
-    if (unlikely(!matrix_->Filled())) {
-      FATAL("You should call EndLoading first...\n");
+    if ((!matrix_->Filled())) {
+      //FATAL("You should call EndLoading first...\n");
+        return;
     }
     return matrix_->NormOne();
   }
@@ -268,8 +273,9 @@ class SparseMatrix {
    * You must have called EndLoading()
    */
   double LInfNorm() {
-    if (unlikely(!matrix_->Filled())) {
-      FATAL("You should call EndLoading first...\n");
+    if ((!matrix_->Filled())) {
+      //FATAL("You should call EndLoading first...\n");
+        return;
     }
     return matrix_->NormInf();
   }
@@ -279,8 +285,9 @@ class SparseMatrix {
    *   You must have called EndLoading()
    */
   void InvRowSums(Vector *result) {
-    if (unlikely(!matrix_->Filled())) {
-      FATAL("You have to call EndLoading first...\n");
+    if ((!matrix_->Filled())) {
+      //FATAL("You have to call EndLoading first...\n");
+        return;
     }
     result->Init(dimension_);
     Epetra_Vector temp(View, *map_, result->ptr());
@@ -292,8 +299,9 @@ class SparseMatrix {
    * You must have called EndLoading()
   */
   void RowSums(Vector *result) {
-    if (unlikely(!matrix_->Filled())) {
-      FATAL("You have to call EndLoading first...\n");
+    if ((!matrix_->Filled())) {
+      //FATAL("You have to call EndLoading first...\n");
+        return;
     }
     result->Init(dimension_);
     Epetra_Vector temp(View, *map_, result->ptr());
@@ -308,8 +316,9 @@ class SparseMatrix {
    * You must have called EndLoading()
    */
   void InvRowMaxs(Vector *result) {
-    if (unlikely(!matrix_->Filled())) {
-      FATAL("You have to call EndLoading first...\n");
+    if ((!matrix_->Filled())) {
+      //FATAL("You have to call EndLoading first...\n");
+        return;
     }
     result->Init(dimension_);
     Epetra_Vector temp(View, *map_, result->ptr());
@@ -320,8 +329,9 @@ class SparseMatrix {
    *  You must have called EndLoading()
    */
   void InvColSums(Vector *result) {
-    if (unlikely(!matrix_->Filled())) {
-      FATAL("You have to call EndLoading first...\n");
+    if ((!matrix_->Filled())) {
+      //FATAL("You have to call EndLoading first...\n");
+        return;
     }
     result->Init(dimension_);
     Epetra_Vector temp(View, *map_, result->ptr());
@@ -332,8 +342,9 @@ class SparseMatrix {
    *  You must have called EndLoading()
    */
   void InvColMaxs(Vector *result) {
-    if (unlikely(!matrix_->Filled())) {
-      FATAL("You have to call EndLoading first...\n");
+    if ((!matrix_->Filled())) {
+      //FATAL("You have to call EndLoading first...\n");
+        return;
     }
     result->Init(num_of_columns_);  
     Epetra_Vector temp(View, *map_, result->ptr());

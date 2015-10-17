@@ -227,7 +227,8 @@ class NullBlockDevice : public BlockDevice {
    */
   virtual void Read(blockid_t blockid,
       offset_t begin, offset_t end, char *data) {
-    FATAL("Cannot read from a null block device.");
+    //FATAL("Cannot read from a null block device.");
+      return;
   }
   /**
    * Ignores writes.

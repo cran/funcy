@@ -345,8 +345,8 @@ class DistributedCache : public BlockDevice {
     BlockMetadata() {
       // Initialize into a state where "We know the block is fresh and new
       // but we have no idea who owns it".
-      DEBUG_ASSERT_MSG(sizeof(BlockMetadata) <= 16,
-          "Don't make the metadata take too much RAM!");
+      //DEBUG_ASSERT_MSG(sizeof(BlockMetadata) <= 16,
+      //    "Don't make the metadata take too much RAM!");
       data = NULL;
       value = UNKNOWN_OWNER;
       locks = 0;
@@ -376,10 +376,10 @@ class DistributedCache : public BlockDevice {
 
     /** Determines the block's owner. */
     int owner(const struct DistributedCache *cache) const {
-      return unlikely(value >= 0) ? cache->my_rank_ : (~value);
+      return (value >= 0) ? cache->my_rank_ : (~value);
     }
     int owner() const {
-      DEBUG_ASSERT_MSG(!is_owner(), "owner() doesn't work if i'm the owner");
+      //DEBUG_ASSERT_MSG(!is_owner(), "owner() doesn't work if i'm the owner");
       return ~value;
     }
     /** Determines whether I am the owner. */
@@ -409,8 +409,8 @@ class DistributedCache : public BlockDevice {
     /** Gets the block ID on the local disk. */
     blockid_t local_blockid() const {
       // A block's ID is invalid if...
-      DEBUG_ASSERT_MSG(is_owner(), "no local blockid: it's not mine");
-      DEBUG_ASSERT_MSG(!is_new(), "no local blockid: it's newly allocated");
+      //DEBUG_ASSERT_MSG(is_owner(), "no local blockid: it's not mine");
+      //DEBUG_ASSERT_MSG(!is_new(), "no local blockid: it's newly allocated");
       return value;
     }
   };
@@ -432,7 +432,7 @@ class DistributedCache : public BlockDevice {
 
    public:
     friend bool operator < (const Position& a, const Position& b) {
-      if (unlikely(a.block == b.block)) {
+      if ((a.block == b.block)) {
         return a.offset < b.offset;
       } else {
         return a.block < b.block;

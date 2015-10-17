@@ -6,7 +6,7 @@
 initClust <- function(data, k, init, seed, nrep){
     nc <- dim(data)[1]
     if(init=="kmeans"){
-        res <- stepFlexclust(x=data, k=k, nrep=nrep, seed=seed, FUN=cclust)
+        res <- suppressMessages(stepFlexclust(x=data, k=k, nrep=nrep, seed=seed, FUN=cclust))
         dist <- distEuclidean(data, res@centers)
         distSum <- res@clusinfo[,2]
         clusters <- res@cluster

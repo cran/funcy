@@ -97,7 +97,7 @@ extern const float FLT_INF;
  */
 #define ASSIGN_VIA_COPY_CONSTRUCTION(C) \
     const C &operator=(const C &src) { \
-      if (likely(this != &src)) { \
+      if (this != &src) { \
         this->~C(); \
         new(this) C(src); \
       } \
@@ -119,7 +119,7 @@ extern const float FLT_INF;
  */
 #define ASSIGN_VIA_RECURSION_SAFE_COPY_CONSTRUCTION(C) \
     const C &operator=(const C &src) { \
-      if (likely(this != &src)) { \
+      if (this != &src) { \
         char buf[sizeof(C)]; \
         memcpy(buf, this, sizeof(C)); \
         new(this) C(src); \

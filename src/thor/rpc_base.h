@@ -196,7 +196,7 @@ class Channel {
   virtual ~Channel() {}
 
   virtual Transaction *GetTransaction(Message *message) {
-    FATAL("GetTransaction not implemented?");
+    //FATAL("GetTransaction not implemented?");
   }
 };
 

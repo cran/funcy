@@ -400,7 +400,7 @@ class CacheArray {
     DEBUG_ONLY(n_fifo_locks_++);
     ++metadata->lock_count;
 
-    if (likely(data != NULL)) {
+    if ((data != NULL)) {
       return reinterpret_cast<Element*>(data + offset);
     } else {
       return HandleCacheMiss_(element_id);

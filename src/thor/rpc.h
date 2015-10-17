@@ -170,7 +170,7 @@ class RemoteObjectBackend : public Channel {
 
   virtual void HandleRequest(const RequestObject& request,
       ResponseObject *response) {
-    FATAL("Virtuality sucks");
+    //FATAL("Virtuality sucks");
   }
 
   virtual Transaction *GetTransaction(Message *message) {
@@ -263,16 +263,22 @@ class ReduceChannel : public Channel {
           break;
         }
       }
-      if (unlikely(i < 0)) {
+      if ((i < 0)) {
+          /*
         FATAL("Message from peer #%d unexpected during reduce #%d",
             message->peer(), channel());
+            */
+          return;
       }
       if (received_[i] != NULL) {
+          /*
         FATAL("Multiple messages from peer #%d during reduce #%d: %p %ld %p %ld %d %d",
             message->peer(), channel(),
             received_[i], long(received_[i]->data_size()),
             message, long(message->data_size()),
             message->channel(), received_[i]->channel());
+            */
+          return;
       }
       received_[i] = message;
       Done(message->peer());

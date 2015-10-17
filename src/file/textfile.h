@@ -198,7 +198,7 @@ class TextTokenizer {
     f_ = NULL;
   }
   ~TextTokenizer() {
-    if (unlikely(f_ != NULL)) {
+    if ((f_ != NULL)) {
       (void) fclose(f_);
     }
     DEBUG_POISON_PTR(f_);
@@ -316,11 +316,11 @@ class TextTokenizer {
   void Error_(const char *msg, const ArrayList<char>& token);
   
   bool isident_begin_(int c) const {
-    return isalpha(c) || unlikely(c == '_');
+    return isalpha(c) || (c == '_');
   }
   
   bool isident_rest_(int c) const {
-    return isalnum(c) || unlikely(c == '_') || (c != 0 && strchr(ident_extra_, c));
+    return isalnum(c) || (c == '_') || (c != 0 && strchr(ident_extra_, c));
   }
 
   void ScanNumber_(char c, ArrayList<char> *token);
@@ -356,7 +356,7 @@ class TextWriter {
    */
   ~TextWriter() {
     if (f_) {
-      MUST_PASS(SUCCESS_FROM_C(::fclose(f_)));
+      //MUST_PASS(SUCCESS_FROM_C(::fclose(f_)));
     }
     DEBUG_POISON_PTR(f_);
   }
@@ -368,7 +368,7 @@ class TextWriter {
    */
   success_t Open(const char *fname) {
     f_ = ::fopen(fname, "w");
-    return (unlikely(!f_)) ? SUCCESS_FAIL : SUCCESS_PASS;
+    return ((!f_)) ? SUCCESS_FAIL : SUCCESS_PASS;
   }
   
   /**
@@ -377,7 +377,7 @@ class TextWriter {
   success_t Close() {
     int rv = fclose(f_);
     f_ = NULL;
-    return unlikely(rv < 0) ? SUCCESS_FAIL : SUCCESS_PASS;
+    return (rv < 0) ? SUCCESS_FAIL : SUCCESS_PASS;
   }
   
   success_t Printf(const char *format, ...);

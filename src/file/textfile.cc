@@ -95,15 +95,18 @@ char *TextTokenizer::ReadLine() {
 
 void TextLineReader::Error(const char *format, ...) {
   va_list vl;
-  
+
+  /*
   // TODO: Use a warning propagation system
   fprintf(stderr, ".| %d: %s\nX|  `-> ", line_num_, line_.c_str());
-  
+
+
   va_start(vl, format);
   vfprintf(stderr, format, vl);
   va_end(vl);
   
   fprintf(stderr, "\n");
+   */
 }
 
 success_t TextLineReader::Open(const char *fname) {
@@ -112,7 +115,7 @@ success_t TextLineReader::Open(const char *fname) {
   has_line_ = false;
   line_.Init();
   
-  if (unlikely(f_ == NULL)) {
+  if (f_ == NULL) {
     return SUCCESS_FAIL;
   } else {
     Gobble();
@@ -125,7 +128,7 @@ bool TextLineReader::Gobble() {
   
   line_.Destruct();
   
-  if (likely(ptr != NULL)) {
+  if (ptr != NULL) {
     line_.Steal(ptr);
     has_line_ = true;
     line_num_++;
@@ -182,7 +185,7 @@ success_t TextTokenizer::Open(const char *fname,
   
   f_ = fopen(fname, "r");
   
-  if (unlikely(f_ == NULL)) {
+  if (f_ == NULL) {
     return SUCCESS_FAIL;
   } else {
     Gobble();
@@ -193,13 +196,13 @@ success_t TextTokenizer::Open(const char *fname,
 char TextTokenizer::NextChar_() {
   int c = GetChar_();
   
-  if (c != EOF && unlikely(strchr(comment_start_, c) != NULL)) {
+  if (c != EOF && (strchr(comment_start_, c) != NULL)) {
     do {
       c = GetChar_();
-    } while (likely(c != EOF) && likely(c != '\r') && likely(c != '\n'));
+    } while ((c != EOF) && (c != '\r') && (c != '\n'));
   }
   
-  if (unlikely(c == EOF)) {
+  if (c == EOF) {
     c = 0;
   }
   
@@ -276,6 +279,7 @@ void TextTokenizer::Error(const char *format, ...) {
   Sanitize(next_, &next_sanitized);
   
   // TODO: Use a warning propagation system
+  /*
   fprintf(stderr, ".| %d: %s <-HERE-> %s\nX|  `-> ", line_,
       cur_sanitized.c_str(), next_sanitized.c_str());
   
@@ -284,12 +288,13 @@ void TextTokenizer::Error(const char *format, ...) {
   va_end(vl);
   
   fprintf(stderr, "\n");
+   */
 }
 
 void TextTokenizer::Error_(const char *msg, const ArrayList<char>& token) {
   next_type_ = INVALID;
   
-  printf("size is %d, token[0] = %d\n", token.size(), token[0]);
+  //printf("size is %d, token[0] = %d\n", token.size(), token[0]);
   next_.Copy(token.begin(), token.size());
   Error("%s", msg);
   next_.Destruct();
@@ -300,17 +305,17 @@ void TextTokenizer::ScanNumber_(char c, ArrayList<char> *token) {
   bool floating = false;
   
   while (1) {
-    if (unlikely(c == '.')) {
+    if (c == '.') {
       /* handle a period */
-      if (unlikely(dot)) {
+      if (dot) {
         Error_("Multiple decimal points in a float", *token);
         return;
       }
       dot = true;
       floating = true;
-    } else if (likely(isdigit(c))) {
+    } else if (isdigit(c)) {
       /* keep on processing digits */
-    } else if (unlikely(c == 'e' || c == 'E')) {
+    } else if (c == 'e' || c == 'E') {
       /* exponent - read exponent and finish */
       c = NextChar_(token);
       if (c == '+' || c == '-') {

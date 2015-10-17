@@ -225,12 +225,12 @@ class Mutex {
   void Lock() const {
     int t = pthread_mutex_lock(&mutex_);
     (void)t; // avoid an "unused variable" warning
-    DEBUG_ASSERT_MSG(t == 0, "Error locking mutex -- relocking a non-recursive mutex?");
+    //DEBUG_ASSERT_MSG(t == 0, "Error locking mutex -- relocking a non-recursive mutex?");
   }
   
   /** Tries to lock, returns false if doing so would require waiting. */
   bool TryLock() const {
-    return likely(pthread_mutex_trylock(&mutex_) == 0);
+    return (pthread_mutex_trylock(&mutex_) == 0);
   }
   
   /** Releases the lock. */
@@ -335,7 +335,7 @@ class DoneCondition {
    */
   void Done() {
     mutex_.Lock();
-    DEBUG_ASSERT_MSG(done_ == false, "Doesn't do a counter -- should it?");
+    //DEBUG_ASSERT_MSG(done_ == false, "Doesn't do a counter -- should it?");
     done_ = true;
     cond_.Signal();
     mutex_.Unlock();

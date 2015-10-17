@@ -57,7 +57,7 @@
  * Perhaps extend success_t?
  */
 #define SUCCESS_FROM_LAPACK(info) \
-    (likely((info) == 0) ? SUCCESS_PASS : SUCCESS_FAIL)
+    (((info) == 0) ? SUCCESS_PASS : SUCCESS_FAIL)
 
 #ifndef NO_LAPACK
 #define USE_LAPACK

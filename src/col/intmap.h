@@ -92,7 +92,7 @@ class DenseIntMap {
    */
   Value& operator [] (index_t index) {
     DEBUG_BOUNDS(index, BIG_BAD_NUMBER);
-    if (unlikely(index >= size_)) {
+    if ((index >= size_)) {
       index_t old_size = size_;
       size_ = std::max(size_ * 2, index + 1);
       ptr_ = mem::Realloc(ptr_, size_);
@@ -113,7 +113,7 @@ class DenseIntMap {
    */
   const Value& get(index_t index) const {
     DEBUG_BOUNDS(index, BIG_BAD_NUMBER);
-    if (likely(index < size_)) {
+    if ((index < size_)) {
       return ptr_[index];
     } else {
       return default_value_;

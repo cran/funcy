@@ -123,10 +123,6 @@ extern int print_warnings;
  *
  * @see VERBOSE_GOT_HERE
  */
-#define VERBOSE_MSG(min_verbosity, msg_params...) \
-    VERBOSE_ONLY( \
-        unlikely(verbosity_level >= (min_verbosity)) \
-            ? NOTIFY(msg_params) : NOP)
 
 /**
  * Prints a default message to indicate having reached a line of code.
@@ -138,11 +134,13 @@ extern int print_warnings;
  *
  * @see VERBOSE_MSG
  */
+/*
 #define VERBOSE_GOT_HERE(min_verbosity) \
     VERBOSE_ONLY( \
-        unlikely(print_got_heres && verbosity_level >= (min_verbosity)) \
+        (print_got_heres && verbosity_level >= (min_verbosity)) \
             ? NOTIFY("Got to line %d of %s", __LINE__, __FUNCTION__) : NOP)
-
+*/
+#define VERBOSE_GOT_HERE(min_verbosity) NOP
 /**
  * Conditionally emits a warning message, which may abort or pause
  * process.
@@ -158,9 +156,6 @@ extern int print_warnings;
  *
  * @see DEBUG_WARNING_IF, DEBUG_ERROR_MSG_IF
  */
-#define DEBUG_WARNING_MSG_IF(cond, msg_params...) \
-    DEBUG_ONLY(unlikely((cond) && print_warnings) \
-        ? NONFATAL(msg_params) : NOP)
 #define DEBUG_WARN_MSG_IF DEBUG_WARNING_MSG_IF
 
 /**
@@ -177,8 +172,6 @@ extern int print_warnings;
  *
  * @see DEBUG_WARNING_MSG_IF, DEBUG_ERROR_IF
  */
-#define DEBUG_WARNING_IF(cond) \
-    DEBUG_WARNING_MSG_IF(cond, "warning: " #cond)
 #define DEBUG_WARN_IF DEBUG_WARNING_IF
 
 /**
@@ -192,9 +185,7 @@ extern int print_warnings;
  *
  * @see DEBUG_ERROR_IF, DEBUG_ASSERT_MSG, DEBUG_WARNING_MSG_IF
  */
-#define DEBUG_ERROR_MSG_IF(cond, msg_params...) \
-    DEBUG_ONLY(unlikely(cond) \
-        ? FATAL(msg_params) : NOP)
+
 #define DEBUG_ERR_MSG_IF DEBUG_ERROR_MSG_IF
 
 /**
@@ -207,9 +198,7 @@ extern int print_warnings;
  *
  * @see DEBUG_ERROR_MSG_IF, DEBUG_ASSERT, DEBUG_WARNING_IF
  */
-#define DEBUG_ERROR_IF(cond) \
-    DEBUG_ERROR_MSG_IF(cond, "error: " #cond)
-#define DEBUG_ERR_IF DEBUG_ERROR_IF
+//#define DEBUG_ERR_IF DEBUG_ERROR_IF
 
 /**
  * Aborts process if some condition fails, printing a given message.
@@ -227,7 +216,6 @@ extern int print_warnings;
     DEBUG_ONLY(likely(cond) \
         ? NOP : FATAL(msg_params))
 */
-#define DEBUG_ASSERT_MSG(cond, msg_params...) NOP
 
 /**
  * Aborts process if a condition fails, printing a standard message.
@@ -305,11 +293,12 @@ const T *poison_ptr(T *&x) {
  *
  * @see DEBUG_BOUNDS_INCLUSIVE, DEBUG_SAME_INT
  */
-#define DEBUG_BOUNDS(x, bound) \
+#define DEBUG_BOUNDS(x, bound) NOP
+/*
     DEBUG_ASSERT_MSG(static_cast<uint64>(x) < static_cast<uint64>(bound), \
         "DEBUG_BOUNDS failed: %s = %" L64 "d not in [0, %s = %" L64 "d)\n", \
         #x, static_cast<int64>(x), #bound, static_cast<int64>(bound))
-
+*/
 /**
  * Asserts than an index is positive and less than or equal to its
  * upper bound.
@@ -322,11 +311,12 @@ const T *poison_ptr(T *&x) {
  *
  * @see DEBUG_BOUNDS, DEBUG_SAME_INT
  */
-#define DEBUG_BOUNDS_INCLUSIVE(x, bound) \
+#define DEBUG_BOUNDS_INCLUSIVE(x, bound) NOP
+/*
     DEBUG_ASSERT_MSG(static_cast<uint64>(x) <= static_cast<uint64>(bound), \
         "DEBUG_BOUNDS failed: %s = %" L64 "d not in [0, %s = %" L64 "d]\n", \
         #x, static_cast<int64>(x), #bound, static_cast<int64>(bound))
-
+*/
 /**
  * Asserts that two integers are the same.
  *
@@ -339,10 +329,6 @@ const T *poison_ptr(T *&x) {
  *
  * @see DEBUG_SAME_SIZE, DEBUG_SAME_DOUBLE, DEBUG_APPROX_DOUBLE
  */
-#define DEBUG_SAME_INT(x, y) \
-    DEBUG_ASSERT_MSG((x) == (y), \
-        "DEBUG_SAME_INT failed: %s = %" L64 "d not equal to %s = %" L64 "d\n", \
-        #x, static_cast<int64>(x), #y, static_cast<int64>(y))
 
 /**
  * Asserts that two integers are the same.
@@ -378,10 +364,6 @@ const T *poison_ptr(T *&x) {
  *
  * @see DEBUG_SAME_INT, DEBUG_APPROX_DOUBLE
  */
-#define DEBUG_SAME_DOUBLE(x, y) \
-    DEBUG_ASSERT_MSG((x) == (y), \
-        "DEBUG_SAME_DOUBLE failed: %s = %g not equal to %s = %g\n", \
-        #x, static_cast<double>(x), #y, static_cast<double>(y))
 
 /**
  * Asserts that two floating-point numbers are within epsilon of each
@@ -396,10 +378,5 @@ const T *poison_ptr(T *&x) {
  *
  * @see DEBUG_SAME_INT, DEBUG_SAME_DOUBLE
  */
-#define DEBUG_APPROX_DOUBLE(x, y, eps) \
-    DEBUG_ASSERT_MSG(fabs(static_cast<double>((x) - (y))) < eps, \
-        "DEBUG_APPROX_DOUBLE failed: %s = %g not within %g of %s = %g\n", \
-        #x, static_cast<double>(x), static_cast<double>(eps), \
-        #y, static_cast<double>(y))
 
 #endif /* BASE_DEBUG_H */

@@ -130,12 +130,14 @@ namespace la {
     la::MulTransAInit(x, x, &r_xx_mat);
     la::MulInit(y, x, &r_xy_vec);
     success_t status = la::SolveInit(r_xx_mat, r_xy_vec, a);
-    if unlikely(status != SUCCESS_PASS) {
+    if (status != SUCCESS_PASS) {
+      /*
       if (status==SUCCESS_FAIL) {
         FATAL("Least square fit failed \n");
       } else {
         NONFATAL("Least square fit returned a warning \n");
       }
+       */
     }
     return status;
   }
@@ -155,11 +157,11 @@ namespace la {
     la::MulTransAInit(x, x, &r_xx_mat);
     la::MulTransAInit(x, y, &r_xy_mat);
     success_t status = la::SolveInit(r_xx_mat, r_xy_mat, a);
-    if unlikely(status != SUCCESS_PASS) {
+    if (status != SUCCESS_PASS) {
       if (status==SUCCESS_FAIL) {
-        FATAL("Least square fit failed \n");
+        //FATAL("Least square fit failed \n");
       } else {
-        NONFATAL("Least square fit returned a warning \n");
+        //NONFATAL("Least square fit returned a warning \n");
       }
     }
     return status;
@@ -180,13 +182,15 @@ namespace la {
     la::MulTransBInit(x, x, &r_xx_mat);
     la::MulInit(x, y, &r_xy_mat);
     success_t status = la::SolveInit(r_xx_mat, r_xy_mat, a);
-    if unlikely(status != SUCCESS_PASS) {
+    /*
+    if (status != SUCCESS_PASS) {
       if (status==SUCCESS_FAIL) {
         FATAL("Least square fit failed \n");
       } else {
         NONFATAL("Least square fit returned a warning \n");
       }
     }
+     */
     return status;
   }
 }

@@ -128,7 +128,7 @@ class MinHeap {
     Entry entry;
     entries_.PopBackInit(&entry);
 
-    if (likely(entries_.size() != 0)) {
+    if ((entries_.size() != 0)) {
       WalkDown_(entry, 0);
     }
   }
@@ -178,12 +178,12 @@ class MinHeap {
     for (;;) {
       index_t c = ChildIndex_(i);
 
-      if (unlikely(c > last)) {
+      if ((c > last)) {
         break;
       }
 
       // TODO: This "if" can be avoided if we're more intelligent...
-      if (likely(c != last)) {
+      if ((c != last)) {
         c += entries[c + 1].key < entries[c].key ? 1 : 0;
       }
 
@@ -207,7 +207,7 @@ class MinHeap {
     for (;;) {
       index_t p;
 
-      if (unlikely(i == 0)) {
+      if (i == 0) {
         break; // highly unlikely, we found the best!
       }
 

@@ -461,7 +461,11 @@ void FSCM::InitTrain(const Dataset& dataset, const Dataset& neighborset, const D
 
 void FSCM::HMRF(Vector& alpha, Matrix& beta, Vector& sigma, Vector& gamma, Matrix& Vgamma, Matrix& pi, Matrix& pi_y, double max_iter_mc){
 
-    index_t n=psi.n_rows(), m=phi.n_rows(), c=beta.n_cols(), p=phi.n_cols(), q=psi.n_cols(), k=neighbors.n_cols();
+    index_t n=psi.n_rows(), m=phi.n_rows(), c=beta.n_cols(), q=psi.n_cols();
+
+    //#pragma GCC diagnostic ignored "-Wunused-variable"
+    index_t k = neighbors.n_cols();
+    index_t p = phi.n_cols();
     
     //ArrayList<index_t> random_index;
     //math::MakeRandomPermutation(n,&random_index);
@@ -1020,7 +1024,7 @@ void FSCM::Results(Vector& alpha, Matrix& beta, Vector& gamma, Matrix& pi_y){
     temporal.Init(m,c+1);
 
     probs.Copy(pi_y);
-    probs.Init(n,c);
+    //probs.Init(n,c);
     data::Save("probsy.csv",probs);
 
     Vector temp;
@@ -1079,7 +1083,7 @@ int hasnan(Matrix x) {
     int i;
     double *p = x.ptr();
     for(i=0; i<x.n_rows()*x.n_cols(); i++) {
-        if(std::isnan(p[i])) return 1;
+        if(yet_another_isnan(p[i])) return 1;
     }
     return 0;
 }

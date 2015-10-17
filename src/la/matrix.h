@@ -118,11 +118,13 @@ class GenVector {
    * Uninitializes so that you can call another initializer.
    */
   void Destruct() {
+      /*
     DEBUG_ASSERT_MSG(ptr_ != BIG_BAD_POINTER(T),
        "You forgot to initialize a Vector before it got automatically freed.");
+       */
     
     /* mark slow case as "unlikely" even if it might be the likely case */
-    if (unlikely(should_free_)) {
+    if ((should_free_)) {
       mem::DebugPoison(ptr_, length_);
       mem::Free(ptr_);
     }
@@ -427,7 +429,7 @@ class GenVector {
   
  private:
   void AssertUninitialized_() const {
-    DEBUG_ASSERT_MSG(length_ == BIG_BAD_NUMBER, "Cannot re-init vectors.");
+    //DEBUG_ASSERT_MSG(length_ == BIG_BAD_NUMBER, "Cannot re-init vectors.");
   }
   
   void Uninitialize_() {
@@ -436,8 +438,8 @@ class GenVector {
   }
   
   void AssertInitialized_() {
-    DEBUG_ASSERT_MSG(ptr_ != BIG_BAD_POINTER(T),
-        "Vector was not initialized.");
+    //DEBUG_ASSERT_MSG(ptr_ != BIG_BAD_POINTER(T),
+    //    "Vector was not initialized.");
   }
 };
 
@@ -515,8 +517,10 @@ class GenMatrix {
    * on this again.
    */
   void Destruct() {
+      /*
     DEBUG_ASSERT_MSG(ptr_ != BIG_BAD_POINTER(T),
        "You forgot to initialize a Matrix before it got automatically freed.");
+       */
     if (should_free_) {
       mem::DebugPoison(ptr_, n_rows_ * n_cols_);
       mem::Free(ptr_);
@@ -1063,7 +1067,7 @@ class GenMatrix {
   
  private:
   void AssertUninitialized_() const {
-    DEBUG_ASSERT_MSG(n_rows_ == BIG_BAD_NUMBER, "Cannot re-init matrices.");
+    //DEBUG_ASSERT_MSG(n_rows_ == BIG_BAD_NUMBER, "Cannot re-init matrices.");
   }
   
   void Uninitialize_() {

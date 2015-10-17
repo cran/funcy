@@ -39,7 +39,7 @@
 #define BASE_ANSI_COLORS_H
 
 /** ANSI color sequence wrapper */
-#define ANSI_SEQ(str) "\033["str"m"
+#define ANSI_SEQ(str) "\033[" str "m"
 /** Clears ANSI colors */
 #define ANSI_CLEAR ANSI_SEQ("0")
 /** Begin high-intensity */

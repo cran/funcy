@@ -1,8 +1,8 @@
 Package: funcy
 Type: Package
 Title: Functional Clustering Algorithms
-Version: 0.8
-Date: 2015-09-24
+Version: 0.8.2
+Date: 2015-10-16
 Authors@R: c(
 	   person(given="Christina", family="Yassouridis", email="c_ya02@yahoo.de",
 	   role=c("aut", "cre")),
@@ -15,7 +15,7 @@ Authors@R: c(
 	   person(given="Huijing", family="Jiang", role="ctb"),
 	   person(given="Gareth", family="James", role="ctb"),
 	   person(given="Catherine", family="Sugar", role="ctb"),
-	   person(given="Hans-Georg", family="M\"uller", role="ctb"),
+	   person(given="Hans-Georg", family="Mueller", role="ctb"),
 	   person(given="Jie", family="Peng", role="ctb"),
 	   person(given="Chiou", family="Jeng-Min", role="ctb"),
 	   person(given="Pai-Ling", family="Li", role="ctb")
@@ -29,7 +29,7 @@ Suggests: scatterplot3d, Funclustering, funHDDC
 LazyLoad: yes
 Encoding: UTF-8
 NeedsCompilation: yes
-Packaged: 2015-10-13 10:09:55 UTC; christina
+Packaged: 2015-10-16 15:47:12 UTC; christina
 Author: Christina Yassouridis [aut, cre],
   Dominik Ernst [ctb],
   Madison Giacofci [ctb],
@@ -40,10 +40,10 @@ Author: Christina Yassouridis [aut, cre],
   Huijing Jiang [ctb],
   Gareth James [ctb],
   Catherine Sugar [ctb],
-  Hans-Georg M"uller [ctb],
+  Hans-Georg Mueller [ctb],
   Jie Peng [ctb],
   Chiou Jeng-Min [ctb],
   Pai-Ling Li [ctb]
 Maintainer: Christina Yassouridis <c_ya02@yahoo.de>
 Repository: CRAN
-Date/Publication: 2015-10-13 12:45:13
+Date/Publication: 2015-10-17 15:53:25

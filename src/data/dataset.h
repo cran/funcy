@@ -77,7 +77,8 @@ class DatasetFeature {
   Type type_;
   /** If nominal, the names of each numbered value. */
   ArrayList<String> value_names_;
-  
+
+
   OBJECT_TRAVERSAL(DatasetFeature) {
     OT_OBJ(name_);
     //OT_OBJ(reinterpret_cast<int &>(type_));
@@ -94,6 +95,7 @@ class DatasetFeature {
   * @param name_in the name of the feature
   */ 
  void InitGeneral(const char *name_in) {
+     //type_ = INTEGER;
     name_.Copy(name_in);
     value_names_.Init();
  }
@@ -381,7 +383,7 @@ class Dataset {
  private:
   Matrix matrix_;
   DatasetInfo info_;
-  
+
   OBJECT_TRAVERSAL(Dataset) {
     OT_OBJ(matrix_);
     OT_OBJ(info_);

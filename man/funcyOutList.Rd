@@ -49,7 +49,7 @@ data <- Data(ds)
 clusters <- Cluster(ds)
 
 res <- funcit(data=data, clusters=clusters, seed=2808,
-              methods=1:7, k=4, parallel=TRUE)
+              methods=1:5, k=4, parallel=TRUE)
 class(res)
 summary(res)
 }

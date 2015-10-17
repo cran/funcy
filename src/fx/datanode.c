@@ -95,10 +95,10 @@ struct datanode *datanode_lookup_expert(struct datanode *node, char *path,
     *slash = '\0'; /* Demark end of current query */
 
     /* Match special paths: "", ".", ".." */
-    if (unlikely(*path == '\0' || strcmp(path, ".") == 0)) {
+    if ((*path == '\0' || strcmp(path, ".") == 0)) {
       path = slash + 1;
       continue;
-    } else if (unlikely(strcmp(path, "..") == 0)) {
+    } else if ((strcmp(path, "..") == 0)) {
       if (node->parent) {
 	node = node->parent;
       }
@@ -111,7 +111,7 @@ struct datanode *datanode_lookup_expert(struct datanode *node, char *path,
      * - but check end first for fast repeat lookups
      */   
     if (!node->last_child
-	|| likely(strcmp(path, node->last_child->key) != 0)) {
+	|| (strcmp(path, node->last_child->key) != 0)) {
       struct datanode *child;
       struct datanode **prev;
 
@@ -120,7 +120,7 @@ struct datanode *datanode_lookup_expert(struct datanode *node, char *path,
        */
       for (prev = &node->first_child, child = node->first_child; child;
 	   prev = &child->next, child = child->next) {
-	if (unlikely(strcmp(path, child->key) == 0)) {
+	if ((strcmp(path, child->key) == 0)) {
 	  *prev = child->next;
 	  child->next = NULL;
 	  node->last_child->next = child;
@@ -130,7 +130,7 @@ struct datanode *datanode_lookup_expert(struct datanode *node, char *path,
       }
 
       /* Create query if not found */
-      if (unlikely(!child)) {
+      if ((!child)) {
 	if (!create) {
 	  return NULL;
 	}

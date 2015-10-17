@@ -210,7 +210,7 @@ ds <- sampleFuncy(obsNr=50, k=4, timeNr=8, reg=TRUE)
 
 ##Cluster the functions with all available methods. 
 res <- funcit(data=Data(ds), clusters=Cluster(ds),
-              methods=c(1,2,3,6), seed=2404,
+              methods=c(1,2,3,4), seed=2404,
               k=4)
 summary(res)
 Cluster(res)
@@ -223,7 +223,7 @@ res <- funcit(data=Data(ds), clusters=Cluster(ds), methods="fitfclust", seed=240
 ##Cluster the data with methods for irregular sets
 ##Sample an irregular dataset
 set.seed(2804)
-ds <- sampleFuncy(obsNr=50, k=4, timeNrMin=5, timeNrMax=10,
+ds <- sampleFuncy(obsNr=50, k=4, timeNrMin=4, timeNrMax=8,
                   reg=FALSE)
 data <- Data(ds)
 clusters <- Cluster(ds)

@@ -49,13 +49,20 @@ char fl_msg_marker[] = {'X', '!', '*', '.'};
 const char *fl_msg_color[] =
   {ANSI_HRED, ANSI_YELLOW, ANSI_HGREEN, ANSI_HBLUE};
 
+
+int yet_another_isnan(double x) {
+    return(x != x);
+}
+
+
+
 void fl_abort(void)
 {
   if (segfault_on_abort) {
-    fflush(NULL);
-    *(int*)NULL = 0;
+    //fflush(NULL);
+    //*(int*)NULL = 0;
   }
-  abort();
+  //abort();
 }
 
 void fl_pause(void)
@@ -63,8 +70,8 @@ void fl_pause(void)
   if (isatty(0)) {
     char c;
 
-    fprintf(stderr, ANSI_HBLACK"Press Return to continue..."ANSI_CLEAR);
-    fflush(stderr);
+    //fprintf(stderr, ANSI_HBLACK"Press Return to continue..."ANSI_CLEAR);
+    //fflush(stderr);
 
     while ((c = getchar()) != EOF && c != '\n');
   }
@@ -72,7 +79,7 @@ void fl_pause(void)
 
 void fl_print_msg_header(char marker, const char *color)
 {
-  fprintf(stderr, "%s[%c]%s ", color, marker, ANSI_CLEAR);
+  //fprintf(stderr, "%s[%c]%s ", color, marker, ANSI_CLEAR);
 }
 
 void fl_print_msg_loc(const char *file, const char *func, int line)
@@ -86,7 +93,7 @@ void fl_print_msg_loc(const char *file, const char *func, int line)
     last = file + 1;
   }
 
-  fprintf(stderr, "%s:%s:%d: ", prev, func, line);
+  //fprintf(stderr, "%s:%s:%d: ", prev, func, line);
 }
 
 void fl_print_fatal_msg(const char *file, const char *func, int line,
@@ -99,10 +106,10 @@ void fl_print_fatal_msg(const char *file, const char *func, int line,
   fl_print_msg_loc(file, func, line);
 
   va_start(vl, format);
-  vfprintf(stderr, format, vl);
+  //vfprintf(stderr, format, vl);
   va_end(vl);
 
-  fprintf(stderr, "\n");
+  //fprintf(stderr, "\n");
 
   fl_abort();
 }
@@ -118,10 +125,10 @@ void fl_print_msg(const char *file, const char *func, int line,
   }
 
   va_start(vl, format);
-  vfprintf(stderr, format, vl);
+  //vfprintf(stderr, format, vl);
   va_end(vl);
 
-  fprintf(stderr, "\n");
+  //fprintf(stderr, "\n");
 
   if (msg_type < FL_MSG_NOTIFY_STAR) {
     if (msg_type == FL_MSG_FATAL || abort_on_nonfatal) {
@@ -134,6 +141,7 @@ void fl_print_msg(const char *file, const char *func, int line,
 
 void fl_print_progress(const char *desc, int prec)
 {
+  /*
   const int BAR_LEN = 50;
   static int prev_prec = -1;
   static const char *prev_desc = NULL;
@@ -154,13 +162,14 @@ void fl_print_progress(const char *desc, int prec)
       }
       buf[i] = '\0';
 
-      fprintf(stderr, "\r"ANSI_BLUE"[%s] %d%% %s"ANSI_CLEAR"\r",
-              buf, prec, desc);
+      //fprintf(stderr, "\r"ANSI_BLUE"[%s] %d%% %s"ANSI_CLEAR"\r",
+      //        buf, prec, desc);
 
       prev_prec = prec;
       prev_desc = desc;
     }
   }
+   */
 }
 
 void hex_to_stream(FILE *stream, const char *src, const char *ok_char)
@@ -212,8 +221,8 @@ char *unhex_in_place(char *str)
     str = dest;
     while (*str) {
       if (*str == '%' && isxdigit(str[1]) && isxdigit(str[2])) {
-        printf("[%s:%d] cannot portably compute sscanf %%2hhx\n", __FILE__, __LINE__);
-        abort();
+        //printf("[%s:%d] cannot portably compute sscanf %%2hhx\n", __FILE__, __LINE__);
+        //abort();
         *dest = unhex(str[1])*16 + unhex(str[2]);
         ++dest;
     	//sscanf(str + 1, FMT_HEX_CHAR, dest++);

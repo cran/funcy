@@ -61,17 +61,19 @@ void math::MakeRandomPermutation(index_t size, index_t *array) {
   // This is cache inefficient for large sizes; large caches might
   // warrant a more sophisticated blocked algorithm.
   
-  if (unlikely(size == 0)) {
+  if (size == 0) {
     return;
   }
   
   array[0] = 0;
-  
+
+  /*
   for (index_t i = 1; i < size; i++) {
     index_t victim = rand() % i;
     array[i] = array[victim];
     array[victim] = i;
   }
+  */
 }
 
 void math::MakeInversePermutation(index_t size,

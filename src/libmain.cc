@@ -100,7 +100,7 @@ void do_fscm(const char **datafile,
 		if(*verbose) Rprintf("1. Update f(Y|gamma,z; alpha,beta,sigma_epsilon) \n");
 		fit.MStep(gamma, Vgamma, pi_y, alpha, beta , sigma, pi, *max_iter_hmrf); //given gamma, Vgamma,pi_y; update alpha, beta, sigma, pi
 
-		if(std::isnan(sigma[0]) || std::isnan(sigma[1])) {
+		if(yet_another_isnan(sigma[0]) || yet_another_isnan(sigma[1])) {
 			if(*verbose) Rprintf("nan occured during the estimation (sigma)\n");
 			error=1;
 			break;

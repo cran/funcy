@@ -40,28 +40,15 @@
 
 #include "../base/base.h"
 
-#define ARRAYLIST__DEBUG_INIT_OK(who, size, cap) \
-    DEBUG_INIT_OK(who); \
-    DEBUG_ASSERT(size >= 0); \
-    DEBUG_ASSERT(size <= cap);
+#define ARRAYLIST__DEBUG_INIT_OK(who, size, cap) NOP
 
-#define ARRAYLIST__DEBUG_PUSH_BACK_OK(who, inc) \
-    DEBUG_MODIFY_OK(who); \
-    DEBUG_ASSERT(inc >= 0);
+#define ARRAYLIST__DEBUG_PUSH_BACK_OK(who, inc) NOP
 
-#define ARRAYLIST__DEBUG_POP_BACK_OK(who, dec) \
-    DEBUG_MODIFY_OK(who); \
-    DEBUG_BOUNDS_INCLUSIVE(dec, who->size());
+#define ARRAYLIST__DEBUG_POP_BACK_OK(who, dec) NOP
 
-#define ARRAYLIST__DEBUG_INSERT_OK(who, pos, inc) \
-    DEBUG_MODIFY_OK(who); \
-    DEBUG_BOUNDS_INCLUSIVE(pos, who->size()); \
-    DEBUG_ASSERT(inc >= 0);
+#define ARRAYLIST__DEBUG_INSERT_OK(who, pos, inc) NOP
 
-#define ARRAYLIST__DEBUG_REMOVE_OK(who, pos, dec) \
-    DEBUG_MODIFY_OK(who); \
-    DEBUG_BOUNDS_INCLUSIVE(pos, who->size()); \
-    DEBUG_BOUNDS_INCLUSIVE(dec, who->size() - pos);
+#define ARRAYLIST__DEBUG_REMOVE_OK(who, pos, dec) NOP
 
 /**
  * A typical multi-purpose, resizable array, coded with an emphasis on
@@ -91,6 +78,7 @@ class ArrayList {
   index_t size_; // number of active objects
   index_t cap_;  // allocated size of the array; -1 if alias
 
+//#pragma GCC diagnostic ignored "-Wunused-variable"
   OBJECT_TRAVERSAL_DEPRECATED_COPIES(ArrayList) {
     // note that only the active objects are copied, etc.
     OT_OBJ(size_);
@@ -257,7 +245,9 @@ class ArrayList {
     //ARRAYLIST__DEBUG_INIT_OK(this, size, cap);
     //DEBUG_BOUNDS_INCLUSIVE(pos, src.size());
     //DEBUG_BOUNDS_INCLUSIVE(size, src.size() - pos);
-    InitCopy(src.begin() + pos, size, capacity);
+    //InitCopy(src.begin() + pos, size, capacity);
+      printf("InitSubCopy %d\n", __LINE__);
+      abort();
   }
   void InitSubCopy(const ArrayList &src, index_t pos, index_t size) {
     InitSubCopy(src, pos, size, size);
@@ -381,7 +371,7 @@ class ArrayList {
   void GrowTo(index_t size) {
     //DEBUG_MODIFY_OK(this);
     //DEBUG_ASSERT(size >= size_);
-    if (unlikely(size > cap_)) {
+    if ((size > cap_)) {
       IncreaseCap_(size + cap_);
     }
     ot::Construct(ptr_ + size_, size - size_);
@@ -423,7 +413,7 @@ class ArrayList {
   void Resize(index_t size) {
     //DEBUG_MODIFY_OK(this);
     //DEBUG_ASSERT(size >= 0);
-    if (unlikely(size > size_)) {
+    if ((size > size_)) {
       GrowTo(size);
     } else {
       ShrinkTo(size);
@@ -446,7 +436,7 @@ class ArrayList {
   void SizeAtLeast(index_t size) {
     //DEBUG_MODIFY_OK(this);
     //DEBUG_ASSERT(size >= 0);
-    if (unlikely(size > size_)) {
+    if ((size > size_)) {
       GrowTo(size);
     }
   }
@@ -462,7 +452,7 @@ class ArrayList {
   void SizeAtMost(index_t size) {
     //DEBUG_MODIFY_OK(this);
     //DEBUG_ASSERT(size >= 0);
-    if (unlikely(size < size_)) {
+    if ((size < size_)) {
       ShrinkTo(size);
     }
   }
@@ -487,7 +477,7 @@ class ArrayList {
   void Reserve(index_t size) {
     //DEBUG_MODIFY_OK(this);
     //DEBUG_ASSERT(size >= 0);
-    if (unlikely(size > cap_)) {
+    if ((size > cap_)) {
       ptr_ = mem::Realloc(ptr_, size);
       cap_ = size;
     }
@@ -554,7 +544,7 @@ class ArrayList {
   Elem *PushBackRaw(index_t inc = 1) {
     //ARRAYLIST__DEBUG_PUSH_BACK_OK(this, inc);
 
-    if (unlikely(size_ + inc > cap_)) {
+    if ((size_ + inc > cap_)) {
       IncreaseCap_(size_ + inc + cap_);
     }
 
@@ -796,7 +786,7 @@ class ArrayList {
   Elem *InsertRaw(index_t pos, index_t inc = 1) {
     //ARRAYLIST__DEBUG_INSERT_OK(this, pos, inc);
 
-    if (unlikely(size_ + inc > cap_)) {
+    if ((size_ + inc > cap_)) {
       IncreaseCap_(size_ + inc + cap_);
     }
 

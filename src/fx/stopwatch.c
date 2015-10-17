@@ -81,8 +81,6 @@ void timestamp_now(struct timestamp *dest)
 {
   struct timeval tv;
 
-  puts("timestamp_now");
-
   /* Highest precision first */
 #ifdef HAVE_RDTSC
   RDTSC(dest->cycles);
@@ -100,8 +98,6 @@ void timestamp_now(struct timestamp *dest)
 void timestamp_now_rev(struct timestamp *dest)
 {
   struct timeval tv;
-
-  puts("timestamp_now_rev");
 
 
   /* Highest precision last */
@@ -128,19 +124,19 @@ void stopwatch_init(struct stopwatch *timer)
 
 void stopwatch_start(struct stopwatch *timer)
 {
-  DEBUG_WARN_MSG_IF(STOPWATCH_ACTIVE(timer),
-      "Restarting active stopwatch.");
+  //DEBUG_WARN_MSG_IF(STOPWATCH_ACTIVE(timer),
+  //    "Restarting active stopwatch.");
 
   timestamp_now_rev(&timer->start);
 }
 
 void stopwatch_stop(struct stopwatch *timer, const struct timestamp *now)
 {
-  if (likely(STOPWATCH_ACTIVE(timer))) {
+  if ((STOPWATCH_ACTIVE(timer))) {
     timestamp_add(&timer->total, now);
     timestamp_sub(&timer->total, &timer->start);
     timestamp_init(&timer->start);
   } else {
-    DEBUG_ONLY(NONFATAL("Stopping inactive stopwatch."));
+    //DEBUG_ONLY(NONFATAL("Stopping inactive stopwatch."));
   }
 }

@@ -141,7 +141,7 @@ class GrainQueue {
    */
   Grain *Pop() {
     mutex_.Lock();
-    Grain *result = likely(queue_.size() != 0) ? queue_.Pop() : NULL;
+    Grain *result = (queue_.size() != 0) ? queue_.Pop() : NULL;
     mutex_.Unlock();
     return result;
   }
@@ -198,7 +198,7 @@ class ThreadedGrainRunner {
    */
   bool RunOneGrain() {
     Grain *grain = queue_->Pop();
-    if (unlikely(!grain)) {
+    if ((!grain)) {
       return false;
     } else {
       grain->Run(context_);

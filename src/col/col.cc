@@ -51,7 +51,7 @@ const String& String::InitSprintf(const char *format, ...) {
     len = vsnprintf(s, size, format, vl);
     va_end(vl);
     
-    if (likely(len > -1) && likely(len < size)) {
+    if ((len > -1) && (len < size)) {
       break;
     }
     
@@ -108,7 +108,7 @@ index_t String::Split(index_t start_index,
     startpos = endpos = pos;
     
     while (1) {
-      if (unlikely(*endpos == '\0') || strchr(donechars, *endpos) != NULL) {
+      if ((*endpos == '\0') || strchr(donechars, *endpos) != NULL) {
         // strip extra delimeters from right side
         while (endpos > startpos && strchr(delimeters, endpos[-1]) != NULL) {
           endpos--;
@@ -126,7 +126,7 @@ index_t String::Split(index_t start_index,
     
     max_portions--;
     
-    if (likely(startpos != endpos)) {
+    if ((startpos != endpos)) {
       result->PushBack();
       result->back().Copy(startpos, endpos - startpos);
     }

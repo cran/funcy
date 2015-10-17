@@ -4,16 +4,27 @@ OFILES=base/cc.o base/otrav.o base/common.o base/debug.o base/ccmem.o \
     col/col.o data/dataset.o file/textfile.o \
     fx/fx.o fx/datanode.o fx/stopwatch.o \
     la/uselapack.o \
-    math/discrete.o
+    math/discrete.o \
+    libmain.o fscm.o
 
+CXX_STD = CXX11
 
 PKG_CPPFLAGS = -DDISABLE_DISK_MATRIX -DSCALE_NORMAL -I. -I..
-PKG_CFLAGS = -Wall -std=gnu99 -Wno-strict-aliasing -Wno-unused-variable -Wno-unused-function -pedantic -Wno-variadic-macros -Wno-strict-overflow
-PKG_CXXFLAGS = -Wall -std=c++11 -Wno-strict-aliasing -Wno-unused-variable -Wno-unused-function -pedantic -Wno-variadic-macros  -Wno-strict-overflow
 
-PKG_LIBS = $(OFILES) $(BLAS_LIBS) $(LAPACK_LIBS) $(FLIBS)
+# Flags for ubsan
+#PKG_CFLAGS=-fsanitize=undefined -fsanitize=shift -fsanitize=integer-divide-by-zero -fsanitize=unreachable -fsanitize=vla-bound -fsanitize=null -fsanitize=return -fsanitize=signed-integer-overflow
+#PKG_CXXFLAGS=-fsanitize=undefined -fsanitize=shift -fsanitize=integer-divide-by-zero -fsanitize=unreachable -fsanitize=vla-bound -fsanitize=null -fsanitize=return -fsanitize=signed-integer-overflow
 
 
-all: $(OFILES) libmain.o fscm.o
-$(SHLIB): $(OFILES) libmain.o fscm.o
+
+
+# Used the order from:
+# https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Compiling-in-sub_002ddirectories
+PKG_LIBS = $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)
+#PKG_LIBS = $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS) -lubsan
+
+OBJECTS = $(OFILES)
+
+#all: $(OFILES) libmain.o fscm.o
+#$(SHLIB): $(OFILES) libmain.o fscm.o
 

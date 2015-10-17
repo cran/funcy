@@ -48,16 +48,18 @@
  *
  * (This may eventually be more sophisticated)
  */
+/*
 #define TEST_ASSERT(x) \
     (likely(x) ? NOP : FATAL("Assertion failed: %s", #x))
 
 #define TEST_DOUBLE_EXACT(a, b) \
-    if (unlikely((a) != (b))) \
+    if (((a) != (b))) \
     FATAL("%.10e (%s) != %.10e (%s)", (double)(a), #a, (double)(b), #b); else
 
 #define TEST_DOUBLE_APPROX(a, b, absolute_eps) \
-    if (unlikely(fabs((a) - (b)) > absolute_eps)) \
+    if ((fabs((a) - (b)) > absolute_eps)) \
     FATAL("%.10e (%s) !~= %.10e (%s)", (double)(a), #a, (double)(b), #b); else
+*/
 
 /**
  * Begin a test suite of a given name.
@@ -73,6 +75,7 @@ typedef void (*test__void_func)();
 /**
  * End a test suite of a given name, and generate a main.
  */
+#if 0
 #define TEST_SUITE_END(suite_name, functions ...) \
       int execute_tests(int which_test) { \
         test__void_func tests[] = { functions }; \
@@ -96,5 +99,6 @@ typedef void (*test__void_func)();
       return execute_tests( \
          argc <= 1 ? -1 : atoi(argv[1])); \
     }
+#endif // 0
 
 #endif

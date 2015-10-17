@@ -117,7 +117,7 @@ class RangeSet {
 template<typename TBoundary>
 void RangeSet<TBoundary>::Union(
     const Boundary& begin, const Boundary& end) {
-  if (unlikely(!(begin < end))) {
+  if ((!(begin < end))) {
     // Merging with empty range?
     return;
   }

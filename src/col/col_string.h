@@ -251,7 +251,7 @@ class String {
   index_t FindAny(const char *char_set, index_t skip_initial = 0) const;
   
   index_t IndexFromPtr(const char *position) const {
-    if (unlikely(!position)) {
+    if ((!position)) {
       return -1;
     } else {
       return index_t(position - begin());
@@ -473,7 +473,7 @@ class String {
   friend bool operator < (char a, const String& b) {
      // >
      DEBUG_ASSERT(b != '\0');
-     return a < b[0] || (unlikely(a == b[0]) && b[1] != '\0');
+     return a < b[0] || ((a == b[0]) && b[1] != '\0');
   }
   EXPAND_HETERO_LESS_THAN(char, String);
   friend bool operator < (const String& a, char b) {

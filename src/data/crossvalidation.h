@@ -235,8 +235,8 @@ void SimpleCrossValidator<TClassifier>::Init(
   if (n_labels <= 0) {
     const DatasetFeature *feature =
         &data_->info().feature(data_->n_features() - 1);
-    DEBUG_ASSERT_MSG(feature->type() == DatasetFeature::NOMINAL,
-        "Must specify number of classes/labels if the feature is not nominal.");
+    //DEBUG_ASSERT_MSG(feature->type() == DatasetFeature::NOMINAL,
+    //    "Must specify number of classes/labels if the feature is not nominal.");
     n_classes_ = feature->n_values();
   } else {
     n_classes_ = n_labels;
@@ -284,13 +284,13 @@ void SimpleCrossValidator<TClassifier>::Run(bool randomized) {
       SaveTrainTest_(i_fold, train, test);
     }
   
-    VERBOSE_MSG(1, "cross: Training fold %d", i_fold);
+    //VERBOSE_MSG(1, "cross: Training fold %d", i_fold);
     fx_timer_start(foldmodule, "train");
     classifier.InitTrain(train, n_classes_, classifier_module);
     fx_timer_stop(foldmodule, "train");
     
     fx_timer_start(foldmodule, "test");
-    VERBOSE_MSG(1, "cross: Testing fold %d", i_fold);
+    //VERBOSE_MSG(1, "cross: Testing fold %d", i_fold);
     for (index_t i = 0; i < test.n_points(); i++) {
       Vector test_vector_with_label;
       Vector test_vector;
@@ -636,7 +636,7 @@ void GeneralCrossValidator<TLearner>::Run(bool randomized) {
 	SaveTrainValidationSet_(i_fold, train, validation);
       }
       
-      VERBOSE_MSG(1, "cross: Training fold %d", i_fold);
+      //VERBOSE_MSG(1, "cross: Training fold %d", i_fold);
       fx_timer_start(foldmodule, "train");
       // training
       classifier.InitTrain(learner_typeid_, train, learner_module);
@@ -644,7 +644,7 @@ void GeneralCrossValidator<TLearner>::Run(bool randomized) {
 
       // validation; measure method: percent of correctly classified validation samples
       fx_timer_start(foldmodule, "validation");
-      VERBOSE_MSG(1, "cross: Validation fold %d", i_fold);
+      //VERBOSE_MSG(1, "cross: Validation fold %d", i_fold);
 
       for (index_t i = 0; i < validation.n_points(); i++) {
 	Vector validation_vector_with_label;
@@ -714,7 +714,7 @@ void GeneralCrossValidator<TLearner>::Run(bool randomized) {
 	SaveTrainValidationSet_(i_fold, train, validation);
       }
       
-      VERBOSE_MSG(1, "cross: Training fold %d", i_fold);
+      //VERBOSE_MSG(1, "cross: Training fold %d", i_fold);
       fx_timer_start(foldmodule, "train");
       // training
       learner.InitTrain(learner_typeid_, train, learner_module); // 0: dummy number of classes
@@ -722,7 +722,7 @@ void GeneralCrossValidator<TLearner>::Run(bool randomized) {
       
       // validation
       fx_timer_start(foldmodule, "validation");
-      VERBOSE_MSG(1, "cross: Validation fold %d", i_fold);
+      //VERBOSE_MSG(1, "cross: Validation fold %d", i_fold);
       for (index_t i = 0; i < validation.n_points(); i++) {
 	Vector validation_vector_with_label;
 	Vector validation_vector;

@@ -266,7 +266,7 @@ funHDDCWrapper <- function(data, k, reg, regTime,  funcyCtrlMbc,
 
 fscmWrapper <- function(data, k, reg, regTime, funcyCtrlMbc,
                         fpcCtrl, location=NULL, scale=FALSE,
-                        knn=5, useCode="C", verbose=FALSE){
+                        knn=5, useCode="R", verbose=FALSE){
     if(!reg)
         stop("This method does not work on sparse data!")
 

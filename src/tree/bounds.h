@@ -700,7 +700,7 @@ double PeriodicMinDistanceSq(const Vector& point, const Vector& box_size)
        bounds_[i].lo = other.bounds_[i].lo;
      }   
 
-     if (unlikely(ah > bl & bl > bh)){
+     if ((ah > bl & bl > bh)){
        bounds_[i].lo = 0;
        bounds_[i].hi = size[i];
      }

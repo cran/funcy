@@ -44,6 +44,8 @@
 #ifndef BASE_H
 #define BASE_H
 
+
+
 //#include "common.h"
 //#include "debug.h"
 #include "common.h"
@@ -56,6 +58,15 @@
 //#include "cc.h"
 //#include "ccmem.h"
 //#include "otrav.h"
+#endif
+
+#if 0
+#ifdef __GNUC__
+#ifdef __MINGW32__
+#include <float.h>
+#define isnan(x) _isnan(x)
+#endif
+#endif
 #endif
 
 #endif /* BASE_H */

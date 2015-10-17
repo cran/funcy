@@ -45,7 +45,7 @@
 void percent_indicator(const char *name, uint64 num, uint64 den) {
   fl_print_progress(name, num * 100 / den);
 }
-#define ASSERT_PASS(x) MUST_PASS(x)
+
 #define SUCCESS_FROM_INT(x) SUCCESS_FROM_C(x)
 
 /* compiler.h */
@@ -56,8 +56,6 @@ void percent_indicator(const char *name, uint64 num, uint64 den) {
 
 /* debug.h */
 #define debug_verbosity verbosity_level
-#define DEBUG_MSG(min_verbosity, msg_params...) \
-    VERBOSE_MSG(min_verbosity, msg_params)
 #define DEBUG_GOT_HERE(min_verbosity) \
     VERBOSE_GOT_HERE(min_verbosity)
 

@@ -238,6 +238,7 @@
  * @see OT_STATIC_ARRAY_EXPERT, OT_PTR_EXPERT, OT_ARRAY_EXPERT,
  *      OT_ALLOC_EXPERT, OBJECT_TRAVERSAL
  */
+/*
 #define OT_ARRAY_IMPL(x, len, iter_var, loop_code, func, args...) \
     if (true) { \
       ot__visitor->Name(#x, x); \
@@ -251,6 +252,7 @@
 	ot__visitor->Post##func(x, ot__len, ## args); \
       } \
     } else NOP // require semicolon
+*/
 
 /**
  * Inside OBJECT_TRAVERSAL, traverse a static array, i.e. with size
@@ -276,9 +278,12 @@
  *
  * @see OT_STATIC_ARRAY, OBJECT_TRAVERSAL
  */
+/*
 #define OT_STATIC_ARRAY_EXPERT(x, iter_var, elem_code) \
     OT_ARRAY_IMPL(x, sizeof(x) / sizeof(*x), \
         iter_var, elem_code, StaticArray)
+*/
+#define OT_STATIC_ARRAY_EXPERT(x, iter_var, elem_code) NOP
 
 /**
  * Inside OBJECT_TRAVERSAL, traverse a static array, i.e. with size
@@ -322,9 +327,12 @@
  *
  * @see OT_PTR, OBJECT_TRAVERSAL
  */
+/*
 #define OT_PTR_EXPERT(x, nullable, deref_code) \
     OT_ARRAY_IMPL(x, 1, ot__iter, deref_code, \
         Array, nullable, false, true)
+*/
+#define OT_PTR_EXPERT(x, nullable, deref_code) NOP
 
 /**
  * Inside OBJECT_TRAVERSAL, traverse a pointer managed by new and
@@ -387,10 +395,12 @@
  *
  * @see OT_ARRAY, OBJECT_TRAVERSAL
  */
+/*
 #define OT_ARRAY_EXPERT(x, len, nullable, iter_var, elem_code) \
     OT_ARRAY_IMPL(x, len, iter_var, elem_code, \
         Array, nullable, false, false)
-
+*/
+ #define OT_ARRAY_EXPERT(x, len, nullable, iter_var, elem_code) NOP
 /**
  * Inside OBJECT_TRAVERSAL, traverse an array managed by new[] and
  * delete[], assuming its contents to be objects or primitives.
@@ -444,10 +454,12 @@
  *
  * @see OT_ALLOC, OBJECT_TRAVERSAL
  */
+/*
 #define OT_ALLOC_EXPERT(x, len, nullable, iter_var, elem_code) \
     OT_ARRAY_IMPL(x, len, iter_var, elem_code, \
         Array, nullable, true, false)
-
+*/
+#define OT_ALLOC_EXPERT(x, len, nullable, iter_var, elem_code) NOP
 /**
  * Inside OBJECT_TRAVERSAL, traverse an array managed by mem::Alloc
  * and mem::Free, assuming its contents to be objects or primitives.
@@ -550,7 +562,6 @@
 #define OT_DESTRUCTOR(C) \
    public: \
     ~C() { \
-      DEBUG_DESTRUCT_OK(this); \
       ot__private::Destructor<false> ot__destructor(this); \
     } \
    private:
@@ -736,16 +747,6 @@
  * @see OT_ALIAS_METHODS, OT_BECOME_ALIAS, OT_IS_ALIAS,
  *      OBJECT_TRAVERSAL
  */
-#define OT_BECOME_NON_ALIAS(C) \
-   public: \
-    friend void OT__BecomeNonAlias(C *ot__obj) { \
-      ot__obj->OT__BecomeNonAlias_(); \
-      DEBUG_ASSERT_MSG(!OT__IsAlias(ot__obj), \
-          "OT_BECOME_NON_ALIAS left OT_IS_ALIAS true for %s.", \
-	  typeid(C).name()); \
-    } \
-   private: \
-    void OT__BecomeNonAlias_()
 
 /**
  * Fills a function to be called during InitAlias and InitSteal to
@@ -769,9 +770,6 @@
     } \
     friend void OT__BecomeAlias(C *ot__obj) { \
       ot__obj->OT__BecomeAlias_(); \
-      DEBUG_ASSERT_MSG(OT__IsAlias(ot__obj), \
-          "OT_BECOME_ALIAS left OT_IS_ALIAS false for %s.", \
-	  typeid(C).name()); \
     } \
    private: \
     void OT__BecomeAlias_()
@@ -852,14 +850,10 @@
 #define OT_ALIAS_METHODS(C) \
    public: \
     void InitAlias(const C &src) { \
-      DEBUG_INIT_OK(this); \
       mem::Copy(this, &src); \
       ot__private::Aliaser ot__aliaser(this); \
     } \
     void InitSteal(C *src) { \
-      DEBUG_INIT_OK(this); \
-      DEBUG_WARN_MSG_IF(OT__IsAlias(src), \
-          "Stealing from an alias %s.", typeid(C).name()); \
       mem::Copy(this, src); \
       ot__private::Aliaser ot__aliaser(src); \
     } \
@@ -974,10 +968,6 @@
  *
  * @see OT_DEBUG_INIT_OK
  */
-#define DEBUG_INIT_OK(x) \
-    DEBUG_ASSERT_MSG(OT__DebugInitOK(x), \
-        "Reinitialization of %s; missing Renew()?", \
-        typeid(*x).name());
 
 /**
  * Fills a function to be called by the DEBUG_MODIFY_OK macro, which
@@ -1033,10 +1023,6 @@
  *
  * @see OT_DEBUG_MODIFY_OK
  */
-#define DEBUG_MODIFY_OK(x) \
-    DEBUG_ASSERT_MSG(OT__DebugModifyOK(x), \
-        "Modification of alias/locked %s; missing Init?", \
-        typeid(*x).name());
 
 /**
  * Fills a function to be called by the DEBUG_DESTRUCT_OK macro.  This
@@ -1086,10 +1072,6 @@
  *
  * @see OT_DEBUG_DESTRUCT_OK
  */
-#define DEBUG_DESTRUCT_OK(x) \
-    DEBUG_ASSERT_MSG(OT__DebugDestructOK(x), \
-        "Premature destruction of %s; missing Init?", \
-        typeid(*x).name());
 
 
 
@@ -1383,7 +1365,6 @@
       mem::DebugPoison(this); \
     } \
     ~C() { \
-      DEBUG_DESTRUCT_OK(this); \
       mem::DebugPoison(this); \
     } \
     friend bool OT__Shallow(const C *ot__obj) { \
@@ -1607,7 +1588,7 @@ namespace ot {
    */
   template<typename T>
   inline void InitCopy(T *dest, const T &src) {
-    DEBUG_INIT_OK(dest);
+    //DEBUG_INIT_OK(dest);
     ot__private::Copier<false> ot__copier(dest, &src);
   }
 
@@ -1713,8 +1694,8 @@ namespace ot {
    */
   template<typename T>
   inline void InitThaw(T *dest, const char *block) {
-    DEBUG_INIT_OK(dest);
-    ot__private::Copier<true> 
+    //DEBUG_INIT_OK(dest);
+    ot__private::Copier<true>
         ot__copier(dest, reinterpret_cast<const T *>(block));
   }
 
@@ -1734,8 +1715,8 @@ namespace ot {
    */
   template<typename T>
   inline T *SemiCopy(char *block, const T *orig) {
-    DEBUG_WARN_MSG_IF(block == reinterpret_cast<const char *>(orig),
-	"In-place SemiCopy may leak memory; probably incorrect.");
+    //DEBUG_WARN_MSG_IF(block == reinterpret_cast<const char *>(orig),
+	//"In-place SemiCopy may leak memory; probably incorrect.");
     ot__private::Relocator<false, true> ot__relocator(block, orig);
     return reinterpret_cast<T *>(block);
   }
@@ -1772,8 +1753,8 @@ namespace ot {
    */
   template<typename T>
   inline void SemiFreeze(char *block, const T *orig) {
-    DEBUG_WARN_MSG_IF(block == reinterpret_cast<const char *>(orig),
-        "In-place SemiFreeze may leak memory; use SemiFreezeDestruct.");
+    //DEBUG_WARN_MSG_IF(block == reinterpret_cast<const char *>(orig),
+    //    "In-place SemiFreeze may leak memory; use SemiFreezeDestruct.");
     ot__private::Relocator<true, false> ot__relocator(block, orig);
   }
   template<typename T>
@@ -1903,7 +1884,7 @@ namespace ot {
    */
   template<typename T>
   inline size_t InitDeserialize(T *dest, FILE *stream) {
-    DEBUG_INIT_OK(dest);
+    //DEBUG_INIT_OK(dest);
     ot__private::Deserializer ot__deserializer(dest, stream);
     return ot__deserializer.size();
   }

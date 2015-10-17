@@ -58,7 +58,7 @@ class SlabAllocator {
   static void AllocSlab();
   
   static char *Alloc() {
-    if (unlikely(freelist_ == NULL)) {
+    if ((freelist_ == NULL)) {
       AllocSlab();
     }
     char *item = freelist_;

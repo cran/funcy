@@ -48,9 +48,6 @@
 
 #include <new>
 
-#define MEM__DEBUG_MEMORY(ptr) \
-    DEBUG_ASSERT_MSG((ptr) != NULL, "out of memory")
-
 namespace mem__private {
   const size_t BIG_BAD_BUF_SIZE = 64;
 

@@ -49,7 +49,8 @@
 
 
 void DatasetFeature::Format(double value, String *result) const {
-  if (unlikely(std::isnan(value))) {
+  if (yet_another_isnan(value)) {
+  //if(value != value) {
     result->Copy("?");
     return;
   }
@@ -66,13 +67,13 @@ void DatasetFeature::Format(double value, String *result) const {
     case INTEGER: result->InitSprintf("%lu", long(value)); break;
     case NOMINAL: result->InitCopy(value_name(int(value))); break;
     #ifdef DEBUG
-    default: abort();
+    default: ; //abort();
     #endif
   }
 }
 
 success_t DatasetFeature::Parse(const char *str, double *d) const {
-  if (unlikely(str[0] == '?') && unlikely(str[1] == '\0')) {
+  if ((str[0] == '?') && (str[1] == '\0')) {
     *d = DBL_NAN;
     return SUCCESS_PASS;
   }
@@ -80,7 +81,7 @@ success_t DatasetFeature::Parse(const char *str, double *d) const {
     case CONTINUOUS: {
         char *end;
         *d = strtod(str, &end);
-        if (likely(*end == '\0')) {
+        if (*end == '\0') {
           return SUCCESS_PASS;
         } else {
           return SUCCESS_FAIL;
@@ -106,8 +107,9 @@ success_t DatasetFeature::Parse(const char *str, double *d) const {
       *d = DBL_NAN;
       return SUCCESS_FAIL;
     }
-    default: abort();
+    default: return SUCCESS_FAIL; //abort();
   }
+
 }
 
 // DatasetInfo ------------------------------------------------------
@@ -136,7 +138,7 @@ char *DatasetInfo::SkipSpace_(char *s) {
     s++;
   }
 
-  if (unlikely(*s == '%') || unlikely(*s == '\0')) {
+  if ((*s == '%') || (*s == '\0')) {
     return s + strlen(s);
   }
 
@@ -144,10 +146,10 @@ char *DatasetInfo::SkipSpace_(char *s) {
 }
 
 char *DatasetInfo::SkipNonspace_(char *s) {
-  while (likely(*s != '\0')
-      && likely(*s != '%')
-      && likely(*s != ' ')
-      && likely(*s != '\t')) {
+  while ((*s != '\0')
+      && (*s != '%')
+      && (*s != ' ')
+      && (*s != '\t')) {
     s++;
   }
 
@@ -446,7 +448,7 @@ success_t DatasetInfo::ReadPoint(TextLineReader *reader, double *point,
       pos++;
     }
 
-    if (unlikely(*pos == '\0' || *pos == '%')) {
+    if ((*pos == '\0' || *pos == '%')) {
       reader->Gobble();
     } else {
       break;
@@ -460,7 +462,7 @@ success_t DatasetInfo::ReadPoint(TextLineReader *reader, double *point,
       pos++;
     }
 
-    if (unlikely(*pos == '\0')) {
+    if (*pos == '\0') {
       for (char *s = reader->Peek().begin(); s < pos; s++) {
         if (!*s) {
           *s = ',';
@@ -580,7 +582,7 @@ success_t Dataset::InitFromFile(const char *fname) {
   } else {
     matrix_.Init(0, 0);
     info_.Init();
-    NONFATAL("Could not open file '%s' for reading.", fname);
+    //NONFATAL("Could not open file '%s' for reading.", fname);
     return SUCCESS_FAIL;
   }
 }
@@ -604,7 +606,7 @@ success_t Dataset::WriteCsv(const char *fname, bool header) const {
   TextWriter writer;
 
   if (!PASSED(writer.Open(fname))) {
-    NONFATAL("Couldn't open '%s' for writing.", fname);
+    //NONFATAL("Couldn't open '%s' for writing.", fname);
     return SUCCESS_FAIL;
   } else {
     if (header) {
@@ -619,7 +621,7 @@ success_t Dataset::WriteArff(const char *fname) const {
   TextWriter writer;
 
   if (!PASSED(writer.Open(fname))) {
-    NONFATAL("Couldn't open '%s' for writing.", fname);
+    //NONFATAL("Couldn't open '%s' for writing.", fname);
     return SUCCESS_FAIL;
   } else {
     info_.WriteArffHeader(&writer);
@@ -650,7 +652,7 @@ void Dataset::SplitTrainTest(int folds, int fold_number,
   for (i_orig = 0; i_orig < n_points(); i_orig++) {
     double *dest;
 
-    if (unlikely((i_orig - fold_number) % folds == 0)) {
+    if (((i_orig - fold_number) % folds == 0)) {
       dest = test->matrix().GetColumnPtr(i_test);
       i_test++;
     } else {
