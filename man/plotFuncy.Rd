@@ -17,11 +17,11 @@ center curves.
 }
 \usage{
 \S4method{plotFuncy}{matrix}(data, regTime=NULL, col=NULL,
-          ctr=NULL, ctrOnly=FALSE, ctrCols=NULL, showLegend=FALSE,
+          ctr=NULL, ctrOnly=FALSE, ctrCols=NULL, showLegend=TRUE,
           legendPlace="bottomleft", lty=3, lwd=NULL, \dots)
 
 \S4method{plotFuncy}{sampleFuncy}(data, regTime=NULL, col=NULL,
-          ctr=NULL, ctrOnly=FALSE, ctrCols=NULL, showLegend=FALSE,
+          ctr=NULL, ctrOnly=FALSE, ctrCols=NULL, showLegend=TRUE,
           legendPlace="bottomleft", lty=3, lwd=NULL, \dots)
 }
 

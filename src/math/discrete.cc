@@ -50,13 +50,13 @@ double math::Factorial(int d) {
   return v;
 }
 
-void math::MakeIdentityPermutation(index_t size, index_t *array) {
-  for (index_t i = 0; i < size; i++) {
+void math::MakeIdentityPermutation(fl__index_t size, fl__index_t *array) {
+  for (fl__index_t i = 0; i < size; i++) {
     array[i] = i;
   }
 }
 
-void math::MakeRandomPermutation(index_t size, index_t *array) {
+void math::MakeRandomPermutation(fl__index_t size, fl__index_t *array) {
   // Regular permutation algorithm.
   // This is cache inefficient for large sizes; large caches might
   // warrant a more sophisticated blocked algorithm.
@@ -68,17 +68,17 @@ void math::MakeRandomPermutation(index_t size, index_t *array) {
   array[0] = 0;
 
   /*
-  for (index_t i = 1; i < size; i++) {
-    index_t victim = rand() % i;
+  for (fl__index_t i = 1; i < size; i++) {
+    fl__index_t victim = rand() % i;
     array[i] = array[victim];
     array[victim] = i;
   }
   */
 }
 
-void math::MakeInversePermutation(index_t size,
-    const index_t *original, index_t *reverse) {
-  for (index_t i = 0; i < size; i++) {
+void math::MakeInversePermutation(fl__index_t size,
+    const fl__index_t *original, fl__index_t *reverse) {
+  for (fl__index_t i = 0; i < size; i++) {
     reverse[original[i]] = i;
   }
 }

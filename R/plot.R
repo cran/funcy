@@ -5,7 +5,7 @@
 
 setGeneric("plotFuncy", function(data, regTime=NULL, col=NULL,
                                  ctr=NULL, ctrOnly=FALSE,
-                                 ctrCols=NULL, showLegend=FALSE,
+                                 ctrCols=NULL, showLegend=TRUE,
                                  legendPlace="bottomleft", lty=3,
                                  lwd=NULL, ...)
     standardGeneric("plotFuncy"))
@@ -55,11 +55,10 @@ setMethod("plotFuncy", signature(data="matrix"),
            )
 
 setMethod("plotFuncy", signature(data="sampleFuncy"),
-          function(data, ...){
+          function(data, showLegend=TRUE, legendPlace="bottomleft", lty=3, lwd=NULL, ...){
               dat <- data@data
               clusters <- data@clusters
-              plotFuncy(data=dat, col=clusters,
-                        showLegend=TRUE, ...)
+              plotFuncy(data=dat, col=clusters, showLegend=showLegend, legendPlace=legendPlace, lty=lty, lwd=lwd,...)
           }
           )
 

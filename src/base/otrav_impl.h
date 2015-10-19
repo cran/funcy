@@ -100,7 +100,7 @@ inline void OT__TraverseTransients(T *ot__obj, TVisitor *ot__visitor) {}
 
 template<typename T, typename TVisitor>
 inline bool OT__PreTraverse(T *ot__dest, const T *ot__src,
-			    index_t ot__len, TVisitor *ot__visitor) {
+			    fl__index_t ot__len, TVisitor *ot__visitor) {
   return ot__visitor->PreUntraversed(ot__dest, ot__src, ot__len);
 }
 
@@ -171,14 +171,14 @@ namespace ot {
    private:
     void PrintIndent_();
 
-    void PrintHeader_(const char *name, index_t index,
-		      const char *type, index_t len);
+    void PrintHeader_(const char *name, fl__index_t index,
+		      const char *type, fl__index_t len);
 
    public:
     void Untraversed(const unsigned char *obj, size_t bytes);
 
 #define STANDARD_FORMAT__PRIMITIVE(T, TF) \
-    void Primitive(const char *name, index_t index, \
+    void Primitive(const char *name, fl__index_t index, \
                    const char *type, T val);
 
     FOR_ALL_PRIMITIVES_DO(STANDARD_FORMAT__PRIMITIVE)
@@ -186,14 +186,14 @@ namespace ot {
 
 #undef STANDARD_FORMAT__PRIMITIVE
 
-    void Str(const char *name, index_t index,
+    void Str(const char *name, fl__index_t index,
 	     const char *type, const char *str);
 
-    void Ptr(const char *name, index_t index, 
+    void Ptr(const char *name, fl__index_t index,
 	     const char *type, ptrdiff_t ptr);
 
-    void Open(const char *name, index_t index, 
-	      const char *type, index_t len = -1);
+    void Open(const char *name, fl__index_t index,
+	      const char *type, fl__index_t len = -1);
 
     void Close(const char *name, const char *type);
   };
@@ -226,8 +226,8 @@ namespace ot {
    private:
     void PrintIndent_();
 
-    void PrintHeader_(const char *name, index_t index,
-		      const char *type, index_t len);
+    void PrintHeader_(const char *name, fl__index_t index,
+		      const char *type, fl__index_t len);
 
     void PrintFooter_(const char *type);
 
@@ -235,7 +235,7 @@ namespace ot {
     void Untraversed(const unsigned char *obj, size_t bytes);
 
 #define XML_FORMAT__PRIMITIVE(T, TF) \
-    void Primitive(const char *name, index_t index, \
+    void Primitive(const char *name, fl__index_t index, \
 		   const char *type, T val);
 
     FOR_ALL_PRIMITIVES_DO(XML_FORMAT__PRIMITIVE)
@@ -243,14 +243,14 @@ namespace ot {
 
 #undef XML_FORMAT__PRIMITIVE
 
-    void Str(const char *name, index_t index,
+    void Str(const char *name, fl__index_t index,
 	     const char *type, const char *str);
 
-    void Ptr(const char *name, index_t index,
+    void Ptr(const char *name, fl__index_t index,
 	     const char *type, ptrdiff_t ptr);
 
-    void Open(const char *name, index_t index, 
-	      const char *type, index_t len = -1);
+    void Open(const char *name, fl__index_t index,
+	      const char *type, fl__index_t len = -1);
 
     void Close(const char *name, const char *type);
   };
@@ -271,7 +271,7 @@ namespace ot__private {
     const char *name_;
     const char *type_;
     ptrdiff_t array_;
-    index_t index_;
+    fl__index_t index_;
 
    public:
     enum { IS_PRINTER = 1 };
@@ -304,9 +304,9 @@ namespace ot__private {
     }
 
     template<typename T>
-    bool PreUntraversed(T *dest, const T *src, index_t len) { return false; }
+    bool PreUntraversed(T *dest, const T *src, fl__index_t len) { return false; }
     template<typename T>
-    bool PreTraverse(T *dest, const T *src, index_t len) { return false; }
+    bool PreTraverse(T *dest, const T *src, fl__index_t len) { return false; }
 
     template<typename T>
     void Untraversed(T &obj) {
@@ -349,17 +349,17 @@ namespace ot__private {
     }
 
     template<typename T>
-    bool PreStaticArray(T *ptr, index_t len) {
+    bool PreStaticArray(T *ptr, fl__index_t len) {
       format_.Open(name_, index_, type_, len);
       return true;
     }
     template<typename T>
-    void PostStaticArray(T *ptr, index_t len) {
+    void PostStaticArray(T *ptr, fl__index_t len) {
       format_.Close(name_, type_);
     }
 
     template<typename T>
-    bool PreArray(T *ptr, index_t len,
+    bool PreArray(T *ptr, fl__index_t len,
 		  bool nullable, bool alloc, bool unitary) {
       if (nullable && ptr == NULL) {
 	format_.Ptr(name_, index_, type_, 0);
@@ -369,7 +369,7 @@ namespace ot__private {
       }
     }
     template<typename T>
-    void PostArray(T *ptr, index_t len,
+    void PostArray(T *ptr, fl__index_t len,
 		   bool nullable, bool alloc, bool unitary) {
       PostStaticArray(ptr, len);
     }
@@ -402,9 +402,9 @@ namespace ot__private {
     void Name(const char *name, const T &obj) {}
 
     template<typename T>
-    bool PreUntraversed(T *dest, const T *src, index_t len) { return false; }
+    bool PreUntraversed(T *dest, const T *src, fl__index_t len) { return false; }
     template<typename T>
-    bool PreTraverse(T *dest, const T *src, index_t len) { return false; }
+    bool PreTraverse(T *dest, const T *src, fl__index_t len) { return false; }
 
     template<typename T>
     void Untraversed(T &obj) {}
@@ -428,11 +428,11 @@ namespace ot__private {
     }
 
     template<typename T>
-    bool PreStaticArray(T **ptr, index_t len) {
+    bool PreStaticArray(T **ptr, fl__index_t len) {
       return true;
     }
     template<typename T>
-    bool PreStaticArray(T *ptr, index_t len) {
+    bool PreStaticArray(T *ptr, fl__index_t len) {
       if (OT__Shallow(ptr)) {
 	mem::DebugPoison(ptr, len);
       } else if (t_semi) {
@@ -441,10 +441,10 @@ namespace ot__private {
       return false;
     }
     template<typename T>
-    void PostStaticArray(T *ptr, index_t len) {}
+    void PostStaticArray(T *ptr, fl__index_t len) {}
 
     template<typename T>
-    bool PreArray(T *&ptr, index_t len,
+    bool PreArray(T *&ptr, fl__index_t len,
 		  bool nullable, bool alloc, bool unitary) {
       DEBUG_ASSERT(!unitary || len == 1);
       if (nullable) {
@@ -455,7 +455,7 @@ namespace ot__private {
       return false;
     }
     template<typename T>
-    void PostArray(T *&ptr, index_t len,
+    void PostArray(T *&ptr, fl__index_t len,
                    bool nullable, bool alloc, bool unitary) {}
 
     void Str(char *&str, bool nullable, bool alloc) {
@@ -490,9 +490,9 @@ namespace ot__private {
     void Name(const char *name, const T &obj) {}
 
     template<typename T>
-    bool PreUntraversed(T *dest, const T *src, index_t len) { return false; }
+    bool PreUntraversed(T *dest, const T *src, fl__index_t len) { return false; }
     template<typename T>
-    bool PreTraverse(T *dest, const T *src, index_t len) { return false; }
+    bool PreTraverse(T *dest, const T *src, fl__index_t len) { return false; }
 
     template<typename T>
     void Untraversed(T &obj) {}
@@ -514,21 +514,21 @@ namespace ot__private {
     }
 
     template<typename T>
-    bool PreStaticArray(T **ptr, index_t len) {
+    bool PreStaticArray(T **ptr, fl__index_t len) {
       return true;
     }
     template<typename T>
-    bool PreStaticArray(T *ptr, index_t len) {
+    bool PreStaticArray(T *ptr, fl__index_t len) {
       if (OT__Shallow(ptr)) {
 	mem::DebugPoison(ptr, len);
       }
       return false;
     }
     template<typename T>
-    void PostStaticArray(T *ptr, index_t len) {}
+    void PostStaticArray(T *ptr, fl__index_t len) {}
 
     template<typename T>
-    bool PreArray(T *&ptr, index_t len,
+    bool PreArray(T *&ptr, fl__index_t len,
 		  bool nullable, bool alloc, bool unitary) {
       DEBUG_ASSERT(!unitary || len == 1);
       if (nullable) {
@@ -539,7 +539,7 @@ namespace ot__private {
       return false;
     }
     template<typename T>
-    void PostArray(T *&ptr, index_t len,
+    void PostArray(T *&ptr, fl__index_t len,
                    bool nullable, bool alloc, bool unitary) {}
 
     void Str(char *&str, bool nullable, bool alloc) {
@@ -572,14 +572,14 @@ namespace ot__private {
     void Name(const char *name, const T &obj) {}
 
     template<typename T>
-    bool PreUntraversed(T *dest, const T *src, index_t len) {
+    bool PreUntraversed(T *dest, const T *src, fl__index_t len) {
       if (OT__Shallow(dest)) {
 	mem::DebugPoison(dest, len);
       }
       return OT__NonConstPtr(dest);
     }
     template<typename T>
-    bool PreTraverse(T *dest, const T *src, index_t len) {
+    bool PreTraverse(T *dest, const T *src, fl__index_t len) {
       return false;
     }
 
@@ -597,14 +597,14 @@ namespace ot__private {
     void Enum(T &obj) {}
 
     template<typename T>
-    bool PreStaticArray(T *ptr, index_t len) {
+    bool PreStaticArray(T *ptr, fl__index_t len) {
       return (t_semi && !OT__Shallow(ptr)) || OT__NonConstPtr(ptr);
     }
     template<typename T>
-    void PostStaticArray(T *ptr, index_t len) {}
+    void PostStaticArray(T *ptr, fl__index_t len) {}
 
     template<typename T>
-    bool PreArray(T *&ptr, index_t len,
+    bool PreArray(T *&ptr, fl__index_t len,
 		  bool nullable, bool alloc, bool unitary) {
       DEBUG_ASSERT(!unitary || len == 1);
       if (!nullable || ptr != NULL) {
@@ -616,7 +616,7 @@ namespace ot__private {
       return false;
     }
     template<typename T>
-    void PostArray(T *&ptr, index_t len,
+    void PostArray(T *&ptr, fl__index_t len,
                    bool nullable, bool alloc, bool unitary) {
       if (alloc) {
 	mem::FreeDestruct(ptr, len);
@@ -674,14 +674,14 @@ namespace ot__private {
     void Name(const char *name, const T &obj) {}
 
     template<typename T>
-    bool PreUntraversed(T *dest, const T *src, index_t len) {
+    bool PreUntraversed(T *dest, const T *src, fl__index_t len) {
       if (!t_semi && OT__Shallow(dest)) {
 	mem::DebugPoison(dest, len);
       }
       return OT__NonConstPtr(dest);
     }
     template<typename T>
-    bool PreTraverse(T *dest, const T *src, index_t len) {
+    bool PreTraverse(T *dest, const T *src, fl__index_t len) {
       return t_semi && !OT__Shallow(dest);
     }
 
@@ -700,14 +700,14 @@ namespace ot__private {
     void Enum(T &obj) {}
 
     template<typename T>
-    bool PreStaticArray(T *ptr, index_t len) {
+    bool PreStaticArray(T *ptr, fl__index_t len) {
       return (t_semi && !OT__Shallow(ptr)) || OT__NonConstPtr(ptr);
     }
     template<typename T>
-    void PostStaticArray(T *ptr, index_t len) {}
+    void PostStaticArray(T *ptr, fl__index_t len) {}
 
     template<typename T>
-    bool PreArray(T *&ptr, index_t len,
+    bool PreArray(T *&ptr, fl__index_t len,
 		  bool nullable, bool alloc, bool unitary) {
       DEBUG_ASSERT(!unitary || len == 1);
       if (!nullable || ptr != NULL) {
@@ -719,7 +719,7 @@ namespace ot__private {
       return false;
     }
     template<typename T>
-    void PostArray(T *&ptr, index_t len,
+    void PostArray(T *&ptr, fl__index_t len,
                    bool nullable, bool alloc, bool unitary) {
       if (t_semi) {
 	mem::DebugPoison(ptr, len);
@@ -771,10 +771,10 @@ namespace ot__private {
       }
     }
     template<typename T>
-    Copier(T *dest, const T *src, index_t len) {
+    Copier(T *dest, const T *src, fl__index_t len) {
       offset_ = mem::PtrAbsAddr(src);
       if (OT__PreTraverse(dest, src, len, this)) {
-	for (index_t i = 0; i < len; ++i) {
+	for (fl__index_t i = 0; i < len; ++i) {
 	  Obj(dest[i]);
 	}
       }
@@ -786,12 +786,12 @@ namespace ot__private {
     void Name(const char *name, const T &obj) {}
 
     template<typename T>
-    bool PreUntraversed(T *dest, const T *src, index_t len) {
+    bool PreUntraversed(T *dest, const T *src, fl__index_t len) {
       mem::CopyConstruct(dest, src, len);
       return OT__NonConstPtr(dest);
     }
     template<typename T>
-    bool PreTraverse(T *dest, const T *src, index_t len) {
+    bool PreTraverse(T *dest, const T *src, fl__index_t len) {
       mem::Copy(dest, src, len);
       return !OT__Shallow(dest);
     }
@@ -816,14 +816,14 @@ namespace ot__private {
     void Enum(T &obj) {}
 
     template<typename T>
-    bool PreStaticArray(T *ptr, index_t len) {
+    bool PreStaticArray(T *ptr, fl__index_t len) {
       return !OT__Shallow(ptr);
     }
     template<typename T>
-    void PostStaticArray(T *ptr, index_t len) {}
+    void PostStaticArray(T *ptr, fl__index_t len) {}
 
     template<typename T>
-    bool PreArray(T *&ptr, index_t len,
+    bool PreArray(T *&ptr, fl__index_t len,
 		  bool nullable, bool alloc, bool unitary) {
       DEBUG_ASSERT(!unitary || len == 1);
       if (nullable && ptr == NULL) {
@@ -843,13 +843,13 @@ namespace ot__private {
       }
     }
     template<typename T>
-    void PostArray(T *&ptr, index_t len,
+    void PostArray(T *&ptr, fl__index_t len,
                    bool nullable, bool alloc, bool unitary) {}
 
     void Str(char *&str, bool nullable, bool alloc) {
       if (!nullable || str != NULL) {
         char *src = t_thawing ? mem::PtrAddBytes(str, offset_) : str;
-	index_t len = strlen(src) + 1;
+	fl__index_t len = strlen(src) + 1;
 
 	if (alloc) {
 	  str = mem::AllocCopy(src, len);
@@ -880,9 +880,9 @@ namespace ot__private {
     void Name(const char *name, const T &obj) {}
 
     template<typename T>
-    bool PreUntraversed(T *dest, const T *src, index_t len) { return false; }
+    bool PreUntraversed(T *dest, const T *src, fl__index_t len) { return false; }
     template<typename T>
-    bool PreTraverse(T *dest, const T *src, index_t len) { return false; }
+    bool PreTraverse(T *dest, const T *src, fl__index_t len) { return false; }
 
     template<typename T>
     void Untraversed(T &obj) {
@@ -906,19 +906,19 @@ namespace ot__private {
     void Enum(T &obj) {}
 
     template<typename T>
-    bool PreStaticArray(T *ptr, index_t len) {
+    bool PreStaticArray(T *ptr, fl__index_t len) {
       return !OT__Shallow(ptr);
     }
     template<typename T>
-    void PostStaticArray(T *ptr, index_t len) {}
+    void PostStaticArray(T *ptr, fl__index_t len) {}
 
     template<typename T>
-    bool PreArray(T *&ptr, index_t len,
+    bool PreArray(T *&ptr, fl__index_t len,
 		  bool nullable, bool alloc, bool unitary) {
       return false;
     }
     template<typename T>
-    void PostArray(T *&ptr, index_t len,
+    void PostArray(T *&ptr, fl__index_t len,
                    bool nullable, bool alloc, bool unitary) {}
 
     void Str(char *&str, bool nullable, bool alloc) {}
@@ -963,9 +963,9 @@ namespace ot__private {
     void Name(const char *name, const T &obj) {}
 
     template<typename T>
-    bool PreUntraversed(T *dest, const T *src, index_t len) { return false; }
+    bool PreUntraversed(T *dest, const T *src, fl__index_t len) { return false; }
     template<typename T>
-    bool PreTraverse(T *dest, const T *src, index_t len) { return false; }
+    bool PreTraverse(T *dest, const T *src, fl__index_t len) { return false; }
 
     template<typename T>
     void Untraversed(T &obj) {
@@ -993,14 +993,14 @@ namespace ot__private {
     void Enum(T &obj) {}
 
     template<typename T>
-    bool PreStaticArray(T *ptr, index_t len) {
+    bool PreStaticArray(T *ptr, fl__index_t len) {
       return !OT__Shallow(ptr);
     }
     template<typename T>
-    void PostStaticArray(T *ptr, index_t len) {}
+    void PostStaticArray(T *ptr, fl__index_t len) {}
 
     template<typename T>
-    bool PreArray(T *&ptr, index_t len,
+    bool PreArray(T *&ptr, fl__index_t len,
 		  bool nullable, bool alloc, bool unitary) {
       DEBUG_ASSERT(!unitary || len == 1);
       if (nullable && ptr == NULL) {
@@ -1019,7 +1019,7 @@ namespace ot__private {
       }
     }
     template<typename T>
-    void PostArray(T *&ptr, index_t len,
+    void PostArray(T *&ptr, fl__index_t len,
                    bool nullable, bool alloc, bool unitary) {
       if (!t_size_only) {
         ptr = reinterpret_cast<T *>(mem::PtrDiffBytes(ptr, block_));
@@ -1028,7 +1028,7 @@ namespace ot__private {
 
     void Str(char *&str, bool nullable, bool alloc) {
       if (!nullable || str != NULL) {
-	index_t len = strlen(str) + 1;
+	fl__index_t len = strlen(str) + 1;
         pos_ = stride_align(pos_, char);
 
         if (!t_size_only) {
@@ -1073,9 +1073,9 @@ namespace ot__private {
     void Name(const char *name, const T &obj) {}
 
     template<typename T>
-    bool PreUntraversed(T *dest, const T *src, index_t len) { return false; }
+    bool PreUntraversed(T *dest, const T *src, fl__index_t len) { return false; }
     template<typename T>
-    bool PreTraverse(T *dest, const T *src, index_t len) { return false; }
+    bool PreTraverse(T *dest, const T *src, fl__index_t len) { return false; }
 
     template<typename T>
     void Untraversed(T &obj) {}
@@ -1098,14 +1098,14 @@ namespace ot__private {
     void Enum(T &obj) {}
 
     template<typename T>
-    bool PreStaticArray(T *ptr, index_t len) {
+    bool PreStaticArray(T *ptr, fl__index_t len) {
       return !OT__Shallow(ptr);
     }
     template<typename T>
-    void PostStaticArray(T *ptr, index_t len) {}
+    void PostStaticArray(T *ptr, fl__index_t len) {}
 
     template<typename T>
-    bool PreArray(T *&ptr, index_t len,
+    bool PreArray(T *&ptr, fl__index_t len,
 		  bool nullable, bool alloc, bool unitary) {
       DEBUG_ASSERT(!unitary || len == 1);
       if (nullable && ptr == NULL) {
@@ -1119,7 +1119,7 @@ namespace ot__private {
       }
     }
     template<typename T>
-    void PostArray(T *&ptr, index_t len,
+    void PostArray(T *&ptr, fl__index_t len,
                    bool nullable, bool alloc, bool unitary) {
       if (t_freezing) {
         ptr = reinterpret_cast<T *>(mem::PtrDiffBytes(ptr, block_));
@@ -1152,7 +1152,7 @@ namespace ot__private {
     size_t size_;
 
     template<typename T>
-    void Write_(T *val, index_t elems = 1) {
+    void Write_(T *val, fl__index_t elems = 1) {
       if (!t_size_only) {
 	//size_t elems_written = fwrite(val, sizeof(T), elems, stream_);
 	//DEBUG_ASSERT(elems_written == (size_t)elems);
@@ -1181,7 +1181,7 @@ namespace ot__private {
     void Name(const char *name, const T &obj) {}
 
     template<typename T>
-    bool PreUntraversed(T **dest, const T **src, index_t len) {
+    bool PreUntraversed(T **dest, const T **src, fl__index_t len) {
       if (OT__NonConstPtr(src)) {
 	return true;
       } else {
@@ -1193,7 +1193,7 @@ namespace ot__private {
       }
     }
     template<typename T>
-    bool PreUntraversed(T *dest, const T *src, index_t len) {
+    bool PreUntraversed(T *dest, const T *src, fl__index_t len) {
       DEBUG_WARN_MSG_IF(!t_size_only && !OT__Shallow(src),
           "Serializing untraversed %s with bit-copy.",
           typeid(T).name());
@@ -1201,7 +1201,7 @@ namespace ot__private {
       return false;
     }
     template<typename T>
-    bool PreTraverse(T *dest, const T *src, index_t len) {
+    bool PreTraverse(T *dest, const T *src, fl__index_t len) {
       if (OT__IsShallow(src)) {
 	Write_(src, len);
 	return false;
@@ -1240,14 +1240,14 @@ namespace ot__private {
     }
 
     template<typename T>
-    bool PreStaticArray(T *ptr, index_t len) {
+    bool PreStaticArray(T *ptr, fl__index_t len) {
       return OT__PreTraverse((T *)NULL, ptr, len, this);
     }
     template<typename T>
-    void PostStaticArray(T *ptr, index_t len) {}
+    void PostStaticArray(T *ptr, fl__index_t len) {}
 
     template<typename T>
-    bool PreArray(T *&ptr, index_t len,
+    bool PreArray(T *&ptr, fl__index_t len,
 		  bool nullable, bool alloc, bool unitary) {
       DEBUG_ASSERT(!unitary || len == 1);
       if (nullable) {
@@ -1260,7 +1260,7 @@ namespace ot__private {
       return OT__PreTraverse((T *)NULL, ptr, len, this);
     }
     template<typename T>
-    void PostArray(T *&ptr, index_t len,
+    void PostArray(T *&ptr, fl__index_t len,
                    bool nullable, bool alloc, bool unitary) {}
 
     void Str(char *&str, bool nullable, bool alloc) {
@@ -1286,14 +1286,14 @@ namespace ot__private {
     size_t size_;
 
     template<typename T>
-    void Read_(T *ptr, index_t elems = 1) {
+    void Read_(T *ptr, fl__index_t elems = 1) {
       //size_t elems_read = fread(ptr, sizeof(T), elems, stream_);
       //DEBUG_ASSERT(elems_read == (size_t)elems);
       size_ += sizeof(T) * elems;
     }
 
-    index_t ReadStrLen_() {
-      index_t len = 0;
+    fl__index_t ReadStrLen_() {
+      fl__index_t len = 0;
       fpos_t pos;
 
       fgetpos(stream_, &pos);
@@ -1326,7 +1326,7 @@ namespace ot__private {
     void Name(const char *name, const T &obj) {}
 
     template<typename T>
-    bool PreUntraversed(T **dest, const T **src, index_t len) {
+    bool PreUntraversed(T **dest, const T **src, fl__index_t len) {
       if (OT__NonConstPtr(dest)) {
 	return true;
       } else {
@@ -1335,12 +1335,12 @@ namespace ot__private {
       }
     }
     template<typename T>
-    bool PreUntraversed(T *dest, const T *src, index_t len) {
+    bool PreUntraversed(T *dest, const T *src, fl__index_t len) {
       Read_(dest, len);
       return false;
     }
     template<typename T>
-    bool PreTraverse(T *dest, const T *src, index_t len) {
+    bool PreTraverse(T *dest, const T *src, fl__index_t len) {
       if (OT__IsShallow(src)) {
 	Read_(dest, len);
 	return false;
@@ -1371,14 +1371,14 @@ namespace ot__private {
     }
 
     template<typename T>
-    bool PreStaticArray(T *ptr, index_t len) {
+    bool PreStaticArray(T *ptr, fl__index_t len) {
       return OT__PreTraverse(ptr, (T *)NULL, len, this);
     }
     template<typename T>
-    void PostStaticArray(T *ptr, index_t len) {}
+    void PostStaticArray(T *ptr, fl__index_t len) {}
 
     template<typename T>
-    bool PreArray(T *&ptr, index_t len,
+    bool PreArray(T *&ptr, fl__index_t len,
 		  bool nullable, bool alloc, bool unitary) {
       DEBUG_ASSERT(!unitary || len == 1);
       if (nullable) {
@@ -1399,7 +1399,7 @@ namespace ot__private {
       return OT__PreTraverse(ptr, (T *)NULL, len, this);
     }
     template<typename T>
-    void PostArray(T *&ptr, index_t len) {}
+    void PostArray(T *&ptr, fl__index_t len) {}
 
     void Str(char *&str, bool nullable, bool alloc) {
       if (nullable) {
@@ -1410,7 +1410,7 @@ namespace ot__private {
 	  return;
 	}
       }
-      index_t len = ReadStrLen_() + 1;
+      fl__index_t len = ReadStrLen_() + 1;
       if (alloc) {
 	str = mem::Alloc<char>(len);
       } else {

@@ -50,7 +50,7 @@ class DenseIntMap {
 
  private:
   Value *ptr_;
-  index_t size_;
+  fl__index_t size_;
   Value default_value_;
 
   OT_DEF(DenseIntMap) {
@@ -81,7 +81,7 @@ class DenseIntMap {
    * Iterating up to size() is guaranteed to hit all elements without
    * growing the internal array.
    */
-  index_t size() const {
+  fl__index_t size() const {
     return size_;
   }
 
@@ -90,13 +90,13 @@ class DenseIntMap {
    *
    * If you are just probing, beware that this might actually grow the array!
    */
-  Value& operator [] (index_t index) {
+  Value& operator [] (fl__index_t index) {
     DEBUG_BOUNDS(index, BIG_BAD_NUMBER);
     if ((index >= size_)) {
-      index_t old_size = size_;
+      fl__index_t old_size = size_;
       size_ = std::max(size_ * 2, index + 1);
       ptr_ = mem::Realloc(ptr_, size_);
-      for (index_t i = old_size; i < size_; i++) {
+      for (fl__index_t i = old_size; i < size_; i++) {
         new(ptr_+i)Value(default_value_);
       }
     }
@@ -105,13 +105,13 @@ class DenseIntMap {
   /**
    * Accesses an element from a static context.
    */
-  const Value& operator [] (index_t index) const {
+  const Value& operator [] (fl__index_t index) const {
     return get(index);
   }
   /**
    * Accesses an element, never growing the internal representation.
    */
-  const Value& get(index_t index) const {
+  const Value& get(fl__index_t index) const {
     DEBUG_BOUNDS(index, BIG_BAD_NUMBER);
     if ((index < size_)) {
       return ptr_[index];

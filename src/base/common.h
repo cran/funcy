@@ -125,19 +125,19 @@ extern "C" {
  * consideration of potentially negative differences between indices.
  */
 #if defined(SCALE_MASSIVE)
-typedef int64 index_t;          /* For larger than RAM data sets. */
+typedef int64 fl__index_t;          /* For larger than RAM data sets. */
 #elif defined(SCALE_LARGE)
-typedef ssize_t index_t;        /* As large as this machine can handle. */
+typedef ssize_t fl__index_t;        /* As large as this machine can handle. */
 #elif defined(SCALE_NORMAL)
-typedef int index_t;            /* Normal sized data; usually 32-bit. */
+typedef int fl__index_t;            /* Normal sized data; usually 32-bit. */
 #endif
 
 /**
- * Length modifier for emitting index_t with printf.
+ * Length modifier for emitting fl__index_t with printf.
  *
  * Example:
  * @code
- *   index_t i = 42;
+ *   fl__index_t i = 42;
  *   printf("%"LI"d\n", i);
  * @endcode
  */

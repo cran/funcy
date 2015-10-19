@@ -44,8 +44,8 @@ void ot::StandardFormat::PrintIndent_() {
   }
 }
 
-void ot::StandardFormat::PrintHeader_(const char *name, index_t index,
-				      const char *type, index_t len) {
+void ot::StandardFormat::PrintHeader_(const char *name, fl__index_t index,
+				      const char *type, fl__index_t len) {
   if (index >= 0) {
     fprintf(stream_, "[%" LI "d]", index);
   } else {
@@ -77,7 +77,7 @@ void ot::StandardFormat::Untraversed(const unsigned char *obj_cp,
 }
 
 #define STANDARD_FORMAT__PRIMITIVE(T, TF) \
-    void ot::StandardFormat::Primitive(const char *name, index_t index, \
+    void ot::StandardFormat::Primitive(const char *name, fl__index_t index, \
 		                       const char *type, T val) { \
       PrintIndent_(); \
       PrintHeader_(name, index, type, -1); \
@@ -87,7 +87,7 @@ void ot::StandardFormat::Untraversed(const unsigned char *obj_cp,
 
 FOR_ALL_PRIMITIVES_DO(STANDARD_FORMAT__PRIMITIVE)
 
-void ot::StandardFormat::Primitive(const char *name, index_t index,
+void ot::StandardFormat::Primitive(const char *name, fl__index_t index,
 				   const char *type, bool val) {
   PrintIndent_();
   PrintHeader_(name, index, type, -1);
@@ -97,7 +97,7 @@ void ot::StandardFormat::Primitive(const char *name, index_t index,
 
 #undef STANDARD_FORMAT__PRIMITIVE
 
-void ot::StandardFormat::Str(const char *name, index_t index,
+void ot::StandardFormat::Str(const char *name, fl__index_t index,
 			     const char *type, const char *str) {
   PrintIndent_();
   PrintHeader_(name, index, type, -1);
@@ -133,7 +133,7 @@ void ot::StandardFormat::Str(const char *name, index_t index,
   putc('\n', stream_);
 }
 
-void ot::StandardFormat::Ptr(const char *name, index_t index, 
+void ot::StandardFormat::Ptr(const char *name, fl__index_t index,
 			     const char *type, ptrdiff_t ptr) {
   PrintIndent_();
   PrintHeader_(name, index, type, -1);
@@ -150,8 +150,8 @@ void ot::StandardFormat::Ptr(const char *name, index_t index,
   putc('\n', stream_);
 }
 
-void ot::StandardFormat::Open(const char *name, index_t index, 
-			      const char *type, index_t len) {
+void ot::StandardFormat::Open(const char *name, fl__index_t index,
+			      const char *type, fl__index_t len) {
   PrintIndent_();
   PrintHeader_(name, index, type, len);
   putc('\n', stream_);
@@ -178,8 +178,8 @@ void ot::XMLFormat::PrintIndent_() {
   }
 }
 
-void ot::XMLFormat::PrintHeader_(const char *name, index_t index,
-				 const char *type, index_t len) {
+void ot::XMLFormat::PrintHeader_(const char *name, fl__index_t index,
+				 const char *type, fl__index_t len) {
   fprintf(stream_, "<_%s", type);
   if (index >= 0) {
     fprintf(stream_, " index=\"%" LI "d\"", index);
@@ -215,7 +215,7 @@ void ot::XMLFormat::Untraversed(const unsigned char *obj_cp,
 }
 
 #define XML_FORMAT__PRIMITIVE(T, TF) \
-    void ot::XMLFormat::Primitive(const char *name, index_t index, \
+    void ot::XMLFormat::Primitive(const char *name, fl__index_t index, \
 		                  const char *type, T val) { \
       PrintIndent_(); \
       PrintHeader_(name, index, type, -1); \
@@ -226,7 +226,7 @@ void ot::XMLFormat::Untraversed(const unsigned char *obj_cp,
 
 FOR_ALL_PRIMITIVES_DO(XML_FORMAT__PRIMITIVE)
 
-void ot::XMLFormat::Primitive(const char *name, index_t index,
+void ot::XMLFormat::Primitive(const char *name, fl__index_t index,
 			      const char *type, bool val) {
   PrintIndent_();
   PrintHeader_(name, index, type, -1);
@@ -237,7 +237,7 @@ void ot::XMLFormat::Primitive(const char *name, index_t index,
 
 #undef XML_FORMAT__PRIMITIVE
 
-void ot::XMLFormat::Str(const char *name, index_t index,
+void ot::XMLFormat::Str(const char *name, fl__index_t index,
 			const char *type, const char *str) {
   PrintIndent_();
   PrintHeader_(name, index, type, -1);
@@ -264,7 +264,7 @@ void ot::XMLFormat::Str(const char *name, index_t index,
   putc('\n', stream_);
 }
 
-void ot::XMLFormat::Ptr(const char *name, index_t index,
+void ot::XMLFormat::Ptr(const char *name, fl__index_t index,
 			const char *type, ptrdiff_t ptr) {
   PrintIndent_();
   PrintHeader_(name, index, type, -1);
@@ -282,8 +282,8 @@ void ot::XMLFormat::Ptr(const char *name, index_t index,
   putc('\n', stream_);
 }
 
-void ot::XMLFormat::Open(const char *name, index_t index,
-			 const char *type, index_t len) {
+void ot::XMLFormat::Open(const char *name, fl__index_t index,
+			 const char *type, fl__index_t len) {
   PrintIndent_();
   PrintHeader_(name, index, type, len);
   putc('\n', stream_);

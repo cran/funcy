@@ -133,10 +133,10 @@ namespace la {
    * Scales the rows of a column-major matrix by a different value for
    * each row.
    */
-  inline void ScaleRows(index_t n_rows, index_t n_cols,
+  inline void ScaleRows(fl__index_t n_rows, fl__index_t n_cols,
       const double *scales, double *matrix) {
     do {
-      for (index_t i = 0; i < n_rows; i++) {
+      for (fl__index_t i = 0; i < n_rows; i++) {
         matrix[i] *= scales[i];
       }
       matrix += n_rows;
@@ -152,7 +152,7 @@ namespace la {
   /**
    * Finds the square root of the dot product of a vector with itself.
    */
-  inline double LengthEuclidean(index_t length, const double *x) {
+  inline double LengthEuclidean(fl__index_t length, const double *x) {
     return F77_FUNC(dnrm2)(length, x, 1);
   }
 
@@ -160,7 +160,7 @@ namespace la {
    * Finds the dot-product of two arrays
    * (\f$\vec{x} \cdot \vec{y}\f$).
    */
-  inline double Dot(index_t length, const double *x, const double *y) {
+  inline double Dot(fl__index_t length, const double *x, const double *y) {
     return F77_FUNC(ddot)(length, x, 1, y, 1);
   }
 
@@ -168,14 +168,14 @@ namespace la {
    * Scales an array in-place by some factor
    * (\f$\vec{x} \gets \alpha \vec{x}\f$).
    */
-  inline void Scale(index_t length, double alpha, double *x) {
+  inline void Scale(fl__index_t length, double alpha, double *x) {
     F77_FUNC(dscal)(length, alpha, x, 1);
   }
   /**
    * Sets an array to another scaled by some factor
    * (\f$\vec{y} \gets \alpha \vec{x}\f$).
    */
-  inline void ScaleOverwrite(index_t length,
+  inline void ScaleOverwrite(fl__index_t length,
       double alpha, const double *x, double *y) {
     mem::Copy(y, x, length);
     Scale(length, alpha, y);
@@ -185,7 +185,7 @@ namespace la {
    * Adds a scaled array to an existing array
    * (\f$\vec{y} \gets \vec{y} + \alpha \vec{x}\f$).
    */
-  inline void AddExpert(index_t length,
+  inline void AddExpert(fl__index_t length,
       double alpha, const double *x, double *y) {
     F77_FUNC(daxpy)(length, alpha, x, 1, y, 1);
   }
@@ -194,14 +194,14 @@ namespace la {
    * Adds an array to an existing array
    * (\f$\vec{y} \gets \vec{y} + \vec{x}\f$).
    */
-  inline void AddTo(index_t length, const double *x, double *y) {
+  inline void AddTo(fl__index_t length, const double *x, double *y) {
     AddExpert(length, 1.0, x, y);
   }
   /**
    * Sets an array to the sum of two arrays
    * (\f$\vec{z} \gets \vec{y} + \vec{x}\f$).
    */
-  inline void AddOverwrite(index_t length,
+  inline void AddOverwrite(fl__index_t length,
       const double *x, const double *y, double *z) {
     mem::Copy(z, y, length);
     AddTo(length, x, z);
@@ -211,14 +211,14 @@ namespace la {
    * Subtracts an array from an existing array
    * (\f$\vec{y} \gets \vec{y} - \vec{x}\f$).
    */
-  inline void SubFrom(index_t length, const double *x, double *y) {
+  inline void SubFrom(fl__index_t length, const double *x, double *y) {
     AddExpert(length, -1.0, x, y);
   }
   /**
    * Sets an array to the difference of two arrays
    * (\f$\vec{x} \gets \vec{y} - \vec{x}\f$).
    */
-  inline void SubOverwrite(index_t length,
+  inline void SubOverwrite(fl__index_t length,
       const double *x, const double *y, double *z) {
     mem::Copy(z, y, length);
     SubFrom(length, x, z);
@@ -227,7 +227,7 @@ namespace la {
   /* --- Equivalent to BLAS level 1 --- */
   /* These functions steal their comments from the previous versons */
   
-  inline double LengthEuclidean(index_t length, const double *x) {
+  inline double LengthEuclidean(fl__index_t length, const double *x) {
     double sum = 0;
     do {
       sum += *x * *x;
@@ -236,7 +236,7 @@ namespace la {
     return sqrt(sum);
   }
 
-  inline double Dot(index_t length, const double *x, const double *y) {
+  inline double Dot(fl__index_t length, const double *x, const double *y) {
     double sum = 0;
     const double *end = x + length;
     while (x != end) {
@@ -245,14 +245,14 @@ namespace la {
     return sum;
   }
 
-  inline void Scale(index_t length, double alpha, double *x) {
+  inline void Scale(fl__index_t length, double alpha, double *x) {
     const double *end = x + length;
     while (x != end) {
       *x++ *= alpha;
     }
   }
 
-  inline void ScaleOverwrite(index_t length,
+  inline void ScaleOverwrite(fl__index_t length,
       double alpha, const double *x, double *y) {
     const double *end = x + length;
     while (x != end) {
@@ -260,7 +260,7 @@ namespace la {
     }
   }
 
-  inline void AddExpert(index_t length,
+  inline void AddExpert(fl__index_t length,
       double alpha, const double *x, double *y) {
     const double *end = x + length;
     while (x != end) {
@@ -268,30 +268,30 @@ namespace la {
     }
   }
 
-  inline void AddTo(index_t length, const double *x, double *y) {
+  inline void AddTo(fl__index_t length, const double *x, double *y) {
     const double *end = x + length;
     while (x != end) {
       *y++ += *x++;
     }
   }
 
-  inline void AddOverwrite(index_t length,
+  inline void AddOverwrite(fl__index_t length,
       const double *x, const double *y, double *z) {
-    for (index_t i = 0; i < length; i++) {
+    for (fl__index_t i = 0; i < length; i++) {
       z[i] = y[i] + x[i];
     }
   }
 
-  inline void SubFrom(index_t length, const double *x, double *y) {
+  inline void SubFrom(fl__index_t length, const double *x, double *y) {
     const double *end = x + length;
     while (x != end) {
       *y++ -= *x++;
     }
   }
 
-  inline void SubOverwrite(index_t length,
+  inline void SubOverwrite(fl__index_t length,
       const double *x, const double *y, double *z) {
-    for (index_t i = 0; i < length; i++) {
+    for (fl__index_t i = 0; i < length; i++) {
       z[i] = y[i] - x[i];
     }
   }
@@ -550,9 +550,9 @@ namespace la {
    */
   inline void TransposeSquare(Matrix *X) {
     DEBUG_MATSQUARE(*X);
-    index_t nr = X->n_rows();
-    for (index_t r = 1; r < nr; r++) {
-      for (index_t c = 0; c < r; c++) {
+    fl__index_t nr = X->n_rows();
+    for (fl__index_t r = 1; r < nr; r++) {
+      for (fl__index_t c = 0; c < r; c++) {
         double temp = X->get(r, c);
         X->set(r, c, X->get(c, r));
         X->set(c, r, temp);        
@@ -567,10 +567,10 @@ namespace la {
   inline void TransposeOverwrite(const Matrix &X, Matrix *Y) {
     DEBUG_SAME_SIZE(X.n_rows(), Y->n_cols());
     DEBUG_SAME_SIZE(X.n_cols(), Y->n_rows());
-    index_t nr = X.n_rows();
-    index_t nc = X.n_cols();
-    for (index_t r = 0; r < nr; r++) {
-      for (index_t c = 0; c < nc; c++) {
+    fl__index_t nr = X.n_rows();
+    fl__index_t nc = X.n_cols();
+    for (fl__index_t r = 0; r < nr; r++) {
+      for (fl__index_t c = 0; c < nc; c++) {
         Y->set(c, r, X.get(r, c));
       }
     }
@@ -981,7 +981,7 @@ namespace la {
    */
   inline success_t SolveExpert(
       f77_integer *pivots, Matrix *A_in_LU_out,
-      index_t k, double *B_in_X_out) {
+      fl__index_t k, double *B_in_X_out) {
     DEBUG_MATSQUARE(*A_in_LU_out);
     f77_integer info;
     f77_integer n = A_in_LU_out->n_rows();
@@ -1016,7 +1016,7 @@ namespace la {
     DEBUG_MATSQUARE(A);
     DEBUG_SAME_SIZE(A.n_rows(), B.n_rows());
     Matrix tmp;
-    index_t n = B.n_rows();
+    fl__index_t n = B.n_rows();
     //f77_integer pivots[n];
     f77_integer *pivots = new f77_integer[n];
     tmp.Copy(A);
@@ -1052,7 +1052,7 @@ namespace la {
     DEBUG_MATSQUARE(A);
     DEBUG_SAME_SIZE(A.n_rows(), b.length());
     Matrix tmp;
-    index_t n = b.length();
+    fl__index_t n = b.length();
     //f77_integer pivots[n];
     f77_integer *pivots = new f77_integer[n];
     tmp.Copy(A);
@@ -1135,7 +1135,7 @@ namespace la {
    */
   inline success_t SchurInit(const Matrix &A,
       Vector *w_real, Vector *w_imag, Matrix *T, Matrix *Z) {
-    index_t n = A.n_rows();
+    fl__index_t n = A.n_rows();
     T->Copy(A);
     w_real->Init(n);
     w_imag->Init(n);
@@ -1365,7 +1365,7 @@ namespace la {
    * @return SUCCESS_PASS if successful, SUCCESS_FAIL otherwise
    */
   inline success_t SVDInit(const Matrix &A, Vector *s, Matrix *U, Matrix *VT) {
-    index_t k = std::min(A.n_rows(), A.n_cols());
+    fl__index_t k = std::min(A.n_rows(), A.n_cols());
     s->Init(k);
     U->Init(A.n_rows(), k);
     VT->Init(k, A.n_cols());

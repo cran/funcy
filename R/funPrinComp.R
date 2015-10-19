@@ -1,6 +1,6 @@
 #
 #  Copyright (C) 2011-2015 Christina Yassouridis
-#  Original code in matlab, J.-M. Chiou and P.-L. Li J. R. Statist. Soc. B, Volume 69 (2007), 679–699
+#  Original code in matlab, J.-M. Chiou and P.-L. Li J. R. Statist. Soc. B, Volume 69 (2007), 679-699
 #
 
 ##does the same as fpc but is exported

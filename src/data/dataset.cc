@@ -97,7 +97,7 @@ success_t DatasetFeature::Parse(const char *str, double *d) const {
       }
     }
     case NOMINAL: {
-      index_t i;
+      fl__index_t i;
       for (i = 0; i < value_names_.size(); i++) {
         if (value_names_[i] == str) {
           *d = i;
@@ -115,13 +115,13 @@ success_t DatasetFeature::Parse(const char *str, double *d) const {
 // DatasetInfo ------------------------------------------------------
 
 
-void DatasetInfo::InitContinuous(index_t n_features,
+void DatasetInfo::InitContinuous(fl__index_t n_features,
     const char *name_in) {
   features_.Init(n_features);
 
   name_.Copy(name_in);
 
-  for (index_t i = 0; i < n_features; i++) {
+  for (fl__index_t i = 0; i < n_features; i++) {
     String feature_name;
     feature_name.InitSprintf("feature_%d", int(i));
     features_[i].InitContinuous(feature_name);
@@ -250,7 +250,7 @@ success_t DatasetInfo::InitFromCsv(TextLineReader *reader,
   }
 
   // Try to auto-detect if there is a header row
-  for (index_t i = 0; i < headers.size(); i++) {
+  for (fl__index_t i = 0; i < headers.size(); i++) {
     char *end;
 
     (void) strtod(headers[i], &end);
@@ -262,12 +262,12 @@ success_t DatasetInfo::InitFromCsv(TextLineReader *reader,
   }
 
   if (nonnumeric) {
-    for (index_t i = 0; i < headers.size(); i++) {
+    for (fl__index_t i = 0; i < headers.size(); i++) {
       features_.PushBack().InitContinuous(headers[i]);
     }
     reader->Gobble();
   } else {
-    for (index_t i = 0; i < headers.size(); i++) {
+    for (fl__index_t i = 0; i < headers.size(); i++) {
       String name;
       name.InitSprintf("feature%" LI "d", i);
       features_.PushBack().InitContinuous(name);
@@ -296,10 +296,10 @@ success_t DatasetInfo::InitFromFile(TextLineReader *reader,
   }
 }
 
-index_t Dataset::n_labels() const {
-  index_t i = 0;
-  index_t label_row_idx = matrix_.n_rows() - 1; // the last row is for labels
-  index_t n_labels = 0;
+fl__index_t Dataset::n_labels() const {
+  fl__index_t i = 0;
+  fl__index_t label_row_idx = matrix_.n_rows() - 1; // the last row is for labels
+  fl__index_t n_labels = 0;
 
   double current_label;
   
@@ -310,7 +310,7 @@ index_t Dataset::n_labels() const {
 
   for (i = 1; i < matrix_.n_cols(); i++) {
     current_label = matrix_.get(label_row_idx,i);
-    index_t j = 0;
+    fl__index_t j = 0;
     for (j = 0; j < n_labels; j++) {
       if (current_label == labels_list[j]) {
         break;
@@ -326,13 +326,13 @@ index_t Dataset::n_labels() const {
 }
 
 void Dataset::GetLabels(ArrayList<double> &labels_list,
-                        ArrayList<index_t> &labels_index,
-                        ArrayList<index_t> &labels_ct,
-                        ArrayList<index_t> &labels_startpos) const {
-  index_t i = 0;
-  index_t label_row_idx = matrix_.n_rows() - 1; // the last row is for labels
-  index_t n_points = matrix_.n_cols();
-  index_t n_labels = 0;
+                        ArrayList<fl__index_t> &labels_index,
+                        ArrayList<fl__index_t> &labels_ct,
+                        ArrayList<fl__index_t> &labels_startpos) const {
+  fl__index_t i = 0;
+  fl__index_t label_row_idx = matrix_.n_rows() - 1; // the last row is for labels
+  fl__index_t n_points = matrix_.n_cols();
+  fl__index_t n_labels = 0;
 
   double current_label;
 
@@ -347,7 +347,7 @@ void Dataset::GetLabels(ArrayList<double> &labels_list,
   labels_ct.Init();
   labels_startpos.Init();
 
-  ArrayList<index_t> labels_temp;
+  ArrayList<fl__index_t> labels_temp;
   labels_temp.Init(n_points);
   labels_temp[0] = 0;
 
@@ -357,7 +357,7 @@ void Dataset::GetLabels(ArrayList<double> &labels_list,
 
   for (i = 1; i < n_points; i++) {
     current_label = matrix_.get(label_row_idx, i);
-    index_t j = 0;
+    fl__index_t j = 0;
     for (j = 0; j < n_labels; j++) {
       if (current_label == labels_list[j]) {
         labels_ct[j]++;
@@ -390,7 +390,7 @@ void Dataset::GetLabels(ArrayList<double> &labels_list,
 }
 
 bool DatasetInfo::is_all_continuous() const {
-  for (index_t i = 0; i < features_.size(); i++) {
+  for (fl__index_t i = 0; i < features_.size(); i++) {
     if (features_[i].type() != DatasetFeature::CONTINUOUS) {
       return false;
     }
@@ -401,8 +401,8 @@ bool DatasetInfo::is_all_continuous() const {
 
 success_t DatasetInfo::ReadMatrix(TextLineReader *reader, Matrix *matrix) const {
   ArrayList<double> linearized;
-  index_t n_features = this->n_features();
-  index_t n_points = 0;
+  fl__index_t n_features = this->n_features();
+  fl__index_t n_points = 0;
   success_t retval = SUCCESS_PASS;
   bool is_done;
 
@@ -431,7 +431,7 @@ success_t DatasetInfo::ReadMatrix(TextLineReader *reader, Matrix *matrix) const 
 
 success_t DatasetInfo::ReadPoint(TextLineReader *reader, double *point,
     bool *is_done) const {
-  index_t n_features = this->n_features();
+  fl__index_t n_features = this->n_features();
   char *pos;
 
   *is_done = false;
@@ -455,7 +455,7 @@ success_t DatasetInfo::ReadPoint(TextLineReader *reader, double *point,
     }
   }
 
-  for (index_t i = 0; i < n_features; i++) {
+  for (fl__index_t i = 0; i < n_features; i++) {
     char *next;
 
     while (*pos == ' ' || *pos == '\t' || *pos == ',') {
@@ -527,12 +527,12 @@ success_t DatasetInfo::ReadPoint(TextLineReader *reader, double *point,
 void DatasetInfo::WriteArffHeader(TextWriter *writer) const {
   writer->Printf("@relation %s\n", name_.c_str());
 
-  for (index_t i = 0; i < features_.size(); i++) {
+  for (fl__index_t i = 0; i < features_.size(); i++) {
     const DatasetFeature *feature = &features_[i];
     writer->Printf("@attribute %s ", feature->name().c_str());
     if (feature->type() == DatasetFeature::NOMINAL) {
       writer->Printf("{");
-      for (index_t v = 0; v < feature->n_values(); v++) {
+      for (fl__index_t v = 0; v < feature->n_values(); v++) {
         if (v != 0) {
           writer->Write(",");
         }
@@ -548,7 +548,7 @@ void DatasetInfo::WriteArffHeader(TextWriter *writer) const {
 }
 
 void DatasetInfo::WriteCsvHeader(const char *sep, TextWriter *writer) const {
-  for (index_t i = 0; i < features_.size(); i++) {
+  for (fl__index_t i = 0; i < features_.size(); i++) {
     if (i != 0) {
       writer->Write(sep);
     }
@@ -559,8 +559,8 @@ void DatasetInfo::WriteCsvHeader(const char *sep, TextWriter *writer) const {
 
 void DatasetInfo::WriteMatrix(const Matrix& matrix, const char *sep,
     TextWriter *writer) const {
-  for (index_t i = 0; i < matrix.n_cols(); i++) {
-    for (index_t f = 0; f < features_.size(); f++) {
+  for (fl__index_t i = 0; i < matrix.n_cols(); i++) {
+    for (fl__index_t f = 0; f < features_.size(); f++) {
       if (f != 0) {
         writer->Write(sep);
       }
@@ -631,10 +631,10 @@ success_t Dataset::WriteArff(const char *fname) const {
 }
 
 void Dataset::SplitTrainTest(int folds, int fold_number,
-    const ArrayList<index_t>& permutation,
+    const ArrayList<fl__index_t>& permutation,
     Dataset *train, Dataset *test) const {
-  index_t n_test = (n_points() + folds - fold_number - 1) / folds;
-  index_t n_train = n_points() - n_test;
+  fl__index_t n_test = (n_points() + folds - fold_number - 1) / folds;
+  fl__index_t n_train = n_points() - n_test;
 
   train->InitBlank();
   train->info().InitCopy(info());
@@ -645,9 +645,9 @@ void Dataset::SplitTrainTest(int folds, int fold_number,
   train->matrix().Init(n_features(), n_train);
   test->matrix().Init(n_features(), n_test);
 
-  index_t i_train = 0;
-  index_t i_test = 0;
-  index_t i_orig = 0;
+  fl__index_t i_train = 0;
+  fl__index_t i_test = 0;
+  fl__index_t i_orig = 0;
 
   for (i_orig = 0; i_orig < n_points(); i_orig++) {
     double *dest;
@@ -682,7 +682,7 @@ success_t data::Save(const char *fname, const Matrix& matrix) {
   return dataset.WriteCsv(fname);
 }
 
-success_t data::Save(const char *fname, const GenVector<index_t> &index_vector, const GenVector<double> &data_vector) {
+success_t data::Save(const char *fname, const GenVector<fl__index_t> &index_vector, const GenVector<double> &data_vector) {
   // we need to reimplement dataset.WriteCsv with our own modifications
   // this whole thing needs to be re-done at some point to make more sense in
   // terms of the API sensibility, but this is a last-minute thing before
@@ -699,7 +699,7 @@ success_t data::Save(const char *fname, const GenVector<index_t> &index_vector, 
   if(!out.is_open())
     return SUCCESS_FAIL;
 
-  for(index_t i = 0; i < index_vector.length(); i++)
+  for(fl__index_t i = 0; i < index_vector.length(); i++)
     out << index_vector[i] << ", " << data_vector[i] << std::endl;
 
   out.close();

@@ -1,4 +1,4 @@
-#  Original  Copyright (C) 2008  Jie Peng and Hans-Georg Müller
+#  Original  Copyright (C) 2008  Jie Peng and Hans-Georg Mueller
 #  Modiefied Code: Copyright (C) 2011-2015 Christina Yassouridis
 #  
 #

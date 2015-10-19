@@ -149,7 +149,7 @@ class GrainQueue {
   /**
    * Gets the size of this queue.
    */
-  index_t size() const {
+  fl__index_t size() const {
     return queue_.size();
   }
 };

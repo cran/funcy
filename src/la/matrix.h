@@ -61,7 +61,7 @@
  * @code
  * Vector orig;
  * orig.Init(5);
- * for (index_t i = 0; i < 5; i++) {
+ * for (fl__index_t i = 0; i < 5; i++) {
  *   orig[i] = 2.0;
  * }
  * Vector an_alias;
@@ -76,7 +76,7 @@ class GenVector {
   /** The pointer to the array of doubles. */
   T *ptr_;
   /** The length of the vector. */
-  index_t length_;
+  fl__index_t length_;
   /** Whether this should be freed, i.e. it is not an alias. */
   bool should_free_;
   
@@ -136,7 +136,7 @@ class GenVector {
    * Creates a vector of a particular length, but does not initialize the
    * values in it.
    */
-  void Init(index_t in_length) {
+  void Init(fl__index_t in_length) {
     ptr_ = mem::Alloc<T>(in_length);
     length_ = in_length;
     should_free_ = true;
@@ -146,7 +146,7 @@ class GenVector {
    * Creates a vector of a particular length statically, but does not
    * initialize the values in it. This vector will not be freed!
    */
-  void StaticInit(index_t in_length) {
+  void StaticInit(fl__index_t in_length) {
 #ifndef DISABLE_DISK_MATRIX
     ptr_ = mmapmm::MemoryManager<false>::allocator_->Alloc<T>(in_length);
     length_ = in_length;
@@ -186,7 +186,7 @@ class GenVector {
    * @param doubles the array of doubles to copy
    * @param in_length the number of doubles in the array
    */
-  void Copy(const T *doubles, index_t in_length) {
+  void Copy(const T *doubles, fl__index_t in_length) {
     DEBUG_ONLY(AssertUninitialized_());
     
     ptr_ = mem::AllocCopy(doubles, in_length);
@@ -211,7 +211,7 @@ class GenVector {
    * @param doubles the array of doubles to copy
    * @param in_length the number of doubles in the array
    */
-  void StaticCopy(const T *doubles, index_t in_length) {
+  void StaticCopy(const T *doubles, fl__index_t in_length) {
 #ifndef DISABLE_DISK_MATRIX
     DEBUG_ONLY(AssertUninitialized_());
     
@@ -227,7 +227,7 @@ class GenVector {
   /**
    * Alias a particular memory region of doubles.
    */
-  void Alias(T *in_ptr, index_t in_length) {
+  void Alias(T *in_ptr, fl__index_t in_length) {
     DEBUG_ONLY(AssertUninitialized_());
     
     ptr_ = in_ptr;
@@ -271,7 +271,7 @@ class GenVector {
    * Become owner of a particular pointer in memory that was allocated
    * with mem::Alloc<double>.
    */
-  void Own(T *in_ptr, index_t in_length) {
+  void Own(T *in_ptr, fl__index_t in_length) {
     DEBUG_ONLY(AssertUninitialized_());
     
     ptr_ = in_ptr;
@@ -299,7 +299,7 @@ class GenVector {
    * Become owner of a particular pointer in memory that was allocated
    * statically.
    */
-  void StaticOwn(T *in_ptr, index_t in_length) {
+  void StaticOwn(T *in_ptr, fl__index_t in_length) {
 #ifndef DISABLE_DISK_MATRIX
     DEBUG_ONLY(AssertUninitialized_());
     
@@ -319,7 +319,7 @@ class GenVector {
    * @param len the length
    * @param dest an UNINITIALIZED vector to use
    */
-  void MakeSubvector(index_t start_index, index_t len, GenVector* dest) {
+  void MakeSubvector(fl__index_t start_index, fl__index_t len, GenVector* dest) {
     //DEBUG_BOUNDS(start_index, length_);
     //DEBUG_BOUNDS(start_index + len, length_ + 1);
     
@@ -367,7 +367,7 @@ class GenVector {
    */
   void PrintDebug(const char *name = "", FILE *stream = stderr) const {
     fprintf(stream, "----- VECTOR %s ------\n", name);
-    for (index_t i = 0; i < length(); i++) {
+    for (fl__index_t i = 0; i < length(); i++) {
       fprintf(stream, "%+3.3f ", get(i));
     }
     fprintf(stream, "\n");
@@ -375,7 +375,7 @@ class GenVector {
   
  public:
   /** The number of elements in this vector. */
-  index_t length() const {
+  fl__index_t length() const {
     return length_;
   }
   
@@ -396,7 +396,7 @@ class GenVector {
   /**
    * Gets the i'th element of this vector.
    */
-  T operator [] (index_t i) const {
+  T operator [] (fl__index_t i) const {
     //DEBUG_BOUNDS(i, length_);
     return ptr_[i];
   }
@@ -404,7 +404,7 @@ class GenVector {
   /**
    * Gets a mutable reference to the i'th element of this vector.
    */
-  T &operator [] (index_t i) {
+  T &operator [] (fl__index_t i) {
     //DEBUG_BOUNDS(i, length_);
     return ptr_[i];
   }
@@ -422,7 +422,7 @@ class GenVector {
    * }
    * @endcode
    */
-  T get(index_t i) const {
+  T get(fl__index_t i) const {
     //DEBUG_BOUNDS(i, length_);
     return ptr_[i];
   }
@@ -463,9 +463,9 @@ class GenMatrix {
   /** Linearized matrix (column-major). */
   T *ptr_;
   /** Number of rows. */
-  index_t n_rows_;
+  fl__index_t n_rows_;
   /** Number of columns. */
-  index_t n_cols_;
+  fl__index_t n_cols_;
   /** Whether I am a strong copy (not an alias). */
   bool should_free_;
 
@@ -482,7 +482,7 @@ class GenMatrix {
   /**
    * Creates a Matrix with uninitialized elements of the specified size.
    */
-  GenMatrix(index_t in_rows, index_t in_cols) {
+  GenMatrix(fl__index_t in_rows, fl__index_t in_cols) {
     DEBUG_ONLY(Uninitialize_());
     Init(in_rows, in_cols);
   }
@@ -535,7 +535,7 @@ class GenMatrix {
   /**
    * Creates a Matrix with uninitialized elements of the specified size.
    */
-  void Init(index_t in_rows, index_t in_cols) {
+  void Init(fl__index_t in_rows, fl__index_t in_cols) {
     DEBUG_ONLY(AssertUninitialized_());
     ptr_ = mem::Alloc<T>(in_rows * in_cols);
     n_rows_ = in_rows;
@@ -555,7 +555,7 @@ class GenMatrix {
    * Creates a Matrix with uninitialized elements of the specified
    * size statically. This matrix is not freed!
    */
-  void StaticInit(index_t in_rows, index_t in_cols) {
+  void StaticInit(fl__index_t in_rows, fl__index_t in_cols) {
 #ifndef DISABLE_DISK_MATRIX
     DEBUG_ONLY(AssertUninitialized_());
     ptr_ = mmapmm::MemoryManager<false>::allocator_->Alloc<T>
@@ -599,8 +599,8 @@ class GenMatrix {
     DEBUG_ASSERT(n_rows() == v.length());
     DEBUG_ASSERT(n_cols() == v.length());
     SetZero();
-    index_t n = v.length();
-    for (index_t i = 0; i < n; i++) {
+    fl__index_t n = v.length();
+    for (fl__index_t i = 0; i < n; i++) {
       set(i, i, v[i]);
     }
   }
@@ -621,7 +621,7 @@ class GenMatrix {
    * @param n_rows_in the number of rows
    * @param n_cols_in the number of columns
    */
-  void Copy(const T *ptr_in, index_t n_rows_in, index_t n_cols_in) {
+  void Copy(const T *ptr_in, fl__index_t n_rows_in, fl__index_t n_cols_in) {
     DEBUG_ONLY(AssertUninitialized_());
     
     ptr_ = mem::AllocCopy(ptr_in, n_rows_in * n_cols_in);
@@ -648,7 +648,7 @@ class GenMatrix {
    * @param n_rows_in the number of rows
    * @param n_cols_in the number of columns
    */
-  void StaticCopy(const T *ptr_in, index_t n_rows_in, index_t n_cols_in) {
+  void StaticCopy(const T *ptr_in, fl__index_t n_rows_in, fl__index_t n_cols_in) {
 #ifndef DISABLE_DISK_MATRIX
     DEBUG_ONLY(AssertUninitialized_());
 
@@ -683,7 +683,7 @@ class GenMatrix {
    * @param n_rows_in the number of rows
    * @param n_cols_in the number of columns
    */
-  void Alias(T *ptr_in, index_t n_rows_in, index_t n_cols_in) {
+  void Alias(T *ptr_in, fl__index_t n_rows_in, fl__index_t n_cols_in) {
     DEBUG_ONLY(AssertUninitialized_());
     
     ptr_ = ptr_in;
@@ -744,7 +744,7 @@ class GenMatrix {
    * @param n_rows_in the number of rows
    * @param n_cols_in the number of columns
    */
-  void Own(T *ptr_in, index_t n_rows_in, index_t n_cols_in) {
+  void Own(T *ptr_in, fl__index_t n_rows_in, fl__index_t n_cols_in) {
     DEBUG_ONLY(AssertUninitialized_());
     
     ptr_ = ptr_in;
@@ -779,7 +779,7 @@ class GenMatrix {
    * @param n_rows_in the number of rows
    * @param n_cols_in the number of columns
    */
-  void StaticOwn(T *ptr_in, index_t n_rows_in, index_t n_cols_in) {
+  void StaticOwn(T *ptr_in, fl__index_t n_rows_in, fl__index_t n_cols_in) {
 #ifndef DISABLE_DISK_MATRIX
     DEBUG_ONLY(AssertUninitialized_());
     
@@ -799,7 +799,7 @@ class GenMatrix {
    * @param n_cols_new the number of columns in the new matrix
    * @param dest an UNINITIALIZED matrix
    */
-  void MakeColumnSlice(index_t start_col, index_t n_cols_new,
+  void MakeColumnSlice(fl__index_t start_col, fl__index_t n_cols_new,
       GenMatrix *dest) const {
     //DEBUG_BOUNDS(start_col, n_cols_);
     //DEBUG_BOUNDS(start_col + n_cols_new, n_cols_ + 1);
@@ -827,7 +827,7 @@ class GenMatrix {
    * @param dest a pointer to an unitialized matrix
    * @return a reshaped matrix backed by the original
    */
-  void MakeReshaped(index_t n_rows_in, index_t n_cols_in,
+  void MakeReshaped(fl__index_t n_rows_in, fl__index_t n_cols_in,
       GenMatrix *dest) const {
     DEBUG_ASSERT(n_rows_in * n_cols_in == n_rows() * n_cols());
     dest->Alias(ptr_, n_rows_in, n_cols_in);
@@ -840,7 +840,7 @@ class GenMatrix {
    * @param dest a pointer to an uninitialized vector, which will be
    *        initialized as an alias to the particular column
    */
-  void MakeColumnVector(index_t col, GenVector<T> *dest) const {
+  void MakeColumnVector(fl__index_t col, GenVector<T> *dest) const {
     //DEBUG_BOUNDS(col, n_cols_);
     dest->Alias(n_rows_ * col + ptr_, n_rows_);
   }
@@ -854,7 +854,7 @@ class GenMatrix {
    * @param dest a pointer to an uninitialized vector, which will be
    *        initialized as an alias to the particular column's subvector
    */
-  void MakeColumnSubvector(index_t col, index_t start_row, index_t n_rows_new,
+  void MakeColumnSubvector(fl__index_t col, fl__index_t start_row, fl__index_t n_rows_new,
       GenVector<T> *dest) const {
     //DEBUG_BOUNDS(col, n_cols_);
     //DEBUG_BOUNDS(start_row, n_rows_);
@@ -870,7 +870,7 @@ class GenMatrix {
    * @return an array where the i'th element is the i'th row of that
    *         particular column
    */
-  T *GetColumnPtr(index_t col) {
+  T *GetColumnPtr(fl__index_t col) {
     //DEBUG_BOUNDS(col, n_cols_);
     return n_rows_ * col + ptr_;
   }
@@ -883,7 +883,7 @@ class GenMatrix {
    * @return an array where the i'th element is the i'th row of that
    *         particular column
    */
-  const T *GetColumnPtr(index_t col) const {
+  const T *GetColumnPtr(fl__index_t col) const {
     //DEBUG_BOUNDS(col, n_cols_);
     return n_rows_ * col + ptr_;
   }
@@ -895,7 +895,7 @@ class GenMatrix {
    * @param mat the other matrix
    * @return nothing
    */  
-   void CopyColumnFromMat(index_t col1, index_t col2, GenMatrix<T> &mat) {
+   void CopyColumnFromMat(fl__index_t col1, fl__index_t col2, GenMatrix<T> &mat) {
      //DEBUG_BOUNDS(col1, n_cols_);
      //DEBUG_BOUNDS(col2, mat.n_cols());
      DEBUG_ASSERT(n_rows_==mat.n_rows());
@@ -909,7 +909,7 @@ class GenMatrix {
    * @param mat the other matrix
    * @return nothing
    */  
-   void CopyColumnFromMat(index_t col1, index_t col2, index_t ncols, GenMatrix<T> &mat) {
+   void CopyColumnFromMat(fl__index_t col1, fl__index_t col2, fl__index_t ncols, GenMatrix<T> &mat) {
      //DEBUG_BOUNDS(col1, n_cols_);
      //DEBUG_BOUNDS(col2, mat.n_cols());
      //DEBUG_BOUNDS(col1+ncols-1, n_cols_);
@@ -923,7 +923,7 @@ class GenMatrix {
    * @param col1 the column number
    * @return nothing
    */  
-   void CopyVectorToColumn(index_t col, GenVector<T> &vec) {
+   void CopyVectorToColumn(fl__index_t col, GenVector<T> &vec) {
      //DEBUG_BOUNDS(col, n_cols_);
      memcpy(ptr_ + n_rows_ * col, vec.ptr(), n_rows_*sizeof(T));
    }
@@ -936,7 +936,7 @@ class GenMatrix {
    *
    * @param new_n_cols the new number of columns
    */
-  void ResizeNoalias(index_t new_n_cols) {
+  void ResizeNoalias(fl__index_t new_n_cols) {
     DEBUG_ASSERT(should_free_); // the best assert we can do
     n_cols_ = new_n_cols;
     ptr_ = mem::Realloc(ptr_, n_elements());
@@ -975,8 +975,8 @@ class GenMatrix {
    */
   void PrintDebug(const char *name = "", FILE *stream = stderr) const {
     fprintf(stream, "----- MATRIX %s ------\n", name);
-    for (index_t r = 0; r < n_rows(); r++) {
-      for (index_t c = 0; c < n_cols(); c++) {
+    for (fl__index_t r = 0; r < n_rows(); r++) {
+      for (fl__index_t c = 0; c < n_cols(); c++) {
         fprintf(stream, "%+3.3f ", get(r, c));
       }
       fprintf(stream, "\n");
@@ -1010,7 +1010,7 @@ class GenMatrix {
    * @param r the row number
    * @param c the column number
    */
-  T get(index_t r, index_t c) const {
+  T get(fl__index_t r, fl__index_t c) const {
     //DEBUG_BOUNDS(r, n_rows_);
     //DEBUG_BOUNDS(c, n_cols_);
     return ptr_[c * n_rows_ + r];
@@ -1023,7 +1023,7 @@ class GenMatrix {
    * @param c the column number
    * @param v the value to set
    */ 
-  void set(index_t r, index_t c, T v) {
+  void set(fl__index_t r, fl__index_t c, T v) {
     //DEBUG_BOUNDS(r, n_rows_);
     //DEBUG_BOUNDS(c, n_cols_);
     ptr_[c * n_rows_ + r] = v;
@@ -1036,19 +1036,19 @@ class GenMatrix {
    * part of an array; use ColumnSlice or Reshaped instead to make
    * subsections.
    */
-  T &ref(index_t r, index_t c) {
+  T &ref(fl__index_t r, fl__index_t c) {
     //DEBUG_BOUNDS(r, n_rows_);
     //DEBUG_BOUNDS(c, n_cols_);
     return ptr_[c * n_rows_ + r];
   }
   
   /** Returns the number of columns. */
-  index_t n_cols() const {
+  fl__index_t n_cols() const {
     return n_cols_;
   }
   
   /** Returns the number of rows. */
-  index_t n_rows() const {
+  fl__index_t n_rows() const {
     return n_rows_;
   }
   
@@ -1093,7 +1093,7 @@ class SmallVector : public Vector {
   ~SmallVector() {}
   
  public:
-  index_t length() const {
+  fl__index_t length() const {
     return t_length;
   }
 
@@ -1105,17 +1105,17 @@ class SmallVector : public Vector {
     return array_;
   }
   
-  double operator [] (index_t i) const {
+  double operator [] (fl__index_t i) const {
     //DEBUG_BOUNDS(i, t_length);
     return array_[i];
   }
   
-  double &operator [] (index_t i) {
+  double &operator [] (fl__index_t i) {
     //DEBUG_BOUNDS(i, t_length);
     return array_[i];
   }
   
-  double get(index_t i) const {
+  double get(fl__index_t i) const {
     //DEBUG_BOUNDS(i, t_length);
     return array_[i];
   }
@@ -1148,29 +1148,29 @@ class SmallMatrix : public Matrix {
     return array_[0];
   }
 
-  double get(index_t r, index_t c) const {
+  double get(fl__index_t r, fl__index_t c) const {
     //DEBUG_BOUNDS(r, t_rows);
     //DEBUG_BOUNDS(c, t_cols);
     return array_[c][r];
   }
 
-  void set(index_t r, index_t c, double v) {
+  void set(fl__index_t r, fl__index_t c, double v) {
     //DEBUG_BOUNDS(r, t_rows);
     //DEBUG_BOUNDS(c, t_cols);
     array_[c][r] = v;
   }
 
-  double &ref(index_t r, index_t c) {
+  double &ref(fl__index_t r, fl__index_t c) {
     //DEBUG_BOUNDS(r, t_rows);
     //DEBUG_BOUNDS(c, t_cols);
     return array_[c][r];
   }
 
-  index_t n_cols() const {
+  fl__index_t n_cols() const {
     return t_cols;
   }
 
-  index_t n_rows() const {
+  fl__index_t n_rows() const {
     return t_rows;
   }
 
@@ -1181,12 +1181,12 @@ class SmallMatrix : public Matrix {
     return size_t(t_rows) * size_t(t_cols);
   }
 
-  double *GetColumnPtr(index_t col) {
+  double *GetColumnPtr(fl__index_t col) {
     //DEBUG_BOUNDS(col, t_cols);
     return array_[col];
   }
 
-  const double *GetColumnPtr(index_t col) const {
+  const double *GetColumnPtr(fl__index_t col) const {
     //DEBUG_BOUNDS(col, t_cols);
     return array_[col];
   }

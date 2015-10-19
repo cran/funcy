@@ -70,7 +70,7 @@ namespace math {
    * @param size the number of elements in the permutation
    * @param array a place to store the permutation
    */
-  void MakeIdentityPermutation(index_t size, index_t *array);
+  void MakeIdentityPermutation(fl__index_t size, fl__index_t *array);
   
   /**
    * Creates an identity permutation where the element i equals i.
@@ -81,7 +81,7 @@ namespace math {
    * @param result will be initialized to the identity permutation
    */
   inline void MakeIdentityPermutation(
-      index_t size, ArrayList<index_t> *result) {
+      fl__index_t size, ArrayList<fl__index_t> *result) {
     result->Init(size);
     MakeIdentityPermutation(size, result->begin());
   }
@@ -95,7 +95,7 @@ namespace math {
    * @param size the number of elements
    * @param array the array to store a permutation in
    */
-  void MakeRandomPermutation(index_t size, index_t *array);
+  void MakeRandomPermutation(fl__index_t size, fl__index_t *array);
   
   /**
    * Creates a random permutation over integers 0 throush size - 1.
@@ -104,7 +104,7 @@ namespace math {
    * @param result will be initialized to a permutation array
    */
   inline void MakeRandomPermutation(
-      index_t size, ArrayList<index_t> *result) {
+      fl__index_t size, ArrayList<fl__index_t> *result) {
     result->Init(size);
     MakeRandomPermutation(size, result->begin());
   }
@@ -112,14 +112,14 @@ namespace math {
   /**
    * Inverts or transposes an existing permutation.
    */
-  void MakeInversePermutation(index_t size,
-      const index_t *original, index_t *reverse);
+  void MakeInversePermutation(fl__index_t size,
+      const fl__index_t *original, fl__index_t *reverse);
 
   /**
    * Inverts or transposes an existing permutation.
    */
   inline void MakeInversePermutation(
-      const ArrayList<index_t>& original, ArrayList<index_t> *reverse) {
+      const ArrayList<fl__index_t>& original, ArrayList<fl__index_t> *reverse) {
     reverse->Init(original.size());
     MakeInversePermutation(original.size(), original.begin(), reverse->begin());
   }

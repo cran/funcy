@@ -257,7 +257,7 @@ void TextTokenizer::UndoNextChar_(ArrayList<char> *token) {
 void Sanitize(const String& src, String* dest) {
   dest->Init();
   
-  for (index_t i = 0; i < src.length(); i++) {
+  for (fl__index_t i = 0; i < src.length(); i++) {
     char c = src[i];
     
     if (isgraph(c) || c == ' ' || c == '\t') {
@@ -410,7 +410,7 @@ void TextTokenizer::Gobble() {
   Scan_(&token);
   token.PushBackCopy('\0');
   next_.Steal(&token);
-  DEBUG_ASSERT(next_.length() == index_t(strlen(next_.c_str())));
+  DEBUG_ASSERT(next_.length() == fl__index_t(strlen(next_.c_str())));
 }
 
 success_t TextWriter::Printf(const char *format, ...) {

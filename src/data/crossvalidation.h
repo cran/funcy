@@ -132,7 +132,7 @@ class SimpleCrossValidator {
   /** The FastExec name of the classifier. */
   const char *classifier_fx_name_;
   /** Total number correct classified. */
-  index_t n_correct_;
+  fl__index_t n_correct_;
   /** Confusion matrix. */
   Matrix confusion_matrix_;
   
@@ -173,12 +173,12 @@ class SimpleCrossValidator {
   
   
   /** Gets the number correctly classified over all folds. */
-  index_t n_correct() {
+  fl__index_t n_correct() {
     return n_correct_;
   }
   
   /** Gets the number incorrect over all folds. */
-  index_t n_incorrect() {
+  fl__index_t n_incorrect() {
     return data_->n_points() - n_correct_;
   }
   
@@ -256,7 +256,7 @@ void SimpleCrossValidator<TClassifier>::Init(
 
 template<class TClassifier>
 void SimpleCrossValidator<TClassifier>::Run(bool randomized) {
-  ArrayList<index_t> permutation;
+  ArrayList<fl__index_t> permutation;
   
   if (randomized) {
     math::MakeRandomPermutation(data_->n_points(), &permutation);
@@ -272,7 +272,7 @@ void SimpleCrossValidator<TClassifier>::Run(bool randomized) {
     Classifier classifier;
     Dataset test;
     Dataset train;
-    index_t local_n_correct = 0;
+    fl__index_t local_n_correct = 0;
     datanode *classifier_module = fx_copy_module(root_module_,
         classifier_fx_name_, "%s/%d/%s",
         kfold_module_->key, i_fold, classifier_fx_name_);
@@ -291,7 +291,7 @@ void SimpleCrossValidator<TClassifier>::Run(bool randomized) {
     
     fx_timer_start(foldmodule, "test");
     //VERBOSE_MSG(1, "cross: Testing fold %d", i_fold);
-    for (index_t i = 0; i < test.n_points(); i++) {
+    for (fl__index_t i = 0; i < test.n_points(); i++) {
       Vector test_vector_with_label;
       Vector test_vector;
       
@@ -382,7 +382,7 @@ class GeneralCrossValidator {
   /** The input dataset */
   const Dataset *data_;
   /** Number of data points  */
-  index_t num_data_points_;
+  fl__index_t num_data_points_;
   /** The originating module */
   datanode *root_module_;
   /** The fastexec module for cross validation and result storage */
@@ -395,7 +395,7 @@ class GeneralCrossValidator {
   /** Number of labels */
   int clsf_n_classes_;
   /** Total number correct classified */
-  index_t clsf_n_correct_;
+  fl__index_t clsf_n_correct_;
   /** Confusion matrix */
   Matrix clsf_confusion_matrix_;
 
@@ -443,11 +443,11 @@ class GeneralCrossValidator {
 
   /** Functions for type 0: classification ONLY */
   /** Gets the number correctly classified over all folds. */
-  index_t clsf_n_correct() {
+  fl__index_t clsf_n_correct() {
     return clsf_n_correct_;
   }
   /** Gets the number incorrect over all folds */
-  index_t clsf_n_incorrect() {
+  fl__index_t clsf_n_incorrect() {
     return data_->n_points() - clsf_n_correct_;
   }
   /** Gets the portion calculated correct */
@@ -473,24 +473,24 @@ class GeneralCrossValidator {
   /** For classification ONLY*/
   /** Stratified spliting of cross validation set to ensure that approximately 
    * the same portion of data (training/validation) are used for each class */
-  void StratifiedSplitCVSet_(int i_fold, index_t num_classes, ArrayList<index_t>& cv_labels_ct, 
-			     ArrayList<index_t>& cv_labels_startpos, const ArrayList<index_t>& permutation, Dataset *train, Dataset *validation){
+  void StratifiedSplitCVSet_(int i_fold, fl__index_t num_classes, ArrayList<fl__index_t>& cv_labels_ct,
+			     ArrayList<fl__index_t>& cv_labels_startpos, const ArrayList<fl__index_t>& permutation, Dataset *train, Dataset *validation){
     // Begin stratified splitting for the i-th fold stratified CV
-    index_t n_cv_features = data_->n_features();
+    fl__index_t n_cv_features = data_->n_features();
     
     // detemine the number of data samples for training and validation according to i_fold
-    index_t n_cv_validation, i_validation, i_train;
+    fl__index_t n_cv_validation, i_validation, i_train;
     n_cv_validation = 0;
-    for (index_t i_classes=0; i_classes<num_classes; i_classes++) {
+    for (fl__index_t i_classes=0; i_classes<num_classes; i_classes++) {
       i_validation = 0;
-      for (index_t j=0; j<cv_labels_ct[i_classes]; j++) {
+      for (fl__index_t j=0; j<cv_labels_ct[i_classes]; j++) {
 	if ((j - i_fold) % n_folds_ == 0) { // point for validation
 	  i_validation++;
 	}
       }
       n_cv_validation = n_cv_validation + i_validation;
     }
-    index_t n_cv_train = num_data_points_ - n_cv_validation;
+    fl__index_t n_cv_train = num_data_points_ - n_cv_validation;
     train->InitBlank();
     train->info().InitContinuous(n_cv_features);
     train->matrix().Init(n_cv_features, n_cv_train);
@@ -502,8 +502,8 @@ class GeneralCrossValidator {
     // make training set and vaidation set by concatenation
     i_train = 0;
     i_validation = 0;
-    for (index_t i_classes=0; i_classes<num_classes; i_classes++) {
-      for (index_t j=0; j<cv_labels_ct[i_classes]; j++) {
+    for (fl__index_t i_classes=0; i_classes<num_classes; i_classes++) {
+      for (fl__index_t j=0; j<cv_labels_ct[i_classes]; j++) {
 	Vector source, dest;
 	if ((j - i_fold) % n_folds_ != 0) { // add to training set
 	  train->matrix().MakeColumnVector(i_train, &dest);
@@ -580,13 +580,13 @@ void GeneralCrossValidator<TLearner>::Run(bool randomized) {
     /* list of labels, need to be integers. e.g. [0,1,2] for a 3-class dataset */
     ArrayList<double> cv_labels_list;
     /* array of label indices, after grouping. e.g. [c1[0,5,6,7,10,13,17],c2[1,2,4,8,9],c3[...]]*/
-    ArrayList<index_t> cv_labels_index;
+    ArrayList<fl__index_t> cv_labels_index;
     /* counted number of label for each class. e.g. [7,5,8]*/
-    ArrayList<index_t> cv_labels_ct;
+    ArrayList<fl__index_t> cv_labels_ct;
     /* start positions of each classes in the cv label list. e.g. [0,7,12] */
-    ArrayList<index_t> cv_labels_startpos;
+    ArrayList<fl__index_t> cv_labels_startpos;
     // Get label list and label indices from the cross validation data set
-    index_t num_classes = data_->n_labels();
+    fl__index_t num_classes = data_->n_labels();
 
     cv_labels_list.Init();
     cv_labels_index.Init();
@@ -595,20 +595,20 @@ void GeneralCrossValidator<TLearner>::Run(bool randomized) {
     data_->GetLabels(cv_labels_list, cv_labels_index, cv_labels_ct, cv_labels_startpos);
 
     // randomize the original data set within each class if necessary
-    ArrayList<index_t> permutation;
+    ArrayList<fl__index_t> permutation;
 
     if (randomized) {
       permutation.Init(num_data_points_);
-      for (index_t i_classes=0; i_classes<num_classes; i_classes++) {
-	ArrayList<index_t> sub_permutation; // within class permut indices
+      for (fl__index_t i_classes=0; i_classes<num_classes; i_classes++) {
+	ArrayList<fl__index_t> sub_permutation; // within class permut indices
 	math::MakeRandomPermutation(cv_labels_ct[i_classes], &sub_permutation);
 	// use sub-permutation indicies to form the whole permutation
 	if (i_classes==0){
-	  for (index_t j=0; j<cv_labels_ct[i_classes]; j++)
+	  for (fl__index_t j=0; j<cv_labels_ct[i_classes]; j++)
 	    permutation[cv_labels_startpos[i_classes]+j] = cv_labels_index[ sub_permutation[j] ];
 	}
 	else {
-	  for (index_t j=0; j<cv_labels_ct[i_classes]; j++)
+	  for (fl__index_t j=0; j<cv_labels_ct[i_classes]; j++)
 	    permutation[cv_labels_startpos[i_classes]+j] = cv_labels_index[ cv_labels_ct[i_classes-1]+sub_permutation[j] ];
 	}
 	sub_permutation.Clear();
@@ -623,7 +623,7 @@ void GeneralCrossValidator<TLearner>::Run(bool randomized) {
       Dataset train;
       Dataset validation;
       
-      index_t local_n_correct = 0;
+      fl__index_t local_n_correct = 0;
       datanode *learner_module = fx_copy_module(root_module_,
           learner_fx_name_, "%s/%d/%s",
           kfold_module_->key, i_fold, learner_fx_name_);
@@ -646,7 +646,7 @@ void GeneralCrossValidator<TLearner>::Run(bool randomized) {
       fx_timer_start(foldmodule, "validation");
       //VERBOSE_MSG(1, "cross: Validation fold %d", i_fold);
 
-      for (index_t i = 0; i < validation.n_points(); i++) {
+      for (fl__index_t i = 0; i < validation.n_points(); i++) {
 	Vector validation_vector_with_label;
 	Vector validation_vector;
 	
@@ -688,7 +688,7 @@ void GeneralCrossValidator<TLearner>::Run(bool randomized) {
     double accu_msq_err_all_folds = 0.0;
 
     // randomize the original data set if necessary
-    ArrayList<index_t> permutation;  
+    ArrayList<fl__index_t> permutation;
     if (randomized) {
       math::MakeRandomPermutation(num_data_points_, &permutation);
     } else {
@@ -723,7 +723,7 @@ void GeneralCrossValidator<TLearner>::Run(bool randomized) {
       // validation
       fx_timer_start(foldmodule, "validation");
       //VERBOSE_MSG(1, "cross: Validation fold %d", i_fold);
-      for (index_t i = 0; i < validation.n_points(); i++) {
+      for (fl__index_t i = 0; i < validation.n_points(); i++) {
 	Vector validation_vector_with_label;
 	Vector validation_vector;
 	

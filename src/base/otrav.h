@@ -60,7 +60,7 @@
  * Example (printing NULL for pointers):
  * @code
  *   class MyClass {
- *     index_t len_;
+ *     fl__index_t len_;
  *     double *array_;
  *     ...
  *     OT_CUSTOM_PRINT() {
@@ -195,7 +195,7 @@
  * @see OT_ENUM_VAL, OT_ENUM, OBJECT_TRAVERSAL
  */
 #define OT_ENUM_EXPERT(x, T, print_code) \
-    if (true) { \
+    if (false) { \
       ot__visitor->Name(#x, x); \
       switch (x) { \
 	print_code \
@@ -242,9 +242,9 @@
 #define OT_ARRAY_IMPL(x, len, iter_var, loop_code, func, args...) \
     if (true) { \
       ot__visitor->Name(#x, x); \
-      index_t ot__len = len; \
+      fl__index_t ot__len = len; \
       if (ot__visitor->Pre##func(x, ot__len, ## args)) { \
-	for (index_t iter_var = 0; iter_var < ot__len; ++iter_var) { \
+	for (fl__index_t iter_var = 0; iter_var < ot__len; ++iter_var) { \
 	  ot__visitor->ElemOf(x); \
 	  loop_code; \
 	} \
@@ -358,8 +358,8 @@
  * Example (two-dimensional array):
  * @code
  *   class MyClass {
- *     index_t rows_;
- *     index_t cols_;
+ *     fl__index_t rows_;
+ *     fl__index_t cols_;
  *     double **data_;
  *     ...
  *     OBJECT_TRAVERSAL(MyClass} {
@@ -429,7 +429,7 @@
  * Example (array of mem::Alloc'd pointers):
  * @code
  *   class MyClass {
- *     index_t num_children_;
+ *     fl__index_t num_children_;
  *     MyClass **children_;
  *     ...
  *     OBJECT_TRAVERSAL(MyClass} {
@@ -1192,7 +1192,7 @@
    public: \
     template<typename TVisitor> \
     friend bool OT__PreTraverse(C *ot__dest, const C *ot__src, \
-                                index_t ot__len, TVisitor *ot__visitor) { \
+                                fl__index_t ot__len, TVisitor *ot__visitor) { \
       return ot__visitor->PreTraverse(ot__dest, ot__src, ot__len); \
     } \
     template<typename TVisitor> \
@@ -1245,7 +1245,7 @@
  * @code
  *   class MyClass {
  *     MyInfo info_;
- *     index_t data_len_;
+ *     fl__index_t data_len_;
  *     double *data_;
  *     MyClass *next_;
  *     ...
@@ -1422,8 +1422,8 @@
  * Example (deleting an array of variable length arrays of pointers):
  * @code
  *   class MyClass {
- *     index_t rows_;
- *     index_t *cols_;
+ *     fl__index_t rows_;
+ *     fl__index_t *cols_;
  *     MyClass ***children_;
  *     ...
  *     OBJECT_TRAVERSAL(MyClass) {
@@ -1508,12 +1508,12 @@ namespace ot {
    * @li A constructor that accepts a FILE *stream.
    * @li A templated function @c Untraversed(const T &obj)
    * @li For each base type, templated/overloaded functions
-   *     @c Primitive(const char *name, index_t index,
+   *     @c Primitive(const char *name, fl__index_t index,
    *                  const char *type, T val)
    * @li A templated Primitive function that works on pointers
    * @li A templated function
-   *     @c Open(const char *name, index_t index,
-   *             const char *type, const T &obj, index_t len = -1)
+   *     @c Open(const char *name, fl__index_t index,
+   *             const char *type, const T &obj, fl__index_t len = -1)
    * @li A templated function
    *     @c Close(const char *name, const T &obj)
    *

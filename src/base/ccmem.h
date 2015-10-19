@@ -184,7 +184,7 @@ namespace mem {
   }
   template<typename T, typename U>
   inline T* /*inline*/ CopyValues(T *dest, const U *src, size_t elems=1) {
-    for(index_t i=0; i<elems; i++) {
+    for(fl__index_t i=0; i<elems; i++) {
       dest[i]=T(src[i]);
     }
     return dest; 

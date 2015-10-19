@@ -157,26 +157,26 @@ class MinHeap {
   /**
    * Gets the size of the heap.
    */
-  index_t size() const {
+  fl__index_t size() const {
     return entries_.size();
   }
 
  private:
-  static index_t ChildIndex_(index_t i) {
+  static fl__index_t ChildIndex_(fl__index_t i) {
     return (i << 1) + 1;
   }
 
-  static index_t ParentIndex_(index_t i) {
+  static fl__index_t ParentIndex_(fl__index_t i) {
     return (i - 1) >> 1;
   }
 
-  index_t WalkDown_(const Entry& entry, index_t i) {
+  fl__index_t WalkDown_(const Entry& entry, fl__index_t i) {
     Key key = entry.key;
     Entry *entries = entries_.begin();
-    index_t last = entries_.size() - 1;
+    fl__index_t last = entries_.size() - 1;
 
     for (;;) {
-      index_t c = ChildIndex_(i);
+      fl__index_t c = ChildIndex_(i);
 
       if ((c > last)) {
         break;
@@ -200,12 +200,12 @@ class MinHeap {
     return i;
   }
 
-  index_t WalkUp_(const Entry& entry, index_t i) {
+  fl__index_t WalkUp_(const Entry& entry, fl__index_t i) {
     Key key = entry.key;
     Entry *entries = entries_.begin();
 
     for (;;) {
-      index_t p;
+      fl__index_t p;
 
       if (i == 0) {
         break; // highly unlikely, we found the best!

@@ -54,7 +54,7 @@ namespace la {
    * Finds the Euclidean distance squared between two vectors.
    */
   inline double DistanceSqEuclidean(
-      index_t length, const double *va, const double *vb) {
+      fl__index_t length, const double *va, const double *vb) {
     double s = 0;
     do {
       double d = *va++ - *vb++;
@@ -80,7 +80,7 @@ namespace la {
    */
   template<int t_pow>
   inline double RawLMetric(
-      index_t length, const double *va, const double *vb) {
+      fl__index_t length, const double *va, const double *vb) {
     double s = 0;
     do {
       double d = *va++ - *vb++;
@@ -99,7 +99,7 @@ namespace la {
    */
   template<int t_pow>
   inline double LMetric(
-      index_t length, const double *va, const double *vb) {
+      fl__index_t length, const double *va, const double *vb) {
     return math::Pow<1, t_pow>(RawLMetric<t_pow>(length, va, vb));
   }
   /** Finds the trace of the matrix.
@@ -109,7 +109,7 @@ namespace la {
     // trace has meaning only for square matrices
     //DEBUG_SAME_SIZE(a.n_cols(), a.n_rows());
     double trace=0;
-    for(index_t i=0; i<a.n_cols(); i++) {
+    for(fl__index_t i=0; i<a.n_cols(); i++) {
       trace+=a.get(i, i);
     }
     return trace;

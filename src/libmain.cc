@@ -122,9 +122,9 @@ void do_fscm(const char **datafile,
 		data::Save("probsAll.csv", pi);
 
 
-		GenVector<index_t> index;
+		GenVector<fl__index_t> index;
 		index.Init(2);
-		for (index_t i = 0; i < 2; i++)
+		for (fl__index_t i = 0; i < 2; i++)
 			index[i] = i;
 		data::Save("parameter.csv", index, sigma);
 

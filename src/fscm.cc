@@ -15,7 +15,7 @@ void FSCM::InitTrain(const Dataset& dataset, const Dataset& neighborset, const D
     phi.Copy(phiset.matrix()); //m-by-p//
     psi.Copy(psiset.matrix()); //n-by-q//
 
-    index_t n=psi.n_rows(), m=phi.n_rows(), p=phi.n_cols(), q=psi.n_cols(), k=neighbors.n_cols(); 
+    fl__index_t n=psi.n_rows(), m=phi.n_rows(), p=phi.n_cols(), q=psi.n_cols(), k=neighbors.n_cols();
     
     //printf("2. Initialize alpha\n");
     Matrix y_tmp,phi_tran_phi,phi_tran,psi_tran_psi,psi_tran;
@@ -34,7 +34,7 @@ void FSCM::InitTrain(const Dataset& dataset, const Dataset& neighborset, const D
     psi_tran_y.Init(q);
     psi_tran_y.SetZero();
     
-    for(index_t s_j=0;s_j<n;s_j++){
+    for(fl__index_t s_j=0;s_j<n;s_j++){
         Vector y_j;
         y_tmp.MakeColumnVector(s_j,&y_j);
         la::MulExpert(1.0/n,phi_tran,y_j,1,&phi_tran_y);//sum_j 1/n*phi'y_j
@@ -46,7 +46,7 @@ void FSCM::InitTrain(const Dataset& dataset, const Dataset& neighborset, const D
     //printf("3. Initialize pi_y\n"); 
     pi_y.Init(n,c);
     pi_y.SetZero();
-    for(index_t s_j=0;s_j<n;s_j++){
+    for(fl__index_t s_j=0;s_j<n;s_j++){
     
         pi_y.set(s_j,z.get(s_j,0),1);
     
@@ -62,9 +62,9 @@ void FSCM::InitTrain(const Dataset& dataset, const Dataset& neighborset, const D
 
     double sum_nc_inv=0;
 
-    for(index_t c_i=0;c_i<c;c_i++){
+    for(fl__index_t c_i=0;c_i<c;c_i++){
         
-        for(index_t s_j=0;s_j<n;s_j++){
+        for(fl__index_t s_j=0;s_j<n;s_j++){
                 
             n_c[c_i]+=pi_y.get(s_j,c_i);
             
@@ -80,14 +80,14 @@ void FSCM::InitTrain(const Dataset& dataset, const Dataset& neighborset, const D
     lambda.Init(p);
     lambda.SetZero();
 
-    for(index_t s_j=0;s_j<n;s_j++){
+    for(fl__index_t s_j=0;s_j<n;s_j++){
 
         //remove global effects//
         Vector y_j;
         y_tmp.MakeColumnVector(s_j,&y_j); 
         la::MulExpert(-1,phi,alpha,1,&y_j);
 
-        for(index_t c_i=0;c_i<c;c_i++){
+        for(fl__index_t c_i=0;c_i<c;c_i++){
 
 			//lambda=sum_j sum_k z_jk/n_k*phi'(y_j-phi*alpha)
             la::MulExpert(pi_y.get(s_j,c_i)/n_c[c_i],phi_tran,y_j,1,&lambda); //Caution! if n_c[c_i]=0, it will produce NA!
@@ -99,13 +99,13 @@ void FSCM::InitTrain(const Dataset& dataset, const Dataset& neighborset, const D
     la::Scale(1/sum_nc_inv,&lambda);
 
     //printf("2.2 Compute beta_k\n");
-    for(index_t c_i=0;c_i<c;c_i++){
+    for(fl__index_t c_i=0;c_i<c;c_i++){
 
         Vector beta_k;
         beta.MakeColumnVector(c_i,&beta_k);
         phi_tran_y.SetZero(); //clear up for each beta_k
 
-        for(index_t s_j=0;s_j<n;s_j++){
+        for(fl__index_t s_j=0;s_j<n;s_j++){
 
             Vector y_j;
             y_tmp.MakeColumnVector(s_j,&y_j);
@@ -124,12 +124,12 @@ void FSCM::InitTrain(const Dataset& dataset, const Dataset& neighborset, const D
     gamma.Init(q);
 
     //remove cluster effects//
-    for(index_t s_j=0;s_j<n;s_j++){
+    for(fl__index_t s_j=0;s_j<n;s_j++){
 
         Vector y_j;
         y_tmp.MakeColumnVector(s_j,&y_j);
 
-        for(index_t c_i=0;c_i<c;c_i++){
+        for(fl__index_t c_i=0;c_i<c;c_i++){
             
             Vector beta_k;
             beta.MakeColumnVector(c_i,&beta_k);   
@@ -142,7 +142,7 @@ void FSCM::InitTrain(const Dataset& dataset, const Dataset& neighborset, const D
     Matrix y_tran;
     la::TransposeInit(y_tmp,&y_tran);
 
-    for(index_t t_i=0;t_i<m;t_i++){
+    for(fl__index_t t_i=0;t_i<m;t_i++){
     
         Vector y_i;
         y_tran.MakeColumnVector(t_i,&y_i);
@@ -162,7 +162,7 @@ void FSCM::InitTrain(const Dataset& dataset, const Dataset& neighborset, const D
     one.Init(m);
     one.SetAll(1);
     
-    for(index_t s_j=0;s_j<n;s_j++){
+    for(fl__index_t s_j=0;s_j<n;s_j++){
     
         Vector y_j;
         y_tmp.MakeColumnVector(s_j,&y_j);
@@ -179,7 +179,7 @@ void FSCM::InitTrain(const Dataset& dataset, const Dataset& neighborset, const D
 
     double gamma_mean=0;
 
-    for(index_t q_i=0;q_i<q;q_i++){
+    for(fl__index_t q_i=0;q_i<q;q_i++){
     
         gamma_mean+=gamma[q_i]/q; 
     
@@ -197,7 +197,7 @@ void FSCM::InitTrain(const Dataset& dataset, const Dataset& neighborset, const D
     la::Scale(m,&Vgamma); //Vgamma=mPsi'Psi
     //printf("%f\n",Vgamma.get(0,0));
 
-    for(index_t q_i=0;q_i<q;q_i++){
+    for(fl__index_t q_i=0;q_i<q;q_i++){
 
         Vgamma.set(q_i,q_i,Vgamma.get(q_i,q_i)+sigma[0]/sigma[1]); //Vgamma=mPsi'Psi+sigma_e/sigma_s I
 
@@ -219,18 +219,18 @@ void FSCM::InitTrain(const Dataset& dataset, const Dataset& neighborset, const D
 
     //printf("check if the inital bounds bracket the root\n");
     
-    for (index_t s_j=0;s_j<n; s_j++){
+    for (fl__index_t s_j=0;s_j<n; s_j++){
     
         double der_Vj_lb=0,der_Vj_ub=0,Vj_lb=0,Vj_ub=0; //vary with s_j
         Vector n_j;
         n_j.Init(c);
         n_j.SetZero();
 
-        for(index_t c_i=0;c_i<c; c_i++){
+        for(fl__index_t c_i=0;c_i<c; c_i++){
         
-            for(index_t k_i=0;k_i<k;k_i++){
+            for(fl__index_t k_i=0;k_i<k;k_i++){
 
-                index_t s_i=neighbors.get(s_j,k_i);
+                fl__index_t s_i=neighbors.get(s_j,k_i);
                 n_j[c_i]+=pi_y.get(s_i,c_i);    //sum_{i in neighbor_j} pi_ic
                 //if (z[neighbors.get(s_i,k_i)]==c_i) n_eq[c_i]++; 
             } //end of k_i
@@ -244,7 +244,7 @@ void FSCM::InitTrain(const Dataset& dataset, const Dataset& neighborset, const D
         }//end of c_i
 
         //double -log Prob(z_1,...,z_n)=- sum_j log Prob(z_j1,...,z_jc) = - sum_j log (pi_j1^z_j1...pi_jc^z_jc) = - sum_j sum_c E[z_jc|Y_j] log pi_jc
-        for(index_t c_i=0;c_i<c;c_i++){
+        for(fl__index_t c_i=0;c_i<c;c_i++){
             
             neg_log_f_lb += pi_y.get(s_j,c_i)*(der_Vj_lb/Vj_lb-n_j[c_i]); //derivative of -log p(z_jc=1)
             neg_log_f_ub += pi_y.get(s_j,c_i)*(der_Vj_ub/Vj_ub-n_j[c_i]);
@@ -258,18 +258,18 @@ void FSCM::InitTrain(const Dataset& dataset, const Dataset& neighborset, const D
         neg_log_f_lb=0;  
         theta_lb--;
   
-        for (index_t s_j=0;s_j<n; s_j++){
+        for (fl__index_t s_j=0;s_j<n; s_j++){
     
             double der_Vj_lb=0,Vj_lb=0; 
             Vector n_j;
             n_j.Init(c);
             n_j.SetZero();
 
-            for(index_t c_i=0;c_i<c; c_i++){
+            for(fl__index_t c_i=0;c_i<c; c_i++){
         
-                for(index_t k_i=0;k_i<k;k_i++){
+                for(fl__index_t k_i=0;k_i<k;k_i++){
 
-                    index_t s_i=neighbors.get(s_j,k_i);
+                    fl__index_t s_i=neighbors.get(s_j,k_i);
                     n_j[c_i]+=pi_y.get(s_i,c_i);    //sum_{i in neighbor_j} pi_ic
                     //if (z[neighbors.get(s_i,k_i)]==c_i) n_eq[c_i]++; 
                 } //end of k_i
@@ -280,7 +280,7 @@ void FSCM::InitTrain(const Dataset& dataset, const Dataset& neighborset, const D
             }//end of c_i
 
             //double -log Prob(z_1,...,z_n)=- sum_j log Prob(z_j1,...,z_jc) = - sum_j log (pi_j1^z_j1...pi_jc^z_jc) = - sum_j sum_c E[z_jc|Y_j] log pi_jc
-            for(index_t c_i=0;c_i<c;c_i++){
+            for(fl__index_t c_i=0;c_i<c;c_i++){
         
                 neg_log_f_lb += pi_y.get(s_j,c_i)*(der_Vj_lb/Vj_lb-n_j[c_i]); //derivative of -log p(z_jc=1)
             
@@ -295,18 +295,18 @@ void FSCM::InitTrain(const Dataset& dataset, const Dataset& neighborset, const D
         neg_log_f_ub=0;  
         theta_ub++;
 
-        for (index_t s_j=0;s_j<n; s_j++){
+        for (fl__index_t s_j=0;s_j<n; s_j++){
     
             double der_Vj_ub=0,Vj_ub=0; 
             Vector n_j;
             n_j.Init(c);
             n_j.SetZero();
 
-            for(index_t c_i=0;c_i<c; c_i++){
+            for(fl__index_t c_i=0;c_i<c; c_i++){
         
-                for(index_t k_i=0;k_i<k;k_i++){
+                for(fl__index_t k_i=0;k_i<k;k_i++){
 
-                    index_t s_i=neighbors.get(s_j,k_i);
+                    fl__index_t s_i=neighbors.get(s_j,k_i);
                     n_j[c_i]+=pi_y.get(s_i,c_i);    //sum_{i in neighbor_j} pi_ic
                     //if (z[neighbors.get(s_i,k_i)]==c_i) n_eq[c_i]++; 
                 } //end of k_i
@@ -317,7 +317,7 @@ void FSCM::InitTrain(const Dataset& dataset, const Dataset& neighborset, const D
             }//end of c_i
 
             //double -log Prob(z_1,...,z_n)=- sum_j log Prob(z_j1,...,z_jc) = - sum_j log (pi_j1^z_j1...pi_jc^z_jc) = - sum_j sum_c E[z_jc|Y_j] log pi_jc
-            for(index_t c_i=0;c_i<c;c_i++){
+            for(fl__index_t c_i=0;c_i<c;c_i++){
         
                 neg_log_f_ub += pi_y.get(s_j,c_i)*(der_Vj_ub/Vj_ub-n_j[c_i]);
     
@@ -337,18 +337,18 @@ void FSCM::InitTrain(const Dataset& dataset, const Dataset& neighborset, const D
     
         double neg_log_f=0;
 
-        for(index_t s_j=0;s_j<n; s_j++){
+        for(fl__index_t s_j=0;s_j<n; s_j++){
     
             double der_Vj=0,Vj=0; //
             Vector n_j;
             n_j.Init(c);
             n_j.SetZero();
 
-            for(index_t c_i=0;c_i<c; c_i++){
+            for(fl__index_t c_i=0;c_i<c; c_i++){
         
-                for(index_t k_i=0;k_i<k; k_i++){
+                for(fl__index_t k_i=0;k_i<k; k_i++){
 
-                    index_t s_i=neighbors.get(s_j,k_i);
+                    fl__index_t s_i=neighbors.get(s_j,k_i);
                     n_j[c_i]+=pi_y.get(s_i,c_i);    //sum_{i in neighbor_j} pi_ic
                     //if (z[neighbors.get(s_i,k_i)]==c_i) n_eq[c_i]++; 
                 } //end of k_i
@@ -359,7 +359,7 @@ void FSCM::InitTrain(const Dataset& dataset, const Dataset& neighborset, const D
             }//end of c_i
 
             //double -log Prob(z_1,...,z_n)=- sum_j log Prob(z_j1,...,z_jc) = - sum_j log (pi_j1^z_j1...pi_jc^z_jc) = - sum_j sum_c E[z_jc|Y_j] log pi_jc
-            for(index_t c_i=0;c_i<c;c_i++){
+            for(fl__index_t c_i=0;c_i<c;c_i++){
         
                 neg_log_f += pi_y.get(s_j,c_i)*(der_Vj/Vj-n_j[c_i]); //derivative of -log p(z_jc=1)
             
@@ -382,7 +382,7 @@ void FSCM::InitTrain(const Dataset& dataset, const Dataset& neighborset, const D
     fclose(fp1);
 
     //printf("7.2 Compute pi \n");
-    for(index_t s_j=0;s_j<n;s_j++){
+    for(fl__index_t s_j=0;s_j<n;s_j++){
 
         Vector n_j;
         n_j.Init(c);
@@ -390,11 +390,11 @@ void FSCM::InitTrain(const Dataset& dataset, const Dataset& neighborset, const D
         double V_j=0; // the normalizing parameter V_j
 
         //printf("1.1 Compute the normalizing paramter of s_j: sum_k theta*sum_{i in neighbor j} z_ic \n");
-        for(index_t c_i=0;c_i<c;c_i++){
+        for(fl__index_t c_i=0;c_i<c;c_i++){
                 
-            for(index_t k_i=0;k_i<k;k_i++){
+            for(fl__index_t k_i=0;k_i<k;k_i++){
                     
-                index_t s_i=neighbors.get(s_j,k_i); //neighbors of s_j
+                fl__index_t s_i=neighbors.get(s_j,k_i); //neighbors of s_j
                 n_j[c_i]+=pi_y.get(s_i,c_i); //sum over k
                 
             }//end of k_i
@@ -404,7 +404,7 @@ void FSCM::InitTrain(const Dataset& dataset, const Dataset& neighborset, const D
         }//end of c_i
 
         //printf("1.2. Compute Prob(z_jc)\n");      
-        for(index_t c_i=0;c_i<c;c_i++){
+        for(fl__index_t c_i=0;c_i<c;c_i++){
             
             pi.set(s_j,c_i,exp(theta*n_j[c_i])/V_j);
             
@@ -423,11 +423,11 @@ void FSCM::InitTrain(const Dataset& dataset, const Dataset& neighborset, const D
     spatial.MakeColumnVector(0,&temp);
     la::MulOverwrite(psi,gamma, &temp);
 
-    for(index_t s_j=0;s_j<n;s_j++){
+    for(fl__index_t s_j=0;s_j<n;s_j++){
         
-        index_t z_j=0;
+        fl__index_t z_j=0;
     
-        for(index_t c_i=1;c_i<c;c_i++){
+        for(fl__index_t c_i=1;c_i<c;c_i++){
         
             if(pi_y.get(s_j,c_i)>pi_y.get(s_j,z_j)){
             
@@ -445,7 +445,7 @@ void FSCM::InitTrain(const Dataset& dataset, const Dataset& neighborset, const D
     temporal.MakeColumnVector(0,&temp);
     la::MulOverwrite(phi,alpha, &temp);
 
-    for(index_t c_i=0;c_i<c;c_i++){
+    for(fl__index_t c_i=0;c_i<c;c_i++){
     
         Vector beta_k,temporal_k;
         beta.MakeColumnVector(c_i,&beta_k);
@@ -461,13 +461,13 @@ void FSCM::InitTrain(const Dataset& dataset, const Dataset& neighborset, const D
 
 void FSCM::HMRF(Vector& alpha, Matrix& beta, Vector& sigma, Vector& gamma, Matrix& Vgamma, Matrix& pi, Matrix& pi_y, double max_iter_mc){
 
-    index_t n=psi.n_rows(), m=phi.n_rows(), c=beta.n_cols(), q=psi.n_cols();
+    fl__index_t n=psi.n_rows(), m=phi.n_rows(), c=beta.n_cols(), q=psi.n_cols();
 
     //#pragma GCC diagnostic ignored "-Wunused-variable"
-    index_t k = neighbors.n_cols();
-    index_t p = phi.n_cols();
+    fl__index_t k = neighbors.n_cols();
+    fl__index_t p = phi.n_cols();
     
-    //ArrayList<index_t> random_index;
+    //ArrayList<fl__index_t> random_index;
     //math::MakeRandomPermutation(n,&random_index);
 
     pi_y.SetZero(); //f(z_ik=1|y_1,...,y_n)
@@ -481,7 +481,7 @@ void FSCM::HMRF(Vector& alpha, Matrix& beta, Vector& sigma, Vector& gamma, Matri
     one_t.SetAll(1);
     
     //printf("Remove global effects\n");
-    for(index_t s_j=0;s_j<n;s_j++){
+    for(fl__index_t s_j=0;s_j<n;s_j++){
         
         Vector y_j;
         y_tmp.MakeColumnVector(s_j,&y_j);
@@ -493,7 +493,7 @@ void FSCM::HMRF(Vector& alpha, Matrix& beta, Vector& sigma, Vector& gamma, Matri
 	la::CholeskyInit(Vgamma,&H);
 	la::TransposeSquare(&H);
 	
-    for(index_t r=0;r<max_iter_mc;r++){
+    for(fl__index_t r=0;r<max_iter_mc;r++){
 
         //2.1 Generate gamma_r
         Vector ind_norm,gamma_r;
@@ -501,7 +501,7 @@ void FSCM::HMRF(Vector& alpha, Matrix& beta, Vector& sigma, Vector& gamma, Matri
     
         //Generate independent standard normal distributed variables
         //printf("generate independent standard normal distributed variables\n");
-        for(index_t q_i=0;q_i<q;q_i++){ 
+        for(fl__index_t q_i=0;q_i<q;q_i++){
 
             double u=math::Random(); 
             double v=math::Random();
@@ -517,7 +517,7 @@ void FSCM::HMRF(Vector& alpha, Matrix& beta, Vector& sigma, Vector& gamma, Matri
 		pi_y_r.Init(n,c);
 		pi_y_r.SetZero();
               
-        for(index_t s_j=0;s_j<n;s_j++){
+        for(fl__index_t s_j=0;s_j<n;s_j++){
         
             //printf("Remove spatial effect from rth gamma sample\n");
             Vector y_j,psi_j;
@@ -527,7 +527,7 @@ void FSCM::HMRF(Vector& alpha, Matrix& beta, Vector& sigma, Vector& gamma, Matri
             double tau_s=la::Dot(psi_j,gamma_r); 
             la::AddExpert(-tau_s,one_t,&y_j); //y_j-phi*alpha-psi_j*gamma
 
-            for(index_t c_i=0;c_i<c;c_i++){
+            for(fl__index_t c_i=0;c_i<c;c_i++){
 
                 //remove cluster effects
                 Vector beta_k;
@@ -550,17 +550,17 @@ void FSCM::HMRF(Vector& alpha, Matrix& beta, Vector& sigma, Vector& gamma, Matri
 
         //2.3 Compute f(y_1,...,y_n, z_jk=1)
 
-        for(index_t s_j=0;s_j<n;s_j++){
+        for(fl__index_t s_j=0;s_j<n;s_j++){
 
 			double prob_y_r=0;
 			
-            for(index_t c_i=0;c_i<c;c_i++){
+            for(fl__index_t c_i=0;c_i<c;c_i++){
             
                 prob_y_r+=pi_y_r.get(s_j,c_i);                       
                 
             }//end of c_i
 			
-			for(index_t c_i=0;c_i<c;c_i++){
+			for(fl__index_t c_i=0;c_i<c;c_i++){
 			 
 				pi_y.set(s_j,c_i,pi_y.get(s_j,c_i)+pi_y_r.get(s_j,c_i)/prob_y_r);
 			
@@ -574,11 +574,11 @@ void FSCM::HMRF(Vector& alpha, Matrix& beta, Vector& sigma, Vector& gamma, Matri
    la::Scale(1/max_iter_mc,&pi_y);
    
    //apply hard clustering
-   for(index_t s_j=0;s_j<n;s_j++){
+   for(fl__index_t s_j=0;s_j<n;s_j++){
 	
 		double z_j=0;
 		
-		for(index_t c_i=(z_j+1);c_i<c;c_i++){
+		for(fl__index_t c_i=(z_j+1);c_i<c;c_i++){
 		
 			if(pi_y.get(s_j,c_i)>pi_y.get(s_j,z_j)){
 			
@@ -593,7 +593,7 @@ void FSCM::HMRF(Vector& alpha, Matrix& beta, Vector& sigma, Vector& gamma, Matri
 	}
 	
 	pi_y.SetZero();
-    for(index_t s_j=0;s_j<n;s_j++){
+    for(fl__index_t s_j=0;s_j<n;s_j++){
     
         pi_y.set(s_j,z.get(s_j,0),1);
     
@@ -603,14 +603,14 @@ void FSCM::HMRF(Vector& alpha, Matrix& beta, Vector& sigma, Vector& gamma, Matri
 
 void FSCM::RandomEffect(Vector& alpha, Matrix& beta, Matrix& pi_y, Vector& sigma, Vector& gamma, Matrix& Vgamma, double max_iter_mc){
 
-    index_t n=psi.n_rows(), m=phi.n_rows(), c=beta.n_cols(), p=phi.n_cols(), q=psi.n_cols();
+    fl__index_t n=psi.n_rows(), m=phi.n_rows(), c=beta.n_cols(), p=phi.n_cols(), q=psi.n_cols();
 
 
     //printf("Compute Vgamma=Cov(gamma|Y)\n");
 	la::MulTransAOverwrite(psi,psi,&Vgamma);
     la::Scale(m,&Vgamma); //Vgamma=mPsi'Psi
 
-    for(index_t q_i=0;q_i<q;q_i++){
+    for(fl__index_t q_i=0;q_i<q;q_i++){
 
         Vgamma.set(q_i,q_i,Vgamma.get(q_i,q_i)+sigma[0]/sigma[1]); //Vgamma=mPsi'Psi+sigma_e/sigma_s I
 
@@ -624,7 +624,7 @@ void FSCM::RandomEffect(Vector& alpha, Matrix& beta, Matrix& pi_y, Vector& sigma
     y_tmp.Copy(y);
 	
 		
-    for(index_t s_j=0;s_j<n;s_j++){
+    for(fl__index_t s_j=0;s_j<n;s_j++){
 	
 		//printf("Remove global effects\n");
 		Vector y_j, beta_k;
@@ -644,7 +644,7 @@ void FSCM::RandomEffect(Vector& alpha, Matrix& beta, Matrix& pi_y, Vector& sigma
     psi_tran_y.Init(q);
     psi_tran_y.SetZero();
 
-    for(index_t t_i=0;t_i<m;t_i++){
+    for(fl__index_t t_i=0;t_i<m;t_i++){
     
         Vector y_i;
         y_tran.MakeColumnVector(t_i,&y_i);
@@ -660,7 +660,7 @@ void FSCM::RandomEffect(Vector& alpha, Matrix& beta, Matrix& pi_y, Vector& sigma
 
 void FSCM::MStep(Vector& gamma, Matrix& Vgamma, Matrix& pi_y, Vector& alpha, Matrix& beta ,Vector& sigma, Matrix& pi,double max_iter_hmrf){
 
-    index_t n=psi.n_rows(), m=phi.n_rows(), c=beta.n_cols(), p=phi.n_cols(), q=psi.n_cols(), k=neighbors.n_cols(); 
+    fl__index_t n=psi.n_rows(), m=phi.n_rows(), c=beta.n_cols(), p=phi.n_cols(), q=psi.n_cols(), k=neighbors.n_cols();
     
     Matrix phi_tran_phi,phi_tran,psi_tran;
     la::MulTransAInit(phi,phi,&phi_tran_phi); //Phi'Phi
@@ -676,7 +676,7 @@ void FSCM::MStep(Vector& gamma, Matrix& Vgamma, Matrix& pi_y, Vector& alpha, Mat
     Matrix y_tmp;
     y_tmp.Copy(y);
 
-    for(index_t s_j=0;s_j<n;s_j++){
+    for(fl__index_t s_j=0;s_j<n;s_j++){
         
         Vector y_j,psi_j,effect;
         y_tmp.MakeColumnVector(s_j,&y_j);
@@ -713,9 +713,9 @@ void FSCM::MStep(Vector& gamma, Matrix& Vgamma, Matrix& pi_y, Vector& alpha, Mat
 
     double sum_nc_inv=0;
 
-    for(index_t c_i=0;c_i<c;c_i++){
+    for(fl__index_t c_i=0;c_i<c;c_i++){
         
-        for(index_t s_j=0;s_j<n;s_j++){
+        for(fl__index_t s_j=0;s_j<n;s_j++){
                 
             n_c[c_i]+=pi_y.get(s_j,c_i);
             
@@ -730,14 +730,14 @@ void FSCM::MStep(Vector& gamma, Matrix& Vgamma, Matrix& pi_y, Vector& alpha, Mat
     lambda.Init(p);
     lambda.SetZero();
 
-    for(index_t s_j=0;s_j<n;s_j++){
+    for(fl__index_t s_j=0;s_j<n;s_j++){
 
         //remove global effects//
         Vector y_j;
         y_tmp.MakeColumnVector(s_j,&y_j);
         la::MulExpert(-1,phi,alpha,1,&y_j); //y_j-phi*alpha-psi_j*gamma
 
-        for(index_t c_i=0;c_i<c;c_i++){
+        for(fl__index_t c_i=0;c_i<c;c_i++){
 		
 			//sum_j sum_k z_jk/n_k*phi'(y_j-phi*alpha-psi_j*gamma)
             la::MulExpert(pi_y.get(s_j,c_i)/n_c[c_i],phi_tran,y_j,1,&lambda); //Caution! if n_c[c_i]=0, it will produce NA!
@@ -749,13 +749,13 @@ void FSCM::MStep(Vector& gamma, Matrix& Vgamma, Matrix& pi_y, Vector& alpha, Mat
     la::Scale(1/sum_nc_inv,&lambda);
 
     //printf("2.2 Compute beta_k\n");
-    for(index_t c_i=0;c_i<c;c_i++){
+    for(fl__index_t c_i=0;c_i<c;c_i++){
 
         Vector beta_k;
         beta.MakeColumnVector(c_i,&beta_k);
         phi_tran_y.SetZero(); //clear up for each beta_k
 
-        for(index_t s_j=0;s_j<n;s_j++){
+        for(fl__index_t s_j=0;s_j<n;s_j++){
 
             Vector y_j;
             y_tmp.MakeColumnVector(s_j,&y_j);
@@ -772,7 +772,7 @@ void FSCM::MStep(Vector& gamma, Matrix& Vgamma, Matrix& pi_y, Vector& alpha, Mat
     //printf("3. Update sigma_epsilon\n");
     sigma[0]=0;
 
-    for(index_t s_j=0; s_j<n; s_j++){
+    for(fl__index_t s_j=0; s_j<n; s_j++){
 
         Vector y_j,beta_k;
         y_tmp.MakeColumnVector(s_j,&y_j);
@@ -789,7 +789,7 @@ void FSCM::MStep(Vector& gamma, Matrix& Vgamma, Matrix& pi_y, Vector& alpha, Mat
     la::MulInit(psi,Vgamma,&temp);
     la::MulInit(temp,psi_tran,&psi_Vgamma_psi);
 
-    for(index_t s_j=0;s_j<n;s_j++){
+    for(fl__index_t s_j=0;s_j<n;s_j++){
     
         sigma[0]+=psi_Vgamma_psi.get(s_j,s_j)/n;
 
@@ -804,7 +804,7 @@ void FSCM::MStep(Vector& gamma, Matrix& Vgamma, Matrix& pi_y, Vector& alpha, Mat
 	
 	if(verbose) Rprintf("sigma_s is %f \n",sigma[1]);
 
-    for(index_t q_i=0;q_i<q;q_i++){
+    for(fl__index_t q_i=0;q_i<q;q_i++){
     
         sigma[1]+=Vgamma.get(q_i,q_i)/q;
 
@@ -819,18 +819,18 @@ void FSCM::MStep(Vector& gamma, Matrix& Vgamma, Matrix& pi_y, Vector& alpha, Mat
 
     //printf("5.1 Check if the inital bounds bracket the root\n");
     
-    for (index_t s_j=0;s_j<n; s_j++){
+    for (fl__index_t s_j=0;s_j<n; s_j++){
     
         double der_Vj_lb=0,der_Vj_ub=0,Vj_lb=0,Vj_ub=0; //vary with s_j
         Vector n_j;
         n_j.Init(c);
         n_j.SetZero();
 
-        for(index_t c_i=0;c_i<c; c_i++){
+        for(fl__index_t c_i=0;c_i<c; c_i++){
         
-            for(index_t k_i=0;k_i<k;k_i++){
+            for(fl__index_t k_i=0;k_i<k;k_i++){
 
-                index_t s_i=neighbors.get(s_j,k_i);
+                fl__index_t s_i=neighbors.get(s_j,k_i);
                 n_j[c_i]+=pi_y.get(s_i,c_i);    //sum_{i in neighbor_j} pi_ic
                 //if (z[neighbors.get(s_i,k_i)]==c_i) n_eq[c_i]++; 
             } //end of k_i
@@ -844,7 +844,7 @@ void FSCM::MStep(Vector& gamma, Matrix& Vgamma, Matrix& pi_y, Vector& alpha, Mat
         }//end of c_i
 
         //double -log Prob(z_1,...,z_n)=- sum_j log Prob(z_j1,...,z_jc) = - sum_j log (pi_j1^z_j1...pi_jc^z_jc) = - sum_j sum_c E[z_jc|Y_j] log pi_jc
-        for(index_t c_i=0;c_i<c;c_i++){
+        for(fl__index_t c_i=0;c_i<c;c_i++){
             
             neg_log_f_lb += pi_y.get(s_j,c_i)*(der_Vj_lb/Vj_lb-n_j[c_i]); //derivative of -log p(z_jc=1)
             neg_log_f_ub += pi_y.get(s_j,c_i)*(der_Vj_ub/Vj_ub-n_j[c_i]);
@@ -858,18 +858,18 @@ void FSCM::MStep(Vector& gamma, Matrix& Vgamma, Matrix& pi_y, Vector& alpha, Mat
         neg_log_f_lb=0;  
         theta_lb--;
   
-        for (index_t s_j=0;s_j<n; s_j++){
+        for (fl__index_t s_j=0;s_j<n; s_j++){
     
             double der_Vj_lb=0,Vj_lb=0; 
             Vector n_j;
             n_j.Init(c);
             n_j.SetZero();
 
-            for(index_t c_i=0;c_i<c; c_i++){
+            for(fl__index_t c_i=0;c_i<c; c_i++){
         
-                for(index_t k_i=0;k_i<k;k_i++){
+                for(fl__index_t k_i=0;k_i<k;k_i++){
 
-                    index_t s_i=neighbors.get(s_j,k_i);
+                    fl__index_t s_i=neighbors.get(s_j,k_i);
                     n_j[c_i]+=pi_y.get(s_i,c_i);    //sum_{i in neighbor_j} pi_ic
                     //if (z[neighbors.get(s_i,k_i)]==c_i) n_eq[c_i]++; 
                 } //end of k_i
@@ -880,7 +880,7 @@ void FSCM::MStep(Vector& gamma, Matrix& Vgamma, Matrix& pi_y, Vector& alpha, Mat
             }//end of c_i
 
             //double -log Prob(z_1,...,z_n)=- sum_j log Prob(z_j1,...,z_jc) = - sum_j log (pi_j1^z_j1...pi_jc^z_jc) = - sum_j sum_c E[z_jc|Y_j] log pi_jc
-            for(index_t c_i=0;c_i<c;c_i++){
+            for(fl__index_t c_i=0;c_i<c;c_i++){
         
                 neg_log_f_lb += pi_y.get(s_j,c_i)*(der_Vj_lb/Vj_lb-n_j[c_i]); //derivative of -log p(z_jc=1)
             
@@ -895,18 +895,18 @@ void FSCM::MStep(Vector& gamma, Matrix& Vgamma, Matrix& pi_y, Vector& alpha, Mat
         neg_log_f_ub=0;  
         theta_ub++;
 
-        for (index_t s_j=0;s_j<n; s_j++){
+        for (fl__index_t s_j=0;s_j<n; s_j++){
     
             double der_Vj_ub=0,Vj_ub=0; 
             Vector n_j;
             n_j.Init(c);
             n_j.SetZero();
 
-            for(index_t c_i=0;c_i<c; c_i++){
+            for(fl__index_t c_i=0;c_i<c; c_i++){
         
-                for(index_t k_i=0;k_i<k;k_i++){
+                for(fl__index_t k_i=0;k_i<k;k_i++){
 
-                    index_t s_i=neighbors.get(s_j,k_i);
+                    fl__index_t s_i=neighbors.get(s_j,k_i);
                     n_j[c_i]+=pi_y.get(s_i,c_i);    //sum_{i in neighbor_j} pi_ic
                     //if (z[neighbors.get(s_i,k_i)]==c_i) n_eq[c_i]++; 
                 } //end of k_i
@@ -917,7 +917,7 @@ void FSCM::MStep(Vector& gamma, Matrix& Vgamma, Matrix& pi_y, Vector& alpha, Mat
             }//end of c_i
 
             //double -log Prob(z_1,...,z_n)=- sum_j log Prob(z_j1,...,z_jc) = - sum_j log (pi_j1^z_j1...pi_jc^z_jc) = - sum_j sum_c E[z_jc|Y_j] log pi_jc
-            for(index_t c_i=0;c_i<c;c_i++){
+            for(fl__index_t c_i=0;c_i<c;c_i++){
         
                 neg_log_f_ub += pi_y.get(s_j,c_i)*(der_Vj_ub/Vj_ub-n_j[c_i]);
     
@@ -937,18 +937,18 @@ void FSCM::MStep(Vector& gamma, Matrix& Vgamma, Matrix& pi_y, Vector& alpha, Mat
     
         double neg_log_f=0;
 
-        for(index_t s_j=0;s_j<n; s_j++){
+        for(fl__index_t s_j=0;s_j<n; s_j++){
     
             double der_Vj=0,Vj=0; //
             Vector n_j;
             n_j.Init(c);
             n_j.SetZero();
 
-            for(index_t c_i=0;c_i<c; c_i++){
+            for(fl__index_t c_i=0;c_i<c; c_i++){
         
-                for(index_t k_i=0;k_i<k; k_i++){
+                for(fl__index_t k_i=0;k_i<k; k_i++){
 
-                    index_t s_i=neighbors.get(s_j,k_i);
+                    fl__index_t s_i=neighbors.get(s_j,k_i);
                     n_j[c_i]+=pi_y.get(s_i,c_i);    //sum_{i in neighbor_j} pi_ic
                     //if (z[neighbors.get(s_i,k_i)]==c_i) n_eq[c_i]++; 
                 } //end of k_i
@@ -959,7 +959,7 @@ void FSCM::MStep(Vector& gamma, Matrix& Vgamma, Matrix& pi_y, Vector& alpha, Mat
             }//end of c_i
 
             //double -log Prob(z_1,...,z_n)=- sum_j log Prob(z_j1,...,z_jc) = - sum_j log (pi_j1^z_j1...pi_jc^z_jc) = - sum_j sum_c E[z_jc|Y_j] log pi_jc
-            for(index_t c_i=0;c_i<c;c_i++){
+            for(fl__index_t c_i=0;c_i<c;c_i++){
         
                 neg_log_f += pi_y.get(s_j,c_i)*(der_Vj/Vj-n_j[c_i]); //derivative of -log p(z_jc=1)
             
@@ -979,7 +979,7 @@ void FSCM::MStep(Vector& gamma, Matrix& Vgamma, Matrix& pi_y, Vector& alpha, Mat
     if(verbose) Rprintf("5.3 Final theta is %f\n",theta);
 
     //printf("6. Compute p(z_j)\n");
-    for(index_t s_j=0;s_j<n;s_j++){
+    for(fl__index_t s_j=0;s_j<n;s_j++){
 
         Vector n_j;
         n_j.Init(c);
@@ -987,11 +987,11 @@ void FSCM::MStep(Vector& gamma, Matrix& Vgamma, Matrix& pi_y, Vector& alpha, Mat
         double V_j=0; // the normalizing parameter V_j
 
         //printf("1.1 Compute the normalizing paramter of s_j: sum_k theta*sum_{i in neighbor j} z_ic \n");
-        for(index_t c_i=0;c_i<c;c_i++){
+        for(fl__index_t c_i=0;c_i<c;c_i++){
                 
-            for(index_t k_i=0;k_i<k;k_i++){
+            for(fl__index_t k_i=0;k_i<k;k_i++){
                     
-                index_t s_i=neighbors.get(s_j,k_i); //neighbors of s_j
+                fl__index_t s_i=neighbors.get(s_j,k_i); //neighbors of s_j
                 n_j[c_i]+=pi_y.get(s_i,c_i); //sum over k
                 
             }//end of k_i
@@ -1001,7 +1001,7 @@ void FSCM::MStep(Vector& gamma, Matrix& Vgamma, Matrix& pi_y, Vector& alpha, Mat
         }//end of c_i
 
         //printf("1.2. Compute Prob(z_jc)\n");      
-        for(index_t c_i=0;c_i<c;c_i++){
+        for(fl__index_t c_i=0;c_i<c;c_i++){
             
             pi.set(s_j,c_i,exp(theta*n_j[c_i])/V_j);
             
@@ -1014,7 +1014,7 @@ void FSCM::MStep(Vector& gamma, Matrix& Vgamma, Matrix& pi_y, Vector& alpha, Mat
 
 void FSCM::Results(Vector& alpha, Matrix& beta, Vector& gamma, Matrix& pi_y){
 
-  index_t n=psi.n_rows(),m=phi.n_rows(),c=beta.n_cols();
+  fl__index_t n=psi.n_rows(),m=phi.n_rows(),c=beta.n_cols();
 
     Matrix spatial;
     Matrix temporal;
@@ -1031,11 +1031,11 @@ void FSCM::Results(Vector& alpha, Matrix& beta, Vector& gamma, Matrix& pi_y){
     spatial.MakeColumnVector(0,&temp);
     la::MulOverwrite(psi,gamma, &temp);
 
-    for(index_t s_j=0;s_j<n;s_j++){
+    for(fl__index_t s_j=0;s_j<n;s_j++){
         
-        index_t z_j=0;
+        fl__index_t z_j=0;
     
-        for(index_t c_i=1;c_i<c;c_i++){
+        for(fl__index_t c_i=1;c_i<c;c_i++){
         
             if(pi_y.get(s_j,c_i)>pi_y.get(s_j,z_j)){
             
@@ -1053,7 +1053,7 @@ void FSCM::Results(Vector& alpha, Matrix& beta, Vector& gamma, Matrix& pi_y){
     temporal.MakeColumnVector(0,&temp);
     la::MulOverwrite(phi,alpha, &temp);
     
-    for(index_t c_i=0;c_i<c;c_i++){
+    for(fl__index_t c_i=0;c_i<c;c_i++){
     
         Vector beta_k,temporal_k;
         beta.MakeColumnVector(c_i,&beta_k);
@@ -1065,14 +1065,14 @@ void FSCM::Results(Vector& alpha, Matrix& beta, Vector& gamma, Matrix& pi_y){
     data::Save("temporal.csv",temporal);
     data::Save("beta.csv",beta);
     
-    GenVector<index_t> index;
+    GenVector<fl__index_t> index;
     index.Init(gamma.length());
-    for(index_t i=0; i<gamma.length();i++)
+    for(fl__index_t i=0; i<gamma.length();i++)
       index[i]=i;
     data::Save("gamma.csv", index, gamma);
     
     index.Init(alpha.length());
-    for(index_t i=0; i<alpha.length();i++)
+    for(fl__index_t i=0; i<alpha.length();i++)
       index[i]=i;
     data::Save("alpha.csv", index, alpha);
    

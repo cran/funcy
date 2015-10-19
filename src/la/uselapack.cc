@@ -77,8 +77,8 @@ namespace la {
 
 success_t la::PLUInit(const Matrix &A,
     ArrayList<f77_integer> *pivots, Matrix *L, Matrix *U) {
-  index_t m = A.n_rows();
-  index_t n = A.n_cols();
+  fl__index_t m = A.n_rows();
+  fl__index_t n = A.n_cols();
   success_t success;
 
   if (m > n) {
@@ -91,7 +91,7 @@ success_t la::PLUInit(const Matrix &A,
       return success;
     }
 
-    for (index_t j = 0; j < n; j++) {
+    for (fl__index_t j = 0; j < n; j++) {
       double *lcol = L->GetColumnPtr(j);
       double *ucol = U->GetColumnPtr(j);
 
@@ -110,7 +110,7 @@ success_t la::PLUInit(const Matrix &A,
       return success;
     }
 
-    for (index_t j = 0; j < m; j++) {
+    for (fl__index_t j = 0; j < m; j++) {
       double *lcol = L->GetColumnPtr(j);
       double *ucol = U->GetColumnPtr(j);
 
@@ -174,7 +174,7 @@ long double la::Determinant(const Matrix &A) {
 
   long double det = 1.0;
 
-  for (index_t i = 0; i < n; i++) {
+  for (fl__index_t i = 0; i < n; i++) {
     if (pivots[i] != i+1) {
       // pivoting occured (note FORTRAN has 1-based indexing)
       det = -det;
@@ -198,7 +198,7 @@ double la::DeterminantLog(const Matrix &A, int *sign_out) {
   double log_det = 0.0;
   int sign_det = 1;
 
-  for (index_t i = 0; i < n; i++) {
+  for (fl__index_t i = 0; i < n; i++) {
     if (pivots[i] != i+1) {
       // pivoting occured (note FORTRAN has one-based indexing)
       sign_det = -sign_det;
@@ -254,7 +254,7 @@ success_t la::QRExpert(Matrix *A_in_Q_out, Matrix *R) {
   }
 
   // Extract R
-  for (index_t j = 0; j < n; j++) {
+  for (fl__index_t j = 0; j < n; j++) {
     mem::Copy(R->GetColumnPtr(j), A_in_Q_out->GetColumnPtr(j),
         std::min(j + 1, k));
   }
@@ -296,10 +296,10 @@ success_t la::QRExpert(Matrix *A_in_Q_out, Matrix *R) {
   }
 
   // Extract R
-  for (index_t j = 0; j < n; j++) {
+  for (fl__index_t j = 0; j < n; j++) {
     double *r_col = R->GetColumnPtr(j);
     double *q_col = A_in_Q_out->GetColumnPtr(j);
-    int i = std::min(j + 1, index_t(k));
+    int i = std::min(j + 1, fl__index_t(k));
     mem::Copy(r_col, q_col, i);
     mem::Zero(r_col + i, k - i);
   }
@@ -313,7 +313,7 @@ success_t la::QRExpert(Matrix *A_in_Q_out, Matrix *R) {
 }
 
 success_t la::QRInit(const Matrix &A, Matrix *Q, Matrix *R) {
-  index_t k = std::min(A.n_rows(), A.n_cols());
+  fl__index_t k = std::min(A.n_rows(), A.n_cols());
   Q->Copy(A);
   R->Init(k, A.n_cols());
   success_t success = QRExpert(Q, R);
@@ -387,7 +387,7 @@ success_t la::EigenvaluesInit(const Matrix &A, Vector *w) {
     return success;
   }
 
-  for (index_t j = 0; j < n; j++) {
+  for (fl__index_t j = 0; j < n; j++) {
     if ((w_imag[j] != 0.0)) {
       (*w)[j] = DBL_NAN;
     }
@@ -400,7 +400,7 @@ success_t la::EigenvaluesInit(const Matrix &A, Vector *w) {
 success_t la::EigenvectorsInit(const Matrix &A,
     Vector *w_real, Vector *w_imag, Matrix *V_real, Matrix *V_imag) {
   DEBUG_MATSQUARE(A);
-  index_t n = A.n_rows();
+  fl__index_t n = A.n_rows();
   w_real->Init(n);
   w_imag->Init(n);
   V_real->Init(n, n);
@@ -416,14 +416,14 @@ success_t la::EigenvectorsInit(const Matrix &A,
   }
 
   V_imag->SetZero();
-  for (index_t j = 0; j < n; j++) {
+  for (fl__index_t j = 0; j < n; j++) {
     if ((w_imag->get(j) != 0.0)) {
       double *r_cur = V_real->GetColumnPtr(j);
       double *r_next = V_real->GetColumnPtr(j+1);
       double *i_cur = V_imag->GetColumnPtr(j);
       double *i_next = V_imag->GetColumnPtr(j+1);
 
-      for (index_t i = 0; i < n; i++) {
+      for (fl__index_t i = 0; i < n; i++) {
         i_next[i] = -(i_cur[i] = r_next[i]);
         r_next[i] = r_cur[i];
       }
@@ -437,7 +437,7 @@ success_t la::EigenvectorsInit(const Matrix &A,
 
 success_t la::EigenvectorsInit(const Matrix &A, Vector *w, Matrix *V) {
   DEBUG_MATSQUARE(A);
-  index_t n = A.n_rows();
+  fl__index_t n = A.n_rows();
   w->Init(n);
   //double w_imag[n];
   double *w_imag = new double[n];
@@ -452,7 +452,7 @@ success_t la::EigenvectorsInit(const Matrix &A, Vector *w, Matrix *V) {
     return success;
   }
 
-  for (index_t j = 0; j < n; j++) {
+  for (fl__index_t j = 0; j < n; j++) {
     if ((w_imag[j] != 0.0)) {
       (*w)[j] = DBL_NAN;
     }

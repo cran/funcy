@@ -71,7 +71,7 @@ const String& String::InitSprintf(const char *format, ...) {
   return *this;
 }
 
-index_t String::FindAny(const char *char_set, index_t skip_initial) const {
+fl__index_t String::FindAny(const char *char_set, fl__index_t skip_initial) const {
   const char *pos = begin() + skip_initial;
   
   DEBUG_BOUNDS(skip_initial, length() + 1);
@@ -87,10 +87,10 @@ index_t String::FindAny(const char *char_set, index_t skip_initial) const {
   }
 }
 
-index_t String::Split(index_t start_index,
+fl__index_t String::Split(fl__index_t start_index,
     const char *delimeters,
     const char *donechars,
-    index_t max_portions,
+    fl__index_t max_portions,
     ArrayList<String> *result) const {
   const char *pos = begin() + start_index;
   bool done = false;

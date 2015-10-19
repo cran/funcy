@@ -75,8 +75,8 @@ class ArrayList {
 
  private:
   Elem *ptr_;    // the stored or aliased array
-  index_t size_; // number of active objects
-  index_t cap_;  // allocated size of the array; -1 if alias
+  fl__index_t size_; // number of active objects
+  fl__index_t cap_;  // allocated size of the array; -1 if alias
 
 //#pragma GCC diagnostic ignored "-Wunused-variable"
   OBJECT_TRAVERSAL_DEPRECATED_COPIES(ArrayList) {
@@ -108,7 +108,7 @@ class ArrayList {
 
  private:
   /* Allocates more space; unlikely, so not inlined. */
-  void IncreaseCap_(index_t cap);
+  void IncreaseCap_(fl__index_t cap);
 
   /* Brings the ArrayList to a default empty state. */
   void Reset_() {
@@ -138,14 +138,14 @@ class ArrayList {
    *
    * @see Init, InitCopy, InitRepeat
    */
-  Elem *InitRaw(index_t size, index_t cap) {
+  Elem *InitRaw(fl__index_t size, fl__index_t cap) {
     //ARRAYLIST__DEBUG_INIT_OK(this, size, cap);
     ptr_ = mem::Alloc<Elem>(size);
     size_ = size;
     cap_ = cap;
     return ptr_;
   }
-  Elem *InitRaw(index_t size) {
+  Elem *InitRaw(fl__index_t size) {
     return InitRaw(size, size);
   }
 
@@ -168,11 +168,11 @@ class ArrayList {
    *
    * @see InitCopy, InitRepeat, InitRaw
    */
-  void Init(index_t size, index_t cap) {
+  void Init(fl__index_t size, fl__index_t cap) {
     //ARRAYLIST__DEBUG_INIT_OK(this, size, cap);
     ot::Construct(InitRaw(size, cap), size);
   }
-  void Init(index_t size) {
+  void Init(fl__index_t size) {
     Init(size, size);
   }
 
@@ -187,11 +187,11 @@ class ArrayList {
    *
    * @see Init, InitCopy, InitRaw
    */
-  void InitRepeat(const Elem &elem, index_t size, index_t cap) {
+  void InitRepeat(const Elem &elem, fl__index_t size, fl__index_t cap) {
     //ARRAYLIST__DEBUG_INIT_OK(this, size, cap);
     ot::RepeatConstruct(InitRaw(size, cap), elem, size);
   }
-  void InitRepeat(const Elem &elem, index_t size) {
+  void InitRepeat(const Elem &elem, fl__index_t size) {
     InitRepeat(elem, size, size);
   }
 
@@ -206,11 +206,11 @@ class ArrayList {
    *
    * @see Init, InitRepeat, InitRaw, InitAlias, InitSteal
    */
-  void InitCopy(const Elem *src, index_t size, index_t cap) {
+  void InitCopy(const Elem *src, fl__index_t size, fl__index_t cap) {
     //ARRAYLIST__DEBUG_INIT_OK(this, size, cap);
     ot::CopyConstruct(InitRaw(size, cap), src, size);
   }
-  void InitCopy(const Elem *src, index_t size) {
+  void InitCopy(const Elem *src, fl__index_t size) {
     InitCopy(src, size, size);
   }
 
@@ -223,7 +223,7 @@ class ArrayList {
    *
    * @see Init, InitSubCopy
    */
-  void InitCopy(const ArrayList &src, index_t cap) {
+  void InitCopy(const ArrayList &src, fl__index_t cap) {
     //ARRAYLIST__DEBUG_INIT_OK(this, src.size(), cap);
     InitCopy(src.begin(), src.size(), cap);
   }
@@ -240,8 +240,8 @@ class ArrayList {
    *
    * @see Init, InitCopy, InitSubAlias
    */
-  void InitSubCopy(const ArrayList &src, index_t pos, index_t size,
-		   index_t cap) {
+  void InitSubCopy(const ArrayList &src, fl__index_t pos, fl__index_t size,
+		   fl__index_t cap) {
     //ARRAYLIST__DEBUG_INIT_OK(this, size, cap);
     //DEBUG_BOUNDS_INCLUSIVE(pos, src.size());
     //DEBUG_BOUNDS_INCLUSIVE(size, src.size() - pos);
@@ -249,7 +249,7 @@ class ArrayList {
       printf("InitSubCopy %d\n", __LINE__);
       abort();
   }
-  void InitSubCopy(const ArrayList &src, index_t pos, index_t size) {
+  void InitSubCopy(const ArrayList &src, fl__index_t pos, fl__index_t size) {
     InitSubCopy(src, pos, size, size);
   }
 
@@ -266,7 +266,7 @@ class ArrayList {
    *
    * @see Init, InitCopy, InitSubAlias
    */
-  void InitAlias(Elem *ptr, index_t size) {
+  void InitAlias(Elem *ptr, fl__index_t size) {
     //DEBUG_INIT_OK(this);
     ptr_ = ptr;
     size_ = size;
@@ -283,7 +283,7 @@ class ArrayList {
    *
    * @see Init, InitAlias, InitSubCopy
    */
-  void InitSubAlias(const ArrayList &src, index_t pos, index_t size) {
+  void InitSubAlias(const ArrayList &src, fl__index_t pos, fl__index_t size) {
     //DEBUG_INIT_OK(this);
     //DEBUG_BOUNDS_INCLUSIVE(pos, src.size());
     //DEBUG_BOUNDS_INCLUSIVE(size, src.size() - pos);
@@ -307,13 +307,13 @@ class ArrayList {
    *
    * @see Init, InitCopy, InitAlias
    */
-  void InitSteal(Elem *ptr, index_t size, index_t cap) {
+  void InitSteal(Elem *ptr, fl__index_t size, fl__index_t cap) {
     //ARRAYLIST__DEBUG_INIT_OK(this, size, cap);
     ptr_ = ptr;
     size_ = size;
     cap_ = cap;
   }
-  void InitSteal(Elem *ptr, index_t size) {
+  void InitSteal(Elem *ptr, fl__index_t size) {
     InitSteal(ptr, size, size);
   }
 
@@ -368,7 +368,7 @@ class ArrayList {
    *
    * @see ShrinkTo, Resize, Reserve
    */
-  void GrowTo(index_t size) {
+  void GrowTo(fl__index_t size) {
     //DEBUG_MODIFY_OK(this);
     //DEBUG_ASSERT(size >= size_);
     if ((size > cap_)) {
@@ -390,7 +390,7 @@ class ArrayList {
    *
    * @see GrowTo, Resize, Reserve
    */
-  void ShrinkTo(index_t size) {
+  void ShrinkTo(fl__index_t size) {
     //DEBUG_MODIFY_OK(this);
     //DEBUG_BOUNDS_INCLUSIVE(size, size_);
     ot::Destruct(ptr_ + size, size_ - size);
@@ -410,7 +410,7 @@ class ArrayList {
    *
    * @see GrowTo, ShrinkTo, Reserve, Trim, Clear
    */
-  void Resize(index_t size) {
+  void Resize(fl__index_t size) {
     //DEBUG_MODIFY_OK(this);
     //DEBUG_ASSERT(size >= 0);
     if ((size > size_)) {
@@ -433,7 +433,7 @@ class ArrayList {
    *
    * @see Resize, GrowTo, Reserve
    */
-  void SizeAtLeast(index_t size) {
+  void SizeAtLeast(fl__index_t size) {
     //DEBUG_MODIFY_OK(this);
     //DEBUG_ASSERT(size >= 0);
     if ((size > size_)) {
@@ -449,7 +449,7 @@ class ArrayList {
    *
    * @see Resize, ShrinkTo, Trim
    */
-  void SizeAtMost(index_t size) {
+  void SizeAtMost(fl__index_t size) {
     //DEBUG_MODIFY_OK(this);
     //DEBUG_ASSERT(size >= 0);
     if ((size < size_)) {
@@ -474,7 +474,7 @@ class ArrayList {
    *
    * @see Trim, Resize, Clear
    */
-  void Reserve(index_t size) {
+  void Reserve(fl__index_t size) {
     //DEBUG_MODIFY_OK(this);
     //DEBUG_ASSERT(size >= 0);
     if ((size > cap_)) {
@@ -541,7 +541,7 @@ class ArrayList {
    *
    * @see PushBack, PushBackCopy, AppendCopy, PopBackRaw, InsertRaw
    */
-  Elem *PushBackRaw(index_t inc = 1) {
+  Elem *PushBackRaw(fl__index_t inc = 1) {
     //ARRAYLIST__DEBUG_PUSH_BACK_OK(this, inc);
 
     if ((size_ + inc > cap_)) {
@@ -569,7 +569,7 @@ class ArrayList {
    * @see PushBackCopy, AppendCopy, PushBackRaw, PopBack, Insert,
    *      GrowTo
    */
-  void PushBack(index_t inc) {
+  void PushBack(fl__index_t inc) {
     //ARRAYLIST__DEBUG_PUSH_BACK_OK(this, inc);
     ot::Construct(PushBackRaw(inc), inc);
   }
@@ -609,7 +609,7 @@ class ArrayList {
    *
    * @see PushBackCopy, SegmentInit, InfixCopy
    */
-  void AppendCopy(const Elem *src, index_t size) {
+  void AppendCopy(const Elem *src, fl__index_t size) {
     //ARRAYLIST__DEBUG_PUSH_BACK_OK(this, size);
     ot::CopyConstruct(PushBackRaw(size), src, size);
   }
@@ -670,7 +670,7 @@ class ArrayList {
    *
    * @see PopBack, PopBackInit, SegmentInit, PushBackRaw, RemoveRaw
    */
-  void PopBackRaw(index_t dec = 1) {
+  void PopBackRaw(fl__index_t dec = 1) {
     //ARRAYLIST__DEBUG_POP_BACK_OK(this, dec);
     size_ -= dec;
   }
@@ -686,7 +686,7 @@ class ArrayList {
    * @see PopBackInit, SegmentInit, PopBackRaw, PushBack, Remove,
    *      ShrinkTo
    */
-  void PopBack(index_t dec = 1) {
+  void PopBack(fl__index_t dec = 1) {
     //ARRAYLIST__DEBUG_POP_BACK_OK(this, dec);
     ot::Destruct(ptr_ + size_ - dec, dec);
     PopBackRaw(dec);
@@ -731,7 +731,7 @@ class ArrayList {
    *
    * @see PopBackInit, AppendCopy, RemoveInit
    */
-  void SegmentInit(index_t size, Elem *dest) {
+  void SegmentInit(fl__index_t size, Elem *dest) {
     //ARRAYLIST__DEBUG_POP_BACK_OK(this, size);
     mem::Copy(dest, ptr_ + size_ - size, size);
     PopBackRaw(size);
@@ -746,7 +746,7 @@ class ArrayList {
    *
    * @see PopBackInit, SegmentAppend, AppendCopy, ExtractInit
    */
-  void SegmentInit(index_t size, ArrayList *dest);
+  void SegmentInit(fl__index_t size, ArrayList *dest);
 
   /**
    * Moves multiple elements from the end of an ArrayList to the end
@@ -757,7 +757,7 @@ class ArrayList {
    *
    * @see PopBackInit, SegmentInit, AppendCopy, ExtractAppend
    */
-  void SegmentAppend(index_t size, ArrayList *dest);
+  void SegmentAppend(fl__index_t size, ArrayList *dest);
 
 
 
@@ -783,7 +783,7 @@ class ArrayList {
    *
    * @see Insert, InsertCopy, InfixCopy, RemoveRaw, PushBackRaw
    */
-  Elem *InsertRaw(index_t pos, index_t inc = 1) {
+  Elem *InsertRaw(fl__index_t pos, fl__index_t inc = 1) {
     //ARRAYLIST__DEBUG_INSERT_OK(this, pos, inc);
 
     if ((size_ + inc > cap_)) {
@@ -809,11 +809,11 @@ class ArrayList {
    *
    * @see InsertCopy, InfixCopy, InsertRaw, Remove, PushBack
    */
-  void Insert(index_t pos, index_t inc) {
+  void Insert(fl__index_t pos, fl__index_t inc) {
     //ARRAYLIST__DEBUG_INSERT_OK(this, pos, inc);
     ot::Construct(InsertRaw(pos, inc), inc);
   }
-  Elem &Insert(index_t pos) {
+  Elem &Insert(fl__index_t pos) {
     //DEBUG_MODIFY_OK(this);
     //DEBUG_BOUNDS_INCLUSIVE(pos, size_);
     return *ot::Construct(InsertRaw(pos));
@@ -832,7 +832,7 @@ class ArrayList {
    *
    * @see Insert, InfixCopy, RemoveInit, PushBackCopy
    */
-  Elem &InsertCopy(index_t pos, const Elem &src) {
+  Elem &InsertCopy(fl__index_t pos, const Elem &src) {
     //DEBUG_MODIFY_OK(this);
     //DEBUG_BOUNDS_INCLUSIVE(pos, size_);
     return *ot::CopyConstruct(InsertRaw(pos), &src);
@@ -853,7 +853,7 @@ class ArrayList {
    *
    * @see InsertCopy, ExtractInit, AppendCopy
    */
-  void InfixCopy(index_t pos, const Elem *src, index_t size) {
+  void InfixCopy(fl__index_t pos, const Elem *src, fl__index_t size) {
     //ARRAYLIST__DEBUG_INSERT_OK(this, pos, size);
     ot::CopyConstruct(InsertRaw(pos, size), src, size);
   }
@@ -872,7 +872,7 @@ class ArrayList {
    *
    * @see InsertCopy, InfixSteal, ExtractInit, AppendCopy
    */
-  void InfixCopy(index_t pos, const ArrayList &src) {
+  void InfixCopy(fl__index_t pos, const ArrayList &src) {
     //DEBUG_MODIFY_OK(this);
     //DEBUG_BOUNDS_INCLUSIVE(pos, size_);
     InfixCopy(pos, src.begin(), src.size());
@@ -897,7 +897,7 @@ class ArrayList {
    *
    * @see AppendCopy, InfixSteal
    */
-  void InfixSteal(index_t pos, ArrayList *src);
+  void InfixSteal(fl__index_t pos, ArrayList *src);
 
 
 
@@ -917,7 +917,7 @@ class ArrayList {
    *
    * @see Remove, RemoveInit, ExtractInit, InsertRaw, PopBackRaw
    */
-  void RemoveRaw(index_t pos, index_t dec = 1) {
+  void RemoveRaw(fl__index_t pos, fl__index_t dec = 1) {
     //ARRAYLIST__DEBUG_REMOVE_OK(this, pos, dec);
     mem::Move(ptr_ + pos, ptr_ + pos + dec, size_ - dec - pos);
     size_ -= dec;
@@ -932,7 +932,7 @@ class ArrayList {
    *
    * @see RemoveInit, ExtractInit, RemoveRaw, Insert, PopBack
    */
-  void Remove(index_t pos, index_t dec = 1) {
+  void Remove(fl__index_t pos, fl__index_t dec = 1) {
     //ARRAYLIST__DEBUG_REMOVE_OK(this, pos, dec);
     ot::Destruct(ptr_ + pos, dec);
     RemoveRaw(pos, dec);
@@ -954,7 +954,7 @@ class ArrayList {
    *
    * @see Remove, ExtractInit, InsertCopy, PopBackInit
    */
-  void RemoveInit(index_t pos, Elem *dest) {
+  void RemoveInit(fl__index_t pos, Elem *dest) {
     //DEBUG_MODIFY_OK(this);
     //DEBUG_INIT_OK(dest);
     //DEBUG_BOUNDS(pos, size_);
@@ -980,7 +980,7 @@ class ArrayList {
    *
    * @see RemoveInit, InfixCopy, PopBackInit
    */
-  void ExtractInit(index_t pos, index_t size, Elem *dest) {
+  void ExtractInit(fl__index_t pos, fl__index_t size, Elem *dest) {
     //ARRAYLIST__DEBUG_REMOVE_OK(this, pos, size);
     mem::Copy(dest, ptr_ + pos, size);
     RemoveRaw(pos, size);
@@ -996,7 +996,7 @@ class ArrayList {
    *
    * @see RemoveInit, ExtractAppend, InfixCopy, SegmentInit
    */
-  void ExtractInit(index_t pos, index_t size, ArrayList *dest);
+  void ExtractInit(fl__index_t pos, fl__index_t size, ArrayList *dest);
 
   /**
    * Moves multiple elements from a given position in an ArrayList to
@@ -1008,23 +1008,23 @@ class ArrayList {
    *
    * @see RemoveInit, ExtractInit, InfixCopy, SegmentAppend
    */
-  void ExtractAppend(index_t pos, index_t size, ArrayList *dest);
+  void ExtractAppend(fl__index_t pos, fl__index_t size, ArrayList *dest);
 
 
 
   /** The number of active elements in the ArrayList. */
-  index_t size() const {
+  fl__index_t size() const {
     return size_;
   }
   /** The number of active elements in the ArrayList. 
    * This function is defined so that it provides the same 
    * interface for lapack/blas operations*/
-  index_t length() const {
+  fl__index_t length() const {
     return this->size();
   }
 
   /** The allocated number of elements, or -1 if alias. */
-  index_t capacity() const {
+  fl__index_t capacity() const {
     return cap_;
   }
   /** Whether the ArrayList is empty (size 0). */
@@ -1033,11 +1033,11 @@ class ArrayList {
   }
 
   /** Access an element at position i. */
-  const Elem &operator[] (index_t i) const {
+  const Elem &operator[] (fl__index_t i) const {
     //DEBUG_BOUNDS(i, size_);
     return ptr_[i];
   }
-  Elem &operator[] (index_t i) {
+  Elem &operator[] (fl__index_t i) {
     //DEBUG_BOUNDS(i, size_);
     return ptr_[i];
   }
@@ -1077,11 +1077,11 @@ class ArrayList {
   ////////// Deprecated //////////////////////////////////////////////
 
   /* Renamed InitCopy */
-  __attribute__((deprecated)) void Copy(const Elem *src, index_t size) {
+  __attribute__((deprecated)) void Copy(const Elem *src, fl__index_t size) {
     InitCopy(src, size);
   }
   /* Renamed InitSteal */
-  __attribute__((deprecated)) void Steal(const Elem *src, index_t size) {
+  __attribute__((deprecated)) void Steal(const Elem *src, fl__index_t size) {
     InitSteal(src, size);
   }
   /* Renamed InitSteal; other will alias */
@@ -1102,18 +1102,18 @@ class ArrayList {
   }
 
   /* Renamed SizeAtLeast */
-  __attribute__((deprecated)) void EnsureSizeAtLeast(index_t size) {
+  __attribute__((deprecated)) void EnsureSizeAtLeast(fl__index_t size) {
     SizeAtLeast(size);
   }
 
   /* Renamed PushBack; no longer returns pointer */
-  __attribute__((deprecated)) Elem *AddBack(index_t inc = 1) {
-    index_t offset = size_;
+  __attribute__((deprecated)) Elem *AddBack(fl__index_t inc = 1) {
+    fl__index_t offset = size_;
     PushBack(inc);
     return ptr_ + offset;
   }
   /* Renamed PushBackRaw */
-  __attribute__((deprecated)) Elem *AddBackUnconstructed(index_t inc = 1) {
+  __attribute__((deprecated)) Elem *AddBackUnconstructed(fl__index_t inc = 1) {
     return PushBackRaw(inc);
   }
   /* Renamed PushBackCopy */
@@ -1129,7 +1129,7 @@ class ArrayList {
 };
 
 template<typename TElem>
-void ArrayList<TElem>::IncreaseCap_(index_t cap) {
+void ArrayList<TElem>::IncreaseCap_(fl__index_t cap) {
   // round up capcity for possible paging performance
   cap = (cap + sizeof(long) - 1) & ~(sizeof(long) - 1);
   ptr_ = mem::Realloc(ptr_, cap);
@@ -1150,21 +1150,21 @@ void ArrayList<TElem>::AppendSteal(ArrayList *src) {
 }
 
 template<typename TElem>
-void ArrayList<TElem>::SegmentInit(index_t size, ArrayList *dest) {
+void ArrayList<TElem>::SegmentInit(fl__index_t size, ArrayList *dest) {
   //ARRAYLIST__DEBUG_POP_BACK_OK(this, size);
   //DEBUG_INIT_OK(dest);
   SegmentInit(size, dest->InitRaw(size));
 }
 
 template<typename TElem>
-void ArrayList<TElem>::SegmentAppend(index_t size, ArrayList *dest) {
+void ArrayList<TElem>::SegmentAppend(fl__index_t size, ArrayList *dest) {
   //ARRAYLIST__DEBUG_POP_BACK_OK(this, size);
   //DEBUG_MODIFY_OK(dest);
   SegmentInit(size, dest->PushBackRaw(size));
 }
 
 template<typename TElem>
-void ArrayList<TElem>::InfixSteal(index_t pos, ArrayList *src) {
+void ArrayList<TElem>::InfixSteal(fl__index_t pos, ArrayList *src) {
   //DEBUG_MODIFY_OK(this);
   //DEBUG_MODIFY_OK(src);
   //DEBUG_BOUNDS_INCLUSIVE(pos, size_);
@@ -1178,7 +1178,7 @@ void ArrayList<TElem>::InfixSteal(index_t pos, ArrayList *src) {
 }
 
 template<typename TElem>
-void ArrayList<TElem>::ExtractInit(index_t pos, index_t size,
+void ArrayList<TElem>::ExtractInit(fl__index_t pos, fl__index_t size,
 				   ArrayList *dest) {
   //ARRAYLIST__DEBUG_REMOVE_OK(this, pos, size);
   //DEBUG_INIT_OK(dest);
@@ -1186,7 +1186,7 @@ void ArrayList<TElem>::ExtractInit(index_t pos, index_t size,
 }
 
 template<typename TElem>
-void ArrayList<TElem>::ExtractAppend(index_t pos, index_t size,
+void ArrayList<TElem>::ExtractAppend(fl__index_t pos, fl__index_t size,
 				     ArrayList *dest) {
   //ARRAYLIST__DEBUG_REMOVE_OK(this, pos, size);
   //DEBUG_MODIFY_OK(dest);

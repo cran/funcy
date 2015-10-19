@@ -104,7 +104,7 @@ class String {
    * Initializes as a copy of an existing region of characters.
    * The existing array does not need to be null terminated.
    */
-  void Copy(const char *str_region_begin, index_t len) {
+  void Copy(const char *str_region_begin, fl__index_t len) {
     array_.Init(len + 1);
     mem::Copy(array_.begin(), str_region_begin, len);
     Terminate();
@@ -114,7 +114,7 @@ class String {
    * Initializes as a copy of a c-style string.
    */
   void Copy(const char *str) {
-    array_.InitCopy(str, index_t(strlen(str) + 1));
+    array_.InitCopy(str, fl__index_t(strlen(str) + 1));
   }
   
   /**
@@ -147,11 +147,11 @@ class String {
     array_.InitSteal(null_terminated_char_list);
   }
   
-  void Steal(char *str, index_t len, index_t capacity) {
+  void Steal(char *str, fl__index_t len, fl__index_t capacity) {
     array_.InitSteal(str, len + 1, capacity);
   }
   
-  void Steal(char *str, index_t len) {
+  void Steal(char *str, fl__index_t len) {
     array_.InitSteal(str, len + 1, len + 1);
   }
   
@@ -186,7 +186,7 @@ class String {
   }
   
   /** Returns the length of the string. */
-  index_t length() const
+  fl__index_t length() const
    { return array_.size() - 1; }
   
   /**
@@ -205,7 +205,7 @@ class String {
    *
    * @param newlen the new length to truncate to
    */
-  void Truncate(index_t newlen) {
+  void Truncate(fl__index_t newlen) {
     array_.Resize(newlen + 1);
     Terminate();
   }
@@ -214,7 +214,7 @@ class String {
    * Sets the length of the string, if you expect to write past the end
    * of this string (power user).
    */
-  void SetLength(index_t newlen) {
+  void SetLength(fl__index_t newlen) {
     array_.Resize(newlen + 1);
     Terminate();
   }
@@ -239,22 +239,22 @@ class String {
   void Trim()
    { array_.Trim(); }
   
-  index_t Find(char c) const {
+  fl__index_t Find(char c) const {
     return IndexFromPtr(strchr(array_.begin(), c));
   }
-  index_t FindR(char c) const {
+  fl__index_t FindR(char c) const {
     return IndexFromPtr(strrchr(array_.begin(), c));
   }
-  index_t Find(const char* s) const {
+  fl__index_t Find(const char* s) const {
     return IndexFromPtr(strstr(array_.begin(), s));
   }
-  index_t FindAny(const char *char_set, index_t skip_initial = 0) const;
+  fl__index_t FindAny(const char *char_set, fl__index_t skip_initial = 0) const;
   
-  index_t IndexFromPtr(const char *position) const {
+  fl__index_t IndexFromPtr(const char *position) const {
     if ((!position)) {
       return -1;
     } else {
-      return index_t(position - begin());
+      return fl__index_t(position - begin());
     }
   }
 
@@ -271,8 +271,8 @@ class String {
    * @param add_str null-terminated string
    * @param add_length the length of the string
    */
-  void Append(const char *add_str, index_t add_length) {
-    index_t mysize = array_.size();
+  void Append(const char *add_str, fl__index_t add_length) {
+    fl__index_t mysize = array_.size();
     array_.Resize(mysize + add_length);
     strcpy(array_.begin() + mysize - 1, add_str);
   }
@@ -333,12 +333,12 @@ class String {
   /**
    * Gets individual characters.
    */
-  char operator [] (index_t index) const
+  char operator [] (fl__index_t index) const
    { return array_[index]; }
   /**
    * Gets individual characters, and allows modification.
    */
-  char& operator [] (index_t index)
+  char& operator [] (fl__index_t index)
    { return array_[index]; }
   
   /**
@@ -367,8 +367,8 @@ class String {
    * @param result the ArrayList to append results to (must be initialized)
    * @return the index at which splitting stopped
    */
-  index_t Split(index_t start_index, const char *delimeters,
-      const char *donechars, index_t max_portions,
+  fl__index_t Split(fl__index_t start_index, const char *delimeters,
+      const char *donechars, fl__index_t max_portions,
       ArrayList<String> *result) const;
   
   /**
@@ -389,7 +389,7 @@ class String {
    * @param result the ArrayList to append results to (must be initialized)
    * @return the index at which splitting stopped
    */
-  index_t Split(const char *delimeters, ArrayList<String> *result) const {
+  fl__index_t Split(const char *delimeters, ArrayList<String> *result) const {
     return Split(0, delimeters, "", 0, result);
   }
   

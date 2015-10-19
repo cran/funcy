@@ -199,7 +199,7 @@ class DatasetFeature {
    *
    * @return the number of nominal values
    */
-  index_t n_values() const {
+  fl__index_t n_values() const {
     return value_names_.size();
   }
   
@@ -235,12 +235,12 @@ class DatasetInfo {
   }
 
   /** Gets information about a particular feature. */
-  const DatasetFeature& feature(index_t attrib_num) const {
+  const DatasetFeature& feature(fl__index_t attrib_num) const {
     return features_[attrib_num];
   }
 
   /** Gets the number of features. */
-  index_t n_features() const {
+  fl__index_t n_features() const {
     return features_.size();
   }
   
@@ -266,7 +266,7 @@ class DatasetInfo {
    * @param n_features the number of continuous features
    * @param name_in the dataset title
    */
-  void InitContinuous(index_t n_features,
+  void InitContinuous(fl__index_t n_features,
       const char *name_in = "dataset");
 
   /**
@@ -418,7 +418,7 @@ class Dataset {
    *
    * @return the number of features, or variables, in the dataset
    */
-  index_t n_features() const {
+  fl__index_t n_features() const {
     return matrix_.n_rows();
   }
   
@@ -429,7 +429,7 @@ class Dataset {
    *
    * @return the number of points in the dataset
    */
-  index_t n_points() const {
+  fl__index_t n_points() const {
     return matrix_.n_cols();
   }
 
@@ -441,7 +441,7 @@ class Dataset {
    *
    * @return the number of labels in the dataset
    */
-  index_t n_labels() const;
+  fl__index_t n_labels() const;
 
   /**
    * Gets a list and indicies of labels in a labeled dataset.
@@ -464,9 +464,9 @@ class Dataset {
    *        labels_index. e.g. [0,7,12]
    */
   void GetLabels(ArrayList<double> &labels_list,
-                 ArrayList<index_t> &labels_index,
-                 ArrayList<index_t> &labels_ct,
-                 ArrayList<index_t> &labels_startpos) const;
+                 ArrayList<fl__index_t> &labels_index,
+                 ArrayList<fl__index_t> &labels_ct,
+                 ArrayList<fl__index_t> &labels_startpos) const;
  
   /**
    * Gets the numeric value of a particular feature and point.
@@ -474,14 +474,14 @@ class Dataset {
    * @param feature the feature index
    * @param point the point index
    */
-  double get(index_t feature, index_t point) const {
+  double get(fl__index_t feature, fl__index_t point) const {
     return matrix_.get(feature, point);
   }
   
   /**
    * Gets the integer value of a particular feature and point.
    */
-  int get_int(index_t feature, index_t point) const {
+  int get_int(fl__index_t feature, fl__index_t point) const {
     double d = get(feature, point);
     int i = int(d);
     DEBUG_ASSERT(d == double(i));
@@ -495,7 +495,7 @@ class Dataset {
    * @param point the point index
    * @param d the numeric value to set it to
    */
-  void set(index_t feature, index_t point, double d) {
+  void set(fl__index_t feature, fl__index_t point, double d) {
     matrix_.set(feature, point, d);
   }
   
@@ -504,7 +504,7 @@ class Dataset {
    *
    * @return a C-like array of the values of a particular point
    */
-  const double *point(index_t point) const {
+  const double *point(fl__index_t point) const {
     return matrix_.GetColumnPtr(point);
   }
   /**
@@ -512,7 +512,7 @@ class Dataset {
    *
    * @return a C-like array of the values of a particular point
    */
-  double *point(index_t point) {
+  double *point(fl__index_t point) {
     return matrix_.GetColumnPtr(point);
   }
   
@@ -537,7 +537,7 @@ class Dataset {
    * @param point the point index
    * @param result string that will be initialized to the formatted text
    */
-  void Format(index_t feature, index_t point, String *result) const {
+  void Format(fl__index_t feature, fl__index_t point, String *result) const {
     info_.feature(feature).Format(get(feature, point), result);
   }
   
@@ -652,7 +652,7 @@ class Dataset {
    * @param test the test set
    */
   void SplitTrainTest(int folds, int fold_number,
-      const ArrayList<index_t>& permutation,
+      const ArrayList<fl__index_t>& permutation,
       Dataset *train, Dataset *test) const;
 };
 
@@ -696,7 +696,7 @@ namespace data {
       reader->Error("Couldn't open %s", fname);
       return SUCCESS_FAIL;
     } 
-    index_t dimension=0;
+    fl__index_t dimension=0;
     String line=reader->Peek();
     ArrayList<String> result;
     result.Init();
@@ -714,7 +714,7 @@ namespace data {
       ArrayList<String> result;
       result.Init();
       line.Split(",", &result);
-      for(index_t i=0; i<result.size(); i++) {
+      for(fl__index_t i=0; i<result.size(); i++) {
         Precision num;
         sscanf(result[i].c_str(), "%lf", &num);
         matrix->set(i, reader->line_num()-1, (Precision)num);
@@ -752,7 +752,7 @@ namespace data {
    * @param index_vector the vector of indices
    * @param data_vector the vector of data to save to the file
    */
-  success_t Save(const char *fname, const GenVector<index_t> &index_vector,
+  success_t Save(const char *fname, const GenVector<fl__index_t> &index_vector,
     const GenVector<double> &data_vector);
 }
 

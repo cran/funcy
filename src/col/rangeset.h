@@ -101,14 +101,14 @@ class RangeSet {
   /**
    * Gets a constant range element.
    */
-  const Range& operator[] (index_t i) const {
+  const Range& operator[] (fl__index_t i) const {
     return ranges_[i];
   }
 
   /**
    * Gets the number of discrete ranges.
-   */  
-  index_t size() const {
+   */
+  fl__index_t size() const {
     return ranges_.size();
   }
 
@@ -124,7 +124,7 @@ void RangeSet<TBoundary>::Union(
   
   // Not really efficient, but easy to follow.
   ArrayList<Range> new_list;
-  index_t i;
+  fl__index_t i;
 
   new_list.Init();
 
