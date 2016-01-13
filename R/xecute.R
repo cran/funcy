@@ -272,9 +272,8 @@ setMethod("props", "funcyOutList",
               a <- lapply(object@models, function(x) as.data.frame(t(x@props)))
               props <- data.frame(matrix(nrow=length(object@models),ncol=object@k))
               colnames(props) <- paste("cl", 1:object@k)
-              rownames(props) <- object@methodName
               props <- rbind.fill(a, props)
-              
+              rownames(props) <- object@methodName
               cat("\nSummary of the Cluster Proportions:\n")
               print(props)
 })

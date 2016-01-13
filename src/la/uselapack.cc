@@ -488,6 +488,7 @@ success_t la::GenEigenSymmetric(int itype, Matrix *A_eigenvec, Matrix *B_chol, d
   return SUCCESS_FROM_LAPACK(info);
 }
 
+/*
 success_t la::GenEigenNonSymmetric(Matrix *A_garbage, Matrix *B_garbage,
     double *alpha_real, double *alpha_imag, double *beta, double *V_raw) {
   DEBUG_MATSQUARE(*A_garbage);
@@ -513,6 +514,7 @@ success_t la::GenEigenNonSymmetric(Matrix *A_garbage, Matrix *B_garbage,
 
   return SUCCESS_FROM_LAPACK(info);
 }
+*/
 
 /*
 DGESDD is supposed to be faster, although I haven't actually found this

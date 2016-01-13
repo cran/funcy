@@ -103,6 +103,7 @@ setMethod("plot", signature(x="funcyOut", y="missing"),
                       main <- paste("cluster",1:ncl)
                   par(mar=par("mar"))
                   col=rgb(1,0,0,alpha=0.4)
+                  ctr <- x@centers
                   ctrDist <- x@dist2centers
                   ctrDist <- (max(ctrDist)-ctrDist)/max(ctrDist)
                   par(mfrow=squareGrid(x=ncl, round=TRUE))
@@ -116,7 +117,8 @@ setMethod("plot", signature(x="funcyOut", y="missing"),
                                 lwd=ctrDist[,i],
                                 col=rep(col,indx),
                                 lty=1,
-                                main=main[i],...)
+                                main=main[i], showLegend=FALSE,...)
+                      lines(ctr[,i],col=1, type="l",lwd=2, lty=2)
                   }
                   par(mfrow=c(1,1))
                   
@@ -178,7 +180,7 @@ setMethod("plot", signature(x="funcyOutMbc-fscm", y="missing"),
                        legendPlace=legendPlace, main=main, ...)
                   return()
               }
-              plotFct(object=x, ...)
+              plotFct(object=x, showLegend=showLegend, ...)
           }
           )
 
