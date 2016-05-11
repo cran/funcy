@@ -25,9 +25,9 @@ plotOverview <- function(object, showLegend){
 
     .pardefault <- par() 
     par(xpd=T, mfrow=c(2,2) , mar=c(3,1,3,10))
-  
+    
     plotClusterLocs(object, showLegend=FALSE)
-  
+    
 
     matplot(time, ctrs1, type='l', lty=1, col=labels[2,],  ylab="",ylim=c(min(temp[,1],ctrs1),max(temp[,1],ctrs1)))
     title("Temporal cluster trends",line=1)
@@ -42,7 +42,7 @@ plotOverview <- function(object, showLegend){
         legend("top", c("overall trend", paste("cluster",1:k)), col =
                    c(k+1,labels[1,]),pch="o", bty = "n")
     }
- 
+    
     
 }
 
@@ -111,14 +111,14 @@ plotLoc <- function(object, showLegend){
              ylab="location 2", cex=cex)
     textxy(location[,1],location[,2],1:length(location[,1]), cex=max(cex,0.5))
     
-    B=stationary.cov(location,location,Covariance="Matern")
+    B=stationary.cov(location, location, Covariance="Matern")
     B <- as.dist(B)
     check <- cmdscale(1-B,k=2)
     sunflowerplot(check[,1],check[,2],
              main="Matern covariance distance plot",
              ylab="md-scaled variable 2", xlab="md-scaled variable 1",
                   cex=cex)
-    textxy(check[,1],check[,2],1:length(check[,1]), cex=max(cex,0.5))
+    textxy(check[,1], check[,2], 1:length(check[,1]), cex=max(cex,0.5))
     par(mfrow=c(1,1))
 
     ##Get the order of the closest points and verify with plot

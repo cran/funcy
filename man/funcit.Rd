@@ -25,22 +25,24 @@ funcit(data, k, methods=c("fitfclust","distclust", "iterSubspace",
   }
   \item{methods}{
     \describe{
-      \item{"distFPCA":}{
+      \item{"fitfclust":}{Model based cluster algorithm - based on a functional
+	  mixed mixture model. Allows irregular measurements, eigenbasis possible.}
+	\item{"distFPCA":}{
 	Cluster algorithm - based on a distance measure. Allows irregular
 	measurements, eigenbasis possible.}
-      \item{"fitfclust":}{Model based cluster algorithm - based on a functional
-	mixed mixture model. Allows irregular measurements, eigenbasis possible.}
       \item{"iterSubspace":}{Model based cluster algorithm - based on a subspace
 	projection. Allows irregular measurements, eigenbasis possible,
 	dimension between clusters can vary.}
-      \item{"waveclust":}{Model based cluster algorithm - based on a
-  functional mixed mixture model. Wavelet basis is the only possible.}
-      \item{"fscm":}{Model based cluster algorithm - based on a functional mixed
-	mixture model. Curves can dependent on location. A matrix
-	\code{location} is then an optional input parameter (see Details).}
       \item{"funclust":}{Model based cluster algorithm - based on a functional mixed mixture model.}
       \item{"funHDDC":}{Model based cluster algorithm - based on a
-	functional mixed mixture model. Dimension between clusters can vary.}
+	functional mixed mixture model. Dimension between clusters can
+vary.}
+     \item{"fscm":}{Model based cluster algorithm - based on a functional mixed
+	mixture model. Curves can dependent on location. A matrix
+	\code{location} is then an optional input parameter (see
+	Details).}
+      \item{"waveclust":}{Model based cluster algorithm - based on a
+	functional mixed mixture model. Wavelet basis is the only possible.}
     }
 For a detailed description of the methods please see the references. 
   }

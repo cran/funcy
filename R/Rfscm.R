@@ -208,7 +208,7 @@ impute.gamma=function(y,z,phi,psi,beta,sigma_e,sigma_s){
 
 }
 
-estimate.var=function(y,z,phi,psi,beta,gamma,sigma_e,sigma_s){
+estimate.var=function(y, z, phi, psi, beta, gamma, sigma_e, sigma_s){
     
     n=nrow(y)
     m=ncol(y)

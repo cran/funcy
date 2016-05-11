@@ -13,7 +13,7 @@ funcit <- function(data,  k,
     
     ##Check for missing arguments
     if(missing(methods))
-        stop("Please select one method or methods=ALL.")
+        stop("Please select one method or methods='ALL'.")
     else if(length(methods)==1)
         if(methods=="ALL")
             methods <- 1:7
@@ -54,7 +54,7 @@ funcit <- function(data,  k,
     else if(funcyCtrl@baseType=="eigenbasis")
         fpcCtrl <- fpcCtrlCheck(fpcCtrl=fpcCtrl, data=data, reg=reg)
     
-                                        #Check if correct method for the given dataset was chosen.
+    ##Check if correct method for the given dataset was chosen.
     if(reg==0 & sum(usedMethods%in%c("fscm", "funclust", "funHDDC"))>0){
         notWork <- usedMethods[which(usedMethods%in%allMethods[-c(1:3)])]
         stop(paste("Algorithm", notWork,

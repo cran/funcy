@@ -18,11 +18,11 @@ center curves.
 \usage{
 \S4method{plotFuncy}{matrix}(data, regTime=NULL, col=NULL,
           ctr=NULL, ctrOnly=FALSE, ctrCols=NULL, showLegend=TRUE,
-          legendPlace="bottomleft", lty=3, lwd=NULL, \dots)
+          legendPlace="bottomleft", lty=3, lwd=NULL, xlim=NULL, ylim=NULL, \dots)
 
 \S4method{plotFuncy}{sampleFuncy}(data, regTime=NULL, col=NULL,
           ctr=NULL, ctrOnly=FALSE, ctrCols=NULL, showLegend=TRUE,
-          legendPlace="bottomleft", lty=3, lwd=NULL, \dots)
+          legendPlace="bottomleft", lty=3, lwd=NULL, xlim=NULL, ylim=NULL, \dots)
 }
 
 
@@ -64,6 +64,12 @@ center curves.
   }
   \item{lwd}{
     Line width of the functional data. 
+  }
+  \item{xlim}{
+    Range of x-axis.
+  }
+  \item{ylim}{
+    Range of y-axis. 
   }
   \item{\dots}{
     Further plotting parameters. 

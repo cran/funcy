@@ -118,9 +118,7 @@ setClass("sampleFuncy",
              reg="logical"
          )
          )
-         
-
-         
+              
 
 setClass("funcyOut",
          representation(

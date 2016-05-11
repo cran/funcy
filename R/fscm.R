@@ -20,16 +20,16 @@ fscm <- function(data, k, reg, regTime, funcyCtrlMbc, fpcCtrl,
 
     if(is.null(location)){
         gridNr <- squareGrid(x=nc)
-        location <- expand.grid(1:gridNr[1],1:gridNr[2])
+        location <- expand.grid(1:gridNr[1], 1:gridNr[2])
     }
     
     ##scale dataset
     if(scale)
-        data <- apply(as.matrix(data),2,function(x) x-mean(x))
+        data <- apply(as.matrix(data), 2, function(x) x-mean(x))
     data <- t(data)
    
     ##calculate spatial covariance matrix
-    B <- stationary.cov(location, location, Covariance="Matern")
+    B <- stationary.cov(location,  location,  Covariance="Matern")
     psi <- inchol(B)
     psi <- t(psi)
    
@@ -58,9 +58,9 @@ fscm <- function(data, k, reg, regTime, funcyCtrlMbc, fpcCtrl,
 
     ##obtain neighborhood matrix: input 'nb'
     dist <- as.matrix(dist(location))
-    dist.ord <- apply(dist,2,order)
+    dist.ord <- apply(dist, 2, order)
     dist.order <- t(dist.ord)
-    nb <- dist.ord[,2:(knn+1)]-1
+    nb <- dist.ord[, 2:(knn+1)]-1
     nb <- t(nb)
 
     ##initial clustering
@@ -70,16 +70,16 @@ fscm <- function(data, k, reg, regTime, funcyCtrlMbc, fpcCtrl,
     if(useCode=="R"){
         z.init <- as.integer(z.init+1)
         nb <- t(nb)
-        res=Rfscm((data),nb,t(phi),t(psi),z.init,maxit)
+        res=Rfscm((data), nb, t(phi), t(psi), z.init, maxit)
         k <- res$k
         alpha <- rowMeans(sapply(1:nc, function(j)
             ginv(phi%*%t(phi))%*%(phi%*%(data[j,]-t(phi)%*%res$beta[,res$z[j]]-rep(t(psi[j,])%*%res$gamma, nt)))))
         overall <- as.numeric(t(phi)%*%alpha)
         temp <- t(phi)%*%res$beta
         centers <- overall + temp
-        temp <- cbind(overall,temp)
+        temp <- cbind(overall, temp)
         spatial <- as.numeric(t(psi)%*%res$gamma)
-        trends <- list(temp=temp, spatial=spatial)
+        trends <- list(temp=temp,  spatial=spatial)
         probs <- res$prob_z
         cls <- res$z
         params <- list(beta=res$beta, gamma=res$gamma,
@@ -93,14 +93,14 @@ fscm <- function(data, k, reg, regTime, funcyCtrlMbc, fpcCtrl,
         
         ##create a temporary directory
         dataFile <- paste0(temps, "/data.txt")
-        write.table((data),dataFile,row.names=F,col.names=F)
-        phiFile <- paste0(temps,"/phi.txt")
-        write.table(phi, file=phiFile,row.names=F,col.names=F)
-        psiFile <- paste0(temps,"/psi.txt")
-        write.table(psi,psiFile,row.names=F,col.names=F)
-        nbFile <- paste0(temps,"/nb.txt")
-        write.table(nb, nbFile, row.names=F,col.names=F)
-        zFile <- paste0(temps,"/z.init",k,".txt")
+        write.table((data),dataFile,row.names=F, col.names=F)
+        phiFile <- paste0(temps, "/phi.txt")
+        write.table(phi,  file=phiFile, row.names=F, col.names=F)
+        psiFile <- paste0(temps, "/psi.txt")
+        write.table(psi, psiFile, row.names=F, col.names=F)
+        nbFile <- paste0(temps, "/nb.txt")
+        write.table(nb,  nbFile, row.names=F, col.names=F)
+        zFile <- paste0(temps, "/z.init", k, ".txt")
         write.table(z.init, zFile, row.names=F, col.names=F)
 
 
@@ -125,7 +125,7 @@ fscm <- function(data, k, reg, regTime, funcyCtrlMbc, fpcCtrl,
 
         AIC <- BIC <- NA
         trends <- params <- list()
-        tp <- read.csv2("temporal.csv",sep="\t", header=FALSE)
+        tp <- read.csv2("temporal.csv", sep="\t",  header=FALSE)
         trends$temp <- do.call(rbind, lapply(tp, function(x) as.numeric(gsub("[,;]", "", x))))
         trends$spatial <- read.csv("spatial.csv", header=FALSE,sep=",")
         params$alpha <- read.table("alpha.csv", header=FALSE, sep=",")[,-1]

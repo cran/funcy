@@ -44,18 +44,18 @@
     \item{"all methods":}{
       \describe{
 	\item{}{}
-	\item{all}{
+	\item{all:}{
 	  Plots data and cluster centers.}
-	\item{centers}{
+	\item{centers:}{
 	  Plots only cluster centers.}
-	\item{shadow}{
+	\item{shadow:}{
 	  Creates a shadow plot (see function \code{shadow} in package
 	  \pkg{flexclust} - Leisch 2010).}
-	\item{dist2centers}{
+	\item{dist2centers:}{
 	  Multiple plots for each cluster. Thickness of lines corresponds
 	  to the proximity to the cluster centers. Thicker lines means
 	  curve is closer to its center.}
-	\item{fpc}{
+	\item{fpc:}{
 	  Only if \code{baseType}=\code{"eigenbasis"} in \code{funcyCtrl}.
 	  Plots the smoothed mean function, covariance matrix and
 	  eigenbasis.} 
@@ -75,7 +75,7 @@
   \item{"fscm":}{
     \describe{
       \item{}{}
-      \item{overview}{
+      \item{overview:}{
 	Plots curve locations, temporal trends and overall trends (see Serban2012).
 	For the spatial coefficients, dots are colored according to
 	spatial dependency from yellow to blue. Darker dots mean

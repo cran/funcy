@@ -7,7 +7,7 @@ setGeneric("plotFuncy", function(data, regTime=NULL, col=NULL,
                                  ctr=NULL, ctrOnly=FALSE,
                                  ctrCols=NULL, showLegend=TRUE,
                                  legendPlace="bottomleft", lty=3,
-                                 lwd=NULL, ...)
+                                 lwd=NULL, xlim=NULL, ylim=NULL, ...)
     standardGeneric("plotFuncy"))
 
 setMethod("plotFuncy", signature(data="matrix"),
@@ -34,10 +34,15 @@ setMethod("plotFuncy", signature(data="matrix"),
                
                add=FALSE
                if(!ctrOnly){
+                   if(is.null(xlim))
+                       xlim <- c(min(time), max(time))
+                   if(is.null(ylim))
+                      ylim <- c(min(evals,ctr),max(ctr,evals))
                    plot(time[curve==1], evals[curve==1],
-                        xlim=c(min(time), max(time)),
-                        ylim=c(min(evals,ctr),max(ctr,evals)), type='l', col=col[1],
-                        xlab="time", ylab="", lty=lty, lwd=lwd[1], ...)
+                        xlim=xlim,
+                        ylim=ylim,
+                        type='l',
+                        col=col[1], xlab="time", ylab="", lty=lty, lwd=lwd[1], ...)
                    for(i in 1:max(curve))
                        lines(time[curve==i],evals[curve==i], col=col[i],
                              lwd=lwd[i],lty=lty,  ...)
@@ -105,7 +110,7 @@ setMethod("plot", signature(x="funcyOut", y="missing"),
                   col=rgb(1,0,0,alpha=0.4)
                   ctr <- x@centers
                   ctrDist <- x@dist2centers
-                  ctrDist <- (max(ctrDist)-ctrDist)/max(ctrDist)
+                  ctrDist <- (max(ctrDist)-ctrDist)/max(ctrDist)+0.01
                   par(mfrow=squareGrid(x=ncl, round=TRUE))
                   for(i in 1:ncl){
                       indx <- sum(cls==i)

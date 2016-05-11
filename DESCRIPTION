@@ -1,8 +1,8 @@
 Package: funcy
 Type: Package
 Title: Functional Clustering Algorithms
-Version: 0.8.4
-Date: 2015-01-13
+Version: 0.8.5
+Date: 2016-05-03
 Authors@R: c(
 	   person(given="Christina", family="Yassouridis", email="c_ya02@yahoo.de",
 	   role=c("aut", "cre")),
@@ -19,8 +19,13 @@ Authors@R: c(
 	   person(given="Jie", family="Peng", role="ctb"),
 	   person(given="Chiou", family="Jeng-Min", role="ctb"),
 	   person(given="Pai-Ling", family="Li", role="ctb")
-           )		 
-Description: Unified framework to cluster functional data according to one of seven models. All models are based on the projection of the curves onto a basis. The main function funcit() calls wrapper functions for the existing algorithms, so that input parameters are the same. A list is returned with each entry representing the same or extended output for the corresponding method. Method specific as well as general visualization tools are available.
+           )
+Description: Unified framework to cluster functional data according to one of
+    seven models. All models are based on the projection of the curves onto a basis.
+    The main function funcit() calls wrapper functions for the existing algorithms,
+    so that input parameters are the same. A list is returned with each entry
+    representing the same or extended output for the corresponding method. Method
+    specific as well as general visualization tools are available.
 License: GPL-2
 Depends: flexclust, splines
 Imports: MASS, Matrix, fda, methods, wavethresh, kernlab, parallel,
@@ -29,7 +34,8 @@ Suggests: scatterplot3d, Funclustering, funHDDC
 LazyLoad: yes
 Encoding: UTF-8
 NeedsCompilation: yes
-Packaged: 2016-01-13 14:49:17 UTC; christina
+RoxygenNote: 5.0.1
+Packaged: 2016-05-10 09:14:56 UTC; christina
 Author: Christina Yassouridis [aut, cre],
   Dominik Ernst [ctb],
   Madison Giacofci [ctb],
@@ -46,4 +52,4 @@ Author: Christina Yassouridis [aut, cre],
   Pai-Ling Li [ctb]
 Maintainer: Christina Yassouridis <c_ya02@yahoo.de>
 Repository: CRAN
-Date/Publication: 2016-01-13 17:26:06
+Date/Publication: 2016-05-11 12:06:31
