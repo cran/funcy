@@ -23,7 +23,7 @@ distclust <- function(data, k, reg, regTime, simpleCtrl,
         }
                 
         ##Reformat data
-        res <- formatFuncy(data=data, format="Format3")
+        res <- formatFuncy(data=data, format="Format3", regTime=regTime)
         
         Yin <- res$Yin; Tin <- res$Tin; N <- res$N; isobs <-
             res$isobs; t_all <- res$t_all

@@ -4,12 +4,12 @@
 #
 
 ##does the same as fpc but is exported
-fpca <- function(data=data, dimBase=4, fpcCtrl=NULL){
+fpca <- function(data=data, dimBase=4, fpcCtrl=NULL, regTime=NULL){
     
     chf <- checkFormat(data, reformat=FALSE)
     data <- chf$data
     reg <- chf$reg
-    res <- formatFuncy(data, format="Format3")
+    res <- formatFuncy(data, format="Format3", regTime=regTime)
     
     Yin <- res$Yin; Tin <- res$Tin; isobs=res$isobs
     

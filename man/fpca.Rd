@@ -13,7 +13,7 @@
   Performs a functional principal component analysis.
 }
 \usage{
-fpca(data=data, dimBase=4, fpcCtrl=NULL)
+fpca(data=data, dimBase=4, fpcCtrl=NULL, regTime=NULL)
 }
 
 \arguments{
@@ -22,7 +22,12 @@ fpca(data=data, dimBase=4, fpcCtrl=NULL)
 
 \item{dimBase}{ Dimension of the basis.}
 
-\item{fpcCtrl}{ Control object, see \code{\link{fpcCtrl}}.  } }
+\item{fpcCtrl}{ Control object, see \code{\link{fpcCtrl}}.  }
+\item{regTime}{
+  Optional vector of time points if original data is in \code{"Format2"}.
+}
+
+}
   \details{ A functional principal component analysis is
   executed. Therefore, a smoothed mean curve and a smoothed covariance
   matrix are built and upon these, eigenvalues and eigenvectors are

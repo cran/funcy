@@ -80,7 +80,7 @@ setAs("list", "funcyCtrl",
           z@baseType <- match.arg(z@baseType,
                                   c("eigenbasis", "splines",
                                     "exponential", "fourier",
-                                    "power"))
+                                    "power", "polynomial"))
           z@init <- match.arg(z@init,
                               c("kmeans", "random", "hclust"))
           z

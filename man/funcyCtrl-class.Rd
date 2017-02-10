@@ -21,8 +21,10 @@
   \describe{
     \item{\code{baseType}:}{Type of basis functions, one of \code{"eigenbasis"}, \code{"splines"},
       \code{"exponential"},
-      \code{"fourier"} or
-      \code{"power"}.}
+      \code{"fourier"},
+      \code{"power"},
+      \code{"polynomial"}
+      .}
     \item{\code{dimBase}:}{Dimension of the basis functions.}
     \item{\code{flexDim}:}{If \code{TRUE}, dimension can vary between
       clusters (if supported by the algorithm). \code{dimBase} is therefore the

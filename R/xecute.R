@@ -296,7 +296,7 @@ setMethod("summary", "funcyOutList",
                                           collapse=" "))
                   cat(writeLines(strwrap(outlines,
                                          width=0.75*getOption("width"))))
-                  cat("\n\n")
+                  cat("\n")
                   cat("call:", deparse(object@call,0.75*getOption("width")),
                       sep="\n")
                   props(object)

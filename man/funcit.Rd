@@ -102,7 +102,7 @@ For a detailed description of the methods please see the references.
       \item{"iterSubspace"}{
 	\describe{
 	  \item{}{}
-	  \item{simplify:}{\code{FALSE}, if curve affiliation is tested
+	  \item{simplif:}{\code{FALSE}, if curve affiliation is tested
 	    again by projecting the curve onto the current subspace
 	    created without the current curve (leave-one-out-curve-estimation).}
 	}

@@ -221,7 +221,11 @@ makeBasis <- function(basis, time, nbasis){
            },
            "power"={
                bObj <- create.power.basis(c(time[1], time[m]), nbasis=nbasis)
-           })
+           },
+           "polynomial"={
+               bObj <- create.monomial.basis(rangeval=c(time[1], time[m]), nbasis=nbasis)
+           }
+           )
     phi <- eval.basis(time, bObj)
     return(list(bObj=bObj, phi=phi))
 }

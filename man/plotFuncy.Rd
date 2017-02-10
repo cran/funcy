@@ -18,11 +18,13 @@ center curves.
 \usage{
 \S4method{plotFuncy}{matrix}(data, regTime=NULL, col=NULL,
           ctr=NULL, ctrOnly=FALSE, ctrCols=NULL, showLegend=TRUE,
-          legendPlace="bottomleft", lty=3, lwd=NULL, xlim=NULL, ylim=NULL, \dots)
+          legendPlace="bottomleft", lty=3, lwd=NULL, xlim=NULL,
+ylim=NULL, xlab=NULL, ylab=NULL, \dots)
 
 \S4method{plotFuncy}{sampleFuncy}(data, regTime=NULL, col=NULL,
           ctr=NULL, ctrOnly=FALSE, ctrCols=NULL, showLegend=TRUE,
-          legendPlace="bottomleft", lty=3, lwd=NULL, xlim=NULL, ylim=NULL, \dots)
+          legendPlace="bottomleft", lty=3, lwd=NULL, xlim=NULL,
+          ylim=NULL, xlab=NULL, ylab=NULL, \dots)
 }
 
 
@@ -71,6 +73,12 @@ center curves.
   \item{ylim}{
     Range of y-axis. 
   }
+  \item{xlab}{
+    A title for the x axis.
+  }
+  \item{ylab}{
+    A title for the y axis.
+    }
   \item{\dots}{
     Further plotting parameters. 
   }

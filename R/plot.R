@@ -7,7 +7,8 @@ setGeneric("plotFuncy", function(data, regTime=NULL, col=NULL,
                                  ctr=NULL, ctrOnly=FALSE,
                                  ctrCols=NULL, showLegend=TRUE,
                                  legendPlace="bottomleft", lty=3,
-                                 lwd=NULL, xlim=NULL, ylim=NULL, ...)
+                                 lwd=NULL, xlim=NULL, ylim=NULL,
+                                 xlab=NULL, ylab=NULL, ...)
     standardGeneric("plotFuncy"))
 
 setMethod("plotFuncy", signature(data="matrix"),
@@ -31,6 +32,9 @@ setMethod("plotFuncy", signature(data="matrix"),
                
                if(length(lwd)==1 | is.null(lwd))
                    lwd <- rep(lwd, max(curve))
+
+               if(is.null(xlab)) xlab <- ""
+               if(is.null(ylab)) ylab <- ""
                
                add=FALSE
                if(!ctrOnly){
@@ -42,7 +46,12 @@ setMethod("plotFuncy", signature(data="matrix"),
                         xlim=xlim,
                         ylim=ylim,
                         type='l',
-                        col=col[1], xlab="time", ylab="", lty=lty, lwd=lwd[1], ...)
+                        col=col[1],
+                        lty=lty,
+                        lwd=lwd[1],
+                        xlab=xlab,
+                        ylab=ylab,
+                        ...)
                    for(i in 1:max(curve))
                        lines(time[curve==i],evals[curve==i], col=col[i],
                              lwd=lwd[i],lty=lty,  ...)
@@ -103,7 +112,8 @@ setMethod("plot", signature(x="funcyOut", y="missing"),
               }else if(type=="dist2centers"){
                   format <- checkFormat(data, reformat=FALSE)$format
                   if(format!="Format1")
-                      data <- formatFuncy(data=data, format="Format1")
+                      data <- formatFuncy(data=data, format="Format1",
+                                          regTime = time)
                   if(missing(main))
                       main <- paste("cluster",1:ncl)
                   par(mar=par("mar"))
@@ -122,8 +132,10 @@ setMethod("plot", signature(x="funcyOut", y="missing"),
                                 lwd=ctrDist[,i],
                                 col=rep(col,indx),
                                 lty=1,
-                                main=main[i], showLegend=FALSE,...)
-                      lines(ctr[,i],col=1, type="l",lwd=2, lty=2)
+                                main=main[i],
+                                regTime=time,
+                                showLegend=FALSE,...)
+                      lines(time,ctr[,i],col=1, type="l",lwd=2, lty=2)
                   }
                   par(mfrow=c(1,1))
                   

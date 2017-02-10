@@ -24,7 +24,7 @@ plotOverview <- function(object, showLegend){
     }
 
     .pardefault <- par() 
-    par(xpd=T, mfrow=c(2,2) , mar=c(3,1,3,10))
+    par(xpd=T, mfrow=c(2,2) , mar=c(3,2,3,1))
     
     plotClusterLocs(object, showLegend=FALSE)
     

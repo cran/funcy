@@ -1,30 +1,24 @@
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 
 
-funcy version 0.8.5
+funcy version 0.8.6
 ===================
 
-Changes
+Changes (NOCH NICHT SUBMITTED)
 -------
 
-* R/plotFSCM.R:
+* R/plot.R:
 
-1. `plotOverview`: regTime is now reflected on x-axis.
+1. added `xlab=NULL, ylab=NULL` to plotFuncy: xlab and ylab can now be
+   set. They are void if nothing was set. 
 
-2. `plotOverview`: showLegend can now be set to FALSE
+2. plotOverview: changed mar=c(3,2,3,10) to mar=c(3,2,3,1)
 
-3. plot type `dist2centers`: removed legend, added center
-curves
+*R/xecute.R
+method "summary" for "funcyOutList": changed cat("\\n") to cat("\n")
 
+3. functions.R
+added polynomial basis (create.monomial.basis)
 
-* R/plot.R: changed cex of function `plotLoc`
-
-
-* R/xecute.R:
-
-1. added rownames of props (`rownames(props) <- object@methodName`)
-
-2. changed stop("Please select one method or methods=ALL.") to
-   stop("Please select one method or methods='ALL'.")
-
-
+4. funct.Rd
+for method "iterSubspace" parameter name simplify was changed to simplif (as implemented)

@@ -1,8 +1,8 @@
 Package: funcy
 Type: Package
 Title: Functional Clustering Algorithms
-Version: 0.8.5
-Date: 2016-05-03
+Version: 0.8.6
+Date: 2017-01-30
 Authors@R: c(
 	   person(given="Christina", family="Yassouridis", email="c_ya02@yahoo.de",
 	   role=c("aut", "cre")),
@@ -35,7 +35,7 @@ LazyLoad: yes
 Encoding: UTF-8
 NeedsCompilation: yes
 RoxygenNote: 5.0.1
-Packaged: 2016-05-10 09:14:56 UTC; christina
+Packaged: 2017-02-01 21:27:42 UTC; chrissles
 Author: Christina Yassouridis [aut, cre],
   Dominik Ernst [ctb],
   Madison Giacofci [ctb],
@@ -52,4 +52,4 @@ Author: Christina Yassouridis [aut, cre],
   Pai-Ling Li [ctb]
 Maintainer: Christina Yassouridis <c_ya02@yahoo.de>
 Repository: CRAN
-Date/Publication: 2016-05-11 12:06:31
+Date/Publication: 2017-02-10 02:26:54
