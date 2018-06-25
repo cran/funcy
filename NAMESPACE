@@ -50,5 +50,5 @@ exportMethods("calcTime",
               "summary"
               )
 
-useDynLib("funcy")
+useDynLib("funcy", .registration = TRUE)
 

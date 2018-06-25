@@ -45,7 +45,7 @@ regFuncy(data, timeNr = 10, method = "project", baseType = NULL, nbasis = 4, plo
 }
 \value{
   \item{data}{Numeric matrix of "Format1" (see \code{\link{formatFuncy}}).}
-  \item{time}{Vector of evualuation time points.}
+  \item{time}{Vector of evaluation time points.}
 
 }
 \references{

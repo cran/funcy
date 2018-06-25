@@ -579,12 +579,13 @@
  *
  * @see ot::InitCopy, OT_COPY_METHOD, OBJECT_TRAVERSAL
  */
+//TODO: test if this is OK; (was ASSIGN_VIA_RECURSION_SAFE_COPY_CONSTRUCTION)
 #define OT_COPY_CONSTRUCTOR(C) \
    public: \
     C(const C &src) { \
       ot__private::Copier<false> ot__copier(this, &src); \
     } \
-    ASSIGN_VIA_RECURSION_SAFE_COPY_CONSTRUCTION(C) \
+    ASSIGN_VIA_COPY_CONSTRUCTION(C) \
    private:
 
 /**

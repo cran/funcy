@@ -693,7 +693,9 @@ static char *fx__alloc_int_list(size_t size, va_list vl)
 
     str += sprintf(str, FMT_LONG_LONG, va_arg(vl, long long));
     while (--size) {
-      str += sprintf(str, "," FMT_LONG_LONG, va_arg(vl, long long));
+      *str = ',';
+      str++;
+      str += sprintf(str, FMT_LONG_LONG, va_arg(vl, long long));
     }
 
     return retval;
@@ -775,7 +777,9 @@ static char *fx__alloc_int_array(size_t size, const long long *list)
 
     str += sprintf(str, FMT_LONG_LONG, *list++);
     while (--size) {
-      str += sprintf(str, "," FMT_LONG_LONG, *list++);
+      *str = ',';
+      str++;
+      str += sprintf(str, FMT_LONG_LONG, *list++);
     }
 
     return retval;

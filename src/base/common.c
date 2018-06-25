@@ -54,6 +54,13 @@ int yet_another_isnan(double x) {
     return(x != x);
 }
 
+#ifdef WIN32
+char FMT_LONG_LONG[] = "%I64d";
+char FMT_ULONG_LONG[] = "%I64u";
+#else
+char FMT_LONG_LONG[] = "%lld";
+char FMT_ULONG_LONG[] = "%llu";
+#endif
 
 
 void fl_abort(void)
@@ -84,12 +91,12 @@ void fl_print_msg_header(char marker, const char *color)
 
 void fl_print_msg_loc(const char *file, const char *func, int line)
 {
-  const char *prev = file;
+  //const char *prev = file;
   const char *last = file;
 
   /* Finds the file and containing directory, if it exists. */
   while ((file = strchr(last, '/'))) {
-    prev = last;
+    //prev = last;
     last = file + 1;
   }
 

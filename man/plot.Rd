@@ -79,7 +79,7 @@
 	Plots curve locations, temporal trends and overall trends (see Serban2012).
 	For the spatial coefficients, dots are colored according to
 	spatial dependency from yellow to blue. Darker dots mean
-	stronger depencency.}
+	stronger dependency.}
     }
   }
   

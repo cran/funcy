@@ -1,19 +1,32 @@
 #  Original  Copyright (C) 2003  Gareth M. James and Catherine A. Sugar
 #  Modified Code: Copyright (C) 2011-2015 Christina Yassouridis
 #  all functions for regular data were implemented by Yassouridis
-#
-
 
 "fitfclust" <-
-    function(data, k=2, reg=reg, regTime=NULL, dimBase=dimBase, h=1, p=5, epsilon=0.01,
-             maxiter=20, pert =0.01, hard=hard,
-             seed=seed, init=init, nrep=nrep, fpcCtrl, baseType="splines"){
+    function(data, 
+    				 k=2, 
+    				 reg=reg, 
+    				 regTime=NULL, 
+    				 dimBase=dimBase, 
+    				 h=1, 
+    				 p=5, 
+    				 epsilon=0.01,
+             maxiter=20, 
+    				 pert =0.01, 
+    				 hard=hard,
+             seed=seed, 
+    				 init=init, 
+    				 nrep=nrep, 
+    				 fpcCtrl, 
+    				 baseType="splines"){
+    	
         if(baseType=="fourier")
             dimBase <- fourierWarn(dimBase)
         ##Check Input
         if(h>k)
             stop("Reduced dimension in mbcCtrl cannot be greater than k!")
         if(reg==1){
+        	
             if(is.null(regTime))
                 grid <- 1:dim(data)[1]
             else
@@ -22,6 +35,7 @@
             MstepFct <- fitfclustMstep
             EstepFct <- fitfclustEstep
         }else if(reg==0){
+        	
             grid <- unique(sort(data[,3]))
             initFct <- initStepIrreg
             MstepFct <- fitfclustMstepIrreg
@@ -29,9 +43,18 @@
         }
         
         ##INITIAL CLUSTERING --------------------------------------------
-        initFit <- initFct(data=data, pert=pert, grid=grid, h=h,
-                           p=p, dimBase=dimBase, k=k, baseType,
-                           seed=seed, init=init, nrep=nrep, fpcCtrl=fpcCtrl)
+        initFit <- initFct(data=data, 
+        									 pert=pert, 
+        									 grid=grid, 
+        									 h=h,
+                           p=p, 
+        									 dimBase=dimBase, 
+        									 k=k, 
+        									 baseType,
+                           seed=seed, 
+        									 init=init, 
+        									 nrep=nrep, 
+        									 fpcCtrl=fpcCtrl)
 
         ## Initialize the parameters ------------------------------------
         plotParams <- initFit$plotParams
@@ -43,17 +66,25 @@
         sigma.old <- 0
         sigma.new <- 1
         kk <- 1
+        
         ## Main loop. Iterates between M and E steps and stops when
         ## sigma  has converged.
-        while(abs(sigma.old - sigma.new)/sigma.new > epsilon & (kk <=
-                                                                    maxiter)) {
-            parameters <- MstepFct(parameters=parameters, data=data,
-                                   vars=vars, base=fullBase,
-                                   epsilon=epsilon, p=p, hard=hard)
+        while(abs(sigma.old - sigma.new)/sigma.new > epsilon & (kk <= maxiter)) {
+        	
+            parameters <- MstepFct(parameters=parameters, 
+            											 data=data,
+                                   vars=vars, 
+            											 base=fullBase,
+                                   epsilon=epsilon, 
+            											 p=p, hard=hard)
             
             ##returns lambda0, Lambda, alpha, pi, Gamma, sigma
-            vars <- EstepFct(parameters=parameters, data=data, vars=vars,
-                             base=fullBase, hard=hard)
+            vars <- EstepFct(parameters=parameters, 
+            								 data=data, 
+            								 vars=vars,
+                             base=fullBase, 
+            								 hard=hard)
+            
             ##returns gamma, piigivej, gprod, gcov 
             sigma.old <- sigma.new
             sigma.new <- parameters$sigma[1]
@@ -69,28 +100,57 @@
         
         ## Enforce parameter constraint (7)
         cfit <- fitfclustconst(parameters, vars, base)
-        list(data=data, plotParams=plotParams, parameters=cfit$parameters, vars=cfit$vars,
-             fullBase=fullBase, base=base, grid=grid, nrIter=kk,
-             aic=aic, bic=bic, loglik=loglik)
+        
+        list(data=data, 
+        		 plotParams=plotParams, 
+        		 parameters=cfit$parameters, 
+        		 vars=cfit$vars,
+        		 fullBase=fullBase, 
+        		 base=base, 
+        		 grid=grid, 
+        		 nrIter=kk,
+        		 aic=aic, 
+        		 bic=bic, 
+        		 loglik=loglik)
     }
 
 
 ##IRREGULAR DATA FUNCTIONS**************************************************************
-"initStepIrreg" <- function(data, pert, grid, h, p,
-                            dimBase, k, baseType, seed, init, nrep,
+"initStepIrreg" <- function(data, 
+														pert, 
+														grid, 
+														h, 
+														p,
+                            dimBase, 
+														k, 
+														baseType, 
+														seed, 
+														init, 
+														nrep,
                             fpcCtrl){
     base <- fullBase <- NULL
 
     if(baseType=="eigenbasis"){
         mkdat <- formatFuncy(data=data, format="Format3")
-        res <- with(mkdat,fpc(Yin=Yin, Tin=Tin, isobs=isobs,
-                              dimBase=dimBase,fpcCtrl=fpcCtrl,
-                              Tout=grid, reg=FALSE))
+        
+        res <- with(mkdat,
+        						fpc(Yin=Yin, 
+        								Tin=Tin, 
+        								isobs=isobs,
+        								dimBase=dimBase,
+        								fpcCtrl=fpcCtrl,
+        								Tout=grid, 
+        								reg=FALSE))
+        
         plotParams <- res$plotParams
     }else{
-        res <- makeCoeffs(data=data, reg=FALSE, dimBase=dimBase,
-                          grid=grid, pert=pert,
+        res <- makeCoeffs(data=data, 
+        									reg=FALSE, 
+        									dimBase=dimBase,
+                          grid=grid, 
+        									pert=pert,
                           baseType=baseType)
+        
         plotParams <- NULL
     }
     coeffs <- res$coeffs
@@ -100,13 +160,18 @@
     ## Use k-means to get initial cluster memberships from coeffs.
     nc <- max(data[,1])
     if(k > 1) 
-        class <- initClust(data=coeffs, k=k, init=init, seed=seed, nrep=nrep)$clusters
+        class <- initClust(data=coeffs, 
+        									 k=k, 
+        									 init=init, 
+        									 seed=seed, 
+        									 nrep=nrep)$clusters
     else
         class <- rep(1, nc)
 
     ## Initial estimates for the posterior probs of cluster membership.
     piigivej <- matrix(0, nc, k)
     piigivej[col(piigivej) == class] <- 1 
+    
     ## Calculate basis coefficients for cluster means.
     groupCoeffs <- matrix(0,k,dimBase)
     
@@ -132,14 +197,29 @@
                    c(nc, k, sum(dimBase)))
     
     gcov <- matrix(0, sum(dimBase), nc * sum(dimBase))
-    list(base=base, fullBase=fullBase, plotParams=plotParams, parameters =
-             list(lambda.zero=lambda.zero, Lambda=Lambda, alpha =
-                      alpha), vars=list(gamma=gamma, gprod=gprod, gcov=gcov, piigivej=piigivej))
+    
+    list(base=base, 
+    		 fullBase=fullBase, 
+    		 plotParams=plotParams, 
+    		 parameters =	list(lambda.zero=lambda.zero, 
+    		 									Lambda=Lambda, 
+    		 									alpha = alpha), 
+    		 vars=list(gamma=gamma, 
+    		 					gprod=gprod, 
+    		 					gcov=gcov, 
+    		 					piigivej=piigivej)
+    )
 }
 
 
 "fitfclustMstepIrreg" <-
-    function(parameters, data, vars, base, epsilon, p, hard){
+    function(parameters, 
+    				 data, 
+    				 vars, 
+    				 base, 
+    				 epsilon, 
+    				 p, 
+    				 hard){
         ## This function implements the M step of the EM algorithm. It
         ## computes the parameters that maximize the function.
         
@@ -165,7 +245,10 @@
             parameters$pi <- apply(vars$piigivej, 2, mean)
         
         ## Compute rank p estimate of Gamma
-        ind <- matrix(rep(c(rep(c(1, rep(0, dimBase - 1)), nc), 0), dimBase)[1:(nc*dimBase^2)], nc * dimBase, dimBase)
+        ind <- matrix(rep(c(rep(c(1, rep(0, dimBase - 1)), nc), 0), dimBase)[1:(nc*dimBase^2)], 
+        							nc * dimBase, 
+        							dimBase)
+        
         gsvd <- svd(vars$gprod %*% ind/nc)
         gsvd$d[ - (1:p)] <- 0 
         parameters$Gamma <- gsvd$u %*% diag(gsvd$d) %*% t(gsvd$u)
@@ -176,9 +259,10 @@
         while((abs(sigma.old[1] - sigma[1])/sigma[1] > epsilon) & (loopnumber <10)){
             sigma.old <- sigma
             gamma.pi <- diag(base %*% t(apply(gamma * as.vector(piigivej), c(1, 3), sum)[curve,  ]))
-            alpha.pi <- t(matrix(apply(alpha, 2, function(x, piigivej,k)
-                {rep(1, k) %*% (piigivej * x)}
-                                     , t(piigivej), k), nc, h)[curve,  ])
+            alpha.pi <- 
+            	t(matrix(apply(alpha, 2, function(x, piigivej,k)
+            	{rep(1, k) %*% (piigivej * x)}, 
+            	t(piigivej), k), nc, h)[curve,  ])
 
             lambda.zero <- solve(t(base) %*% base) %*% t(base) %*% (data[,2] - diag(base %*% Lambda %*% alpha.pi) - gamma.pi)
             
@@ -236,10 +320,15 @@
     }
 
 "fitfclustEstepIrreg" <-
-    function(parameters, data, vars, base, hard){
+    function(parameters, 
+    				 data, 
+    				 vars, 
+    				 base, 
+    				 hard){
         ## This function performs the E step of the EM algorithm by
         ## calculating the expected values of gamma and gamma %*% t(gamma)
         ## given The currenT parameter estimates.
+    	
         par <- parameters
         nc <- dim(vars$gamma)[1]
         k <- dim(vars$gamma)[2]
@@ -262,8 +351,7 @@
                 invvar <- 1/par$sigma
 
             ## Variance of coefficients
-            Cgamma <- Gamma - Gamma %*% t(basej) %*% solve(diag(nj) + basej %*%
-                                                               Gamma %*% t(basej) %*% invvar) %*% invvar %*% basej %*% Gamma
+            Cgamma <- Gamma - Gamma %*% t(basej) %*% solve(diag(nj) + basej %*% Gamma %*% t(basej) %*% invvar) %*% invvar %*% basej %*% Gamma
             centx <- data[curveIndx==j,2]  - basej %*% Lambda.alpha
             vars$gamma[j,  ,  ] <- t(Cgamma %*% t(basej) %*% invvar %*% centx)
             
@@ -280,9 +368,8 @@
                 
             }
             ## Calculate expected value of gamma and gamma %*% t(gamma)
-            vars$gprod <- cbind(vars$gprod, t(matrix(vars$gamma[j,  ,  ],
-                                                     k, dimBase)) %*% (matrix(vars$gamma[j,  ,  ], k, dimBase) * vars$
-                                                                       piigivej[j,  ]) + Cgamma)
+            vars$gprod <- cbind(vars$gprod, 
+            										t(matrix(vars$gamma[j,  ,  ], k, dimBase)) %*% (matrix(vars$gamma[j,  ,  ], k, dimBase) * vars$piigivej[j,  ]) + Cgamma)
             vars$gcov <- cbind(vars$gcov, Cgamma)
         }
         vars$loglik <- sum(log(cost))
@@ -291,12 +378,16 @@
 
 ##Additional Functions------------------------------------------------------
 "fitfclust.predIrreg" <-
-    function(fit, data=NULL, reweight=F){
+    function(fit, 
+    				 data=NULL, 
+    				 reweight=F){
+    	
         ## This function produces the alpha hats used to provide a low
         ## dimensional pictorial respresentation of each curve. It also
         ## produces a class prediction for each curve. It takes as
         ## input the fit from fldafit (for predictions on the original data)
         ## or the fit and a new data set (for predictions on new data).
+    	
         if (is.null(data))
             data <- fit$data
         fullBase <- fit$fullBase
@@ -350,12 +441,22 @@
                 class.pred[test] <- l
                 m[test] <- probs[test, l]
             }
-        list(Calpha=Calpha, alpha.hat=alpha.hat, class.pred=class.pred,
-             distance=distance, m=m, probs=probs)
+        
+        list(Calpha=Calpha, 
+        		 alpha.hat=alpha.hat, 
+        		 class.pred=class.pred,
+             distance=distance, 
+        		 m=m, 
+        		 probs=probs)
     }
 
 "fitfclust.curvepredIrreg" <-
-    function(fit, data=NULL, index=NULL, tau=0.95, tau1=0.975){
+    function(fit, 
+    				 data=NULL, 
+    				 index=NULL, 
+    				 tau=0.95, 
+    				 tau1=0.975){
+    	
         if (is.null(data))
             data <- fit$data
         if (is.null(index))
@@ -376,6 +477,7 @@
         etapred <- matrix(0,nc,ncol(base))
         ind <- 1
         Lambda.alpha <- lambda.zero + Lambda %*% t(alpha)
+        
         for (i in index){
             y <-data[curveIndx==i,2] 
             basei <-  fullBase[timeIndx[curveIndx == i],  ]
@@ -425,8 +527,12 @@
     }
 
 
-"fitfclust.plotcurvesIrreg" <-function(object=NULL, fit=NULL, index=NULL,
-                                       ci=T, pi=T, clustermean=F){
+"fitfclust.plotcurvesIrreg" <-function(object=NULL, 
+																			 fit=NULL, 
+																			 index=NULL,
+                                       ci=T, 
+																			 pi=T, 
+																			 clustermean=F){
     if (is.null(object))
         object <- fitfclust.curvepredIrreg(fit=fit)
     if (is.null(index))
@@ -434,6 +540,7 @@
     r <- min(ceiling(sqrt(length(index))),5)
     timeIndx <- match(object$data[,3],object$grid)
     curveIndx <- object$data[,1]
+    
     par(mfrow=c(r,r))
     for (i in index){
         grid <- object$grid
@@ -466,18 +573,39 @@
 
 ############################################################
 ##Functions for regular data *******************************
-"initStepReg" <- function(data, pert, grid, h, p,
-                          dimBase, k, baseType, seed, init, nrep,
+"initStepReg" <- function(data, 
+													pert, 
+													grid, 
+													h, 
+													p,
+                          dimBase, 
+													k, 
+													baseType, 
+													seed, 
+													init, 
+													nrep,
                           fpcCtrl){
 
     if(baseType=="eigenbasis"){
         mkdat <- formatFuncy(data, regTime=grid, format="Format3")
-        res <- with(mkdat,fpc(Yin=Yin, Tin=Tin, isobs=isobs, dimBase=dimBase,
-                              fpcCtrl=fpcCtrl, reg=TRUE))
+        
+        res <- with(mkdat,
+        						fpc(Yin=Yin, 
+        								Tin=Tin, 
+        								isobs=isobs, 
+        								dimBase=dimBase,
+        								fpcCtrl=fpcCtrl, 
+        								reg=TRUE))
+        
         plotParams <- res$plotParams
     }else{
-        res <- makeCoeffs(data=t(data), reg=TRUE, dimBase=dimBase,
-                          grid=grid, pert=pert, baseType=baseType)
+        res <- makeCoeffs(data=t(data), 
+        									reg=TRUE, 
+        									dimBase=dimBase,
+                          grid=grid, 
+        									pert=pert, 
+        									baseType=baseType)
+        
         plotParams <- NULL
     }
 
@@ -488,7 +616,11 @@
     
     ## Use k-means to get initial cluster memberships from coeffs.
     if(k > 1) {
-        class <- initClust(data=coeffs, k=k, init=init, seed=seed, nrep=nrep)$clusters 
+        class <- initClust(data=coeffs, 
+        									 k=k, 
+        									 init=init, 
+        									 seed=seed, 
+        									 nrep=nrep)$clusters 
     }  else
         class <- rep(1, nc)
 
@@ -517,12 +649,27 @@
                    c(nc, k, sum(dimBase)))
     
     gcov <- matrix(0, sum(dimBase), nc * sum(dimBase))
-    list(base=base, fullBase=fullBase, plotParams=plotParams, parameters=list(lambda.zero=lambda.zero,Lambda=Lambda, alpha=alpha), vars=list(gamma=gamma,gprod=gprod, gcov=gcov, piigivej=piigivej))
+    list(base=base, 
+    		 fullBase=fullBase, 
+    		 plotParams=plotParams, 
+    		 parameters=list(lambda.zero=lambda.zero,
+    		 								Lambda=Lambda, 
+    		 								alpha=alpha), 
+    		 vars=list(gamma=gamma,
+    		 					gprod=gprod, 
+    		 					gcov=gcov, 
+    		 					piigivej=piigivej))
 }
 
 
 "fitfclustMstep" <-
-    function(parameters, data, vars, base, epsilon, p, hard){
+    function(parameters, 
+    				 data, 
+    				 vars, 
+    				 base, 
+    				 epsilon, 
+    				 p, 
+    				 hard){
         ## This function implements the M step of the EM algorithm. It computes the parameters that maximize the function.
         k <- dim(parameters$alpha)[1]
         alpha <- parameters$alpha

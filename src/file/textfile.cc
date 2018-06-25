@@ -94,7 +94,7 @@ char *TextTokenizer::ReadLine() {
 */
 
 void TextLineReader::Error(const char *format, ...) {
-  va_list vl;
+  //va_list vl;
 
   /*
   // TODO: Use a warning propagation system
@@ -271,7 +271,7 @@ void Sanitize(const String& src, String* dest) {
 }
 
 void TextTokenizer::Error(const char *format, ...) {
-  va_list vl;
+  //va_list vl;
   String cur_sanitized;
   String next_sanitized;
   

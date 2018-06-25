@@ -26,6 +26,6 @@
   Statistical Society Series B. 63. 533--550. 2001
 
   Gareth M. James and Catherine A. Sugar. Clustering for Sparsely Sampled Functional Data
-  . Journal of the American Statistical Assocation. 98. 397--408. 2003
+  . Journal of the American Statistical Association. 98. 397--408. 2003
 }
 \keyword{datasets}

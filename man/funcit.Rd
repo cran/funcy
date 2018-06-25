@@ -86,7 +86,7 @@ For a detailed description of the methods please see the references.
  	    least \code{dimBase}.}
  	  \item{pert:}{
  	    Adds a ridge term to the least squares fit, helps if
- 	    only few obeservations per curve were registered.}
+ 	    only few observations per curve were registered.}
 	}
       }
 
@@ -111,7 +111,7 @@ For a detailed description of the methods please see the references.
       \item{"funclust"}{
 	\describe{
 	  \item{}{}
-	  \item{nbInit:}{The number of small-EM used to determine the intialization of
+	  \item{nbInit:}{The number of small-EM used to determine the initialization of
             the main EM-like algorithm.}
 	  \item{nbIterInit:}{The maximum number of iterations for each
 	    small-EM.}
@@ -134,7 +134,7 @@ For a detailed description of the methods please see the references.
 	    A two-dimensional matrix of the curve
 	    locations (coordinates).}
 	  \item{knn:}{
-	    Number of neighbours each curve depends on.}
+	    Number of neighbors each curve depends on.}
 	  \item{useCode:}{
 	    \code{"R"} or {"C"}. If C is installed, a lot faster than
 	    R.}
@@ -152,7 +152,7 @@ For a detailed description of the methods please see the references.
 	    One of \code{"rEM"} or \code{"SEM"} for random or
 	    stochastic EM.}
 	  \item{plotLoglik:}{
-	    \code{TRUE}, if loglikelihood is to be plotted. 
+	    \code{TRUE}, if log-likelihood is to be plotted. 
 	    }
       }}
     }
@@ -166,7 +166,7 @@ For a detailed description of the methods please see the references.
   grid. While for regular datasets, all curves are measured on the same
   time points, for irregular datasets, number or/and location of time
   points can differ (see \code{\link{formatFuncy}} for different formats). Only algorithms \code{"fitfclust"},\code{"distclust"} and
-  \code{"iterSubspace"} are applicable to irregular datsets. 
+  \code{"iterSubspace"} are applicable to irregular datasets. 
   All methods are based on the projection of the curves onto a
   basis defined in \code{\link{funcyCtrl}} and building mixed effects
   models of the basis coefficients.
@@ -187,7 +187,7 @@ For a detailed description of the methods please see the references.
  of Applied Statistics. 2 (3). 1056--1077, 2008}
  \item{"iterSubspace":}{Chiou Jeng-Min and Pai-Ling Li. Functional clustering and
  identifying substructures of longitudinal data. Journal of the
- Royal Statistical Scociety: Series B. 69 (4). 679--699. 2007}
+ Royal Statistical Society: Series B. 69 (4). 679--699. 2007}
  \item{"waveclust":}{Madison Giacofci and Sophie Lambert-Lacroix and Guillemette Marot
  and Franck Picard. Wavelet-based clustering for mixed-effects
   functional models in high dimension. Biometrics. 69. 31--40. 2011}

@@ -21,7 +21,7 @@ initClust <- function(data, k, init, seed, nrep){
         
     }else if (init=="hclust"){
         T   = matrix(0,nc,k)
-        clusters = cutree(hclust(dist(data),method='ward'),k)
+        clusters = cutree(hclust(dist(data),method='ward.D'),k)
     }
     index <- rep(0,k)
     for (l in 1:k){

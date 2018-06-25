@@ -62,11 +62,13 @@ class String {
   OBJECT_TRAVERSAL(String) {
     OT_OBJ(array_);
   }
-  
+
+  /*
   OT_CUSTOM_PRINT(String) {
     const char *c_str = this->c_str();
     OT_OBJ(c_str);
   }
+  */
 
  public:
   /**

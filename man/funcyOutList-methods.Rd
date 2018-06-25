@@ -45,7 +45,7 @@
     \item{props}{data.frame, proportion of the clusters for all methods. Can include NAs if a method reduced cluster number.}
     \item{randIndex}{\code{signature(x="funcyOutList", y="missing")}: Quadratic matrix of Rand indices showing the similarity between the methods. If true cluster membership was given, correct
       classification on diagonal.}
-    \item{summary}{ Summary showing method call, custer proportions, Rand indices and
+    \item{summary}{ Summary showing method call, cluster proportions, Rand indices and
       calculation time.}
   }
 }

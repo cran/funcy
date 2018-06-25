@@ -413,11 +413,14 @@ class ArrayList {
   void Resize(fl__index_t size) {
     //DEBUG_MODIFY_OK(this);
     //DEBUG_ASSERT(size >= 0);
-    if ((size > size_)) {
+    #if 0
+    if (size > size_) {
       GrowTo(size);
     } else {
       ShrinkTo(size);
     }
+    #endif
+    GrowTo(size);
   }
 
   /**

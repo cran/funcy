@@ -122,16 +122,22 @@ fpc <- function(Yin=NULL, Tin=NULL, Tout=NULL, isobs=NULL, dimBase=dimBase, fpcC
     hcovNew <- min(diff(t_unique))
     counter <- 0
     isNa <- 0
+    
+    if(fpcCtrl@sm2Dim == "sm.regression")
+    	poly.index <- 2
+    else
+    	poly.index <- c(1,2)
+    
     while(isNa==0){
         counter <- counter+1
-        cov.smoothed <- suppressWarnings(smoothFct2D(x=cov.timeIn,
-                                                     y=cov.raw,
-                                                     h=hcov,
-                                                     eval.points=cov.timeOut,
-                                                     weights=rep(1,length(cov.raw)),
-                                                     poly.index=c(1,2),
-                                                     eval.grid=FALSE,
-                                                     display="none")$estimate)
+        cov.smoothed <- smoothFct2D(x=cov.timeIn,
+        														y=cov.raw,
+        														h=hcov,
+        														eval.points=cov.timeOut,
+        														weights=rep(1,length(cov.raw)),
+        														poly.index=poly.index,
+        														eval.grid=FALSE,
+        														display="none")$estimate
 
         if(sum(is.na(cov.smoothed))==0)
             isNa <- 1

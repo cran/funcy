@@ -29,7 +29,7 @@ getUniCl(id, clusters, reduce=TRUE)
   for each curve evaluation point. Method \code{\link{funcit}} accepts
   dataset only in formats "Format1" and "Format2" and an optional vector
   of cluster true labels \code{clusters} of length nr_curves. \code{getUniCl} can be
-  applied to clumns curveID and repeated labels to reduce them
+  applied to columns curveID and repeated labels to reduce them
   to the number of curves. 
 }
 \value{

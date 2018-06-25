@@ -1,24 +1,20 @@
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 
 
-funcy version 0.8.6
+funcy version 0.9.0
 ===================
 
 Changes (NOCH NICHT SUBMITTED)
 -------
 
-* R/plot.R:
+* R/funPrinComp.R:
+ 
+control statements with condition with condition greater than one --> fixed
 
-1. added `xlab=NULL, ylab=NULL` to plotFuncy: xlab and ylab can now be
-   set. They are void if nothing was set. 
+* R/wrappers.R:
 
-2. plotOverview: changed mar=c(3,2,3,10) to mar=c(3,2,3,1)
+1. updated function "funHDDCWrapper" so that no errors occur after new version of package "funHDDC"
 
-*R/xecute.R
-method "summary" for "funcyOutList": changed cat("\\n") to cat("\n")
+* DESCRIPTION
 
-3. functions.R
-added polynomial basis (create.monomial.basis)
-
-4. funct.Rd
-for method "iterSubspace" parameter name simplify was changed to simplif (as implemented)
+1. changed email address

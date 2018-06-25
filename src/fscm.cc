@@ -464,8 +464,8 @@ void FSCM::HMRF(Vector& alpha, Matrix& beta, Vector& sigma, Vector& gamma, Matri
     fl__index_t n=psi.n_rows(), m=phi.n_rows(), c=beta.n_cols(), q=psi.n_cols();
 
     //#pragma GCC diagnostic ignored "-Wunused-variable"
-    fl__index_t k = neighbors.n_cols();
-    fl__index_t p = phi.n_cols();
+    //fl__index_t k = neighbors.n_cols();
+    //fl__index_t p = phi.n_cols();
     
     //ArrayList<fl__index_t> random_index;
     //math::MakeRandomPermutation(n,&random_index);
@@ -603,7 +603,7 @@ void FSCM::HMRF(Vector& alpha, Matrix& beta, Vector& sigma, Vector& gamma, Matri
 
 void FSCM::RandomEffect(Vector& alpha, Matrix& beta, Matrix& pi_y, Vector& sigma, Vector& gamma, Matrix& Vgamma, double max_iter_mc){
 
-    fl__index_t n=psi.n_rows(), m=phi.n_rows(), c=beta.n_cols(), p=phi.n_cols(), q=psi.n_cols();
+    fl__index_t n=psi.n_rows(), m=phi.n_rows(), /*c=beta.n_cols(), p=phi.n_cols(),*/ q=psi.n_cols();
 
 
     //printf("Compute Vgamma=Cov(gamma|Y)\n");

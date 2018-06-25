@@ -9,10 +9,10 @@
 \alias{genes}
 \title{Gene expression profiles}
 \description{
-  A subet of the Drosophila life cycle gene expression data of Arbeitman
+  A subset of the Drosophila life cycle gene expression data of Arbeitman
   et al. (2002). The original data set contains 77 gene expression
   profiles during 58 sequential time points from the embryonic, larval,
-  and pupal periods of the lifecycle.
+  and pupal periods of the life cycle.
 }
 \usage{data("genes")}
 \format{Data in format "Format2" (see \code{\link{formatFuncy}}). A matrix of dimension 44x77, a cluster vector of length 44.}

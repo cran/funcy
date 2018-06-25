@@ -9,9 +9,9 @@ OFILES=base/cc.o base/otrav.o base/common.o base/debug.o \
     math/discrete.o
 
 
-PKG_CPPFLAGS += -DDISABLE_DISK_MATRIX -DSCALE_NORMAL -I. -I..
-PKG_CFLAGS +=  -Wno-strict-aliasing -Wno-unused-variable -Wno-unused-function -Wno-variadic-macros -Wno-long-long -Wno-format
-PKG_CXXFLAGS +=  -std=gnu++0x -Wno-strict-aliasing -Wno-unused-variable -Wno-unused-function -Wno-variadic-macros -Wno-long-long -Wno-format
+PKG_CPPFLAGS += -DWIN32 -DDISABLE_DISK_MATRIX -DSCALE_NORMAL -I. -I..
+PKG_CFLAGS +=
+PKG_CXXFLAGS += -std=c++0x
 
 PKG_LIBS += $(OFILES) $(BLAS_LIBS) $(LAPACK_LIBS)
 
