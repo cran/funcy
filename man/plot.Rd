@@ -87,6 +87,10 @@
 }
 
 \references{
+    Christina Yassouridis and Dominik Ernst and Friedrich Leisch. 
+    Generalization, Combination and Extension of Functional Clustering Algorithms: 
+    The R Package funcy. Journal of Statistical Software. 85 (9). 1--25. 2018
+    
     Friedrich Leisch. Neighborhood graphs, stripes and shadow plots for
     cluster visualization. Statistics and
     Computing. 20(4). 457--469. 2010
@@ -95,7 +99,9 @@
      Sampled Functional Data. Journal of the American Statistical
      Association. 98 (462). 297--408. 2003
 
-     Nicoleta Serban and Huijing Jiang.Clustering Random Curves Under Spatial Interdependence With Application to Service Accessibility. Technometrics. 54 (2). 108--119. 2012
+     Nicoleta Serban and Huijing Jiang.Clustering Random Curves Under Spatial 
+     Interdependence With Application to Service Accessibility. Technometrics. 
+     54 (2). 108--119. 2012
    }
 
 

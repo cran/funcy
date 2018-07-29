@@ -40,7 +40,6 @@ Matrix of dimension nr_curves x nr_clusters.
 Christina Yassouridis
 }
 
-
 \examples{
 ##Generate dataset
 set.seed(2804)
@@ -56,3 +55,8 @@ centers <- cbind(c1,c2,c3)
 ##Calculate distance to the centers
 dist2centers(data, centers)
 }
+\references{
+    Christina Yassouridis and Dominik Ernst and Friedrich Leisch. 
+    Generalization, Combination and Extension of Functional Clustering Algorithms: 
+    The R Package funcy. Journal of Statistical Software. 85 (9). 1--25. 2018
+    }

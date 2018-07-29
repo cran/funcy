@@ -1,20 +1,22 @@
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 
 
-funcy version 0.9.0
+funcy version 1.0.0
 ===================
 
-Changes (NOCH NICHT SUBMITTED)
 -------
 
-* R/funPrinComp.R:
+* R/format.R:
  
-control statements with condition with condition greater than one --> fixed
+For function regFuncy, method "pace" is not available any longer. 
+"Pace" was dependent (via an interface funcyOctave) on the R package "RcppOctave" which had been removed from 
+CRAN.
 
-* R/wrappers.R:
+* R/functions.R:
+Removed import of trapz function from caTools since the package it is scheduled for archival.
 
-1. updated function "funHDDCWrapper" so that no errors occur after new version of package "funHDDC"
+* Unit tests added with testthat
 
-* DESCRIPTION
+* added CITATION of JSS paper
 
-1. changed email address
+* added citations of JSS paper in Rd files

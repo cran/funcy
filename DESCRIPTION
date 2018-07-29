@@ -1,8 +1,8 @@
 Package: funcy
 Type: Package
 Title: Functional Clustering Algorithms
-Version: 0.9.0
-Date: 2018-06-04
+Version: 1.0.0
+Date: 2018-07-03
 Authors@R: c(
 	   person(given="Christina", family="Yassouridis", email="chris.yassou@gmail.com",
 	   role=c("aut", "cre")),
@@ -29,8 +29,8 @@ Description: Unified framework to cluster functional data according to one of
 License: GPL-2
 Depends: flexclust, splines
 Imports: MASS, Matrix, fda, methods, wavethresh, kernlab, parallel,
-        car, fields, calibrate, cluster, sm, caTools, plyr
-Suggests: scatterplot3d, Funclustering, funHDDC
+        car, fields, calibrate, cluster, sm, plyr
+Suggests: scatterplot3d, Funclustering, funHDDC, testthat
 LazyLoad: yes
 Encoding: UTF-8
 NeedsCompilation: yes
@@ -51,5 +51,5 @@ Author: Christina Yassouridis [aut, cre],
   Pai-Ling Li [ctb]
 Maintainer: Christina Yassouridis <chris.yassou@gmail.com>
 Repository: CRAN
-Packaged: 2018-06-25 08:54:18 UTC; ChristinaYassouridis
-Date/Publication: 2018-06-25 14:42:52 UTC
+Packaged: 2018-07-28 22:04:23 UTC; chrissles
+Date/Publication: 2018-07-29 06:10:07 UTC

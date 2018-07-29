@@ -85,3 +85,9 @@ res
 ##Back to Format1
 formatFuncy(data=res, format="Format1", reg=FALSE)
 }
+
+\references{
+    Christina Yassouridis and Dominik Ernst and Friedrich Leisch. 
+    Generalization, Combination and Extension of Functional Clustering Algorithms: 
+    The R Package funcy. Journal of Statistical Software. 85 (9). 1--25. 2018
+    }

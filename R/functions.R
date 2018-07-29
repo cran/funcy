@@ -469,5 +469,10 @@ makeClMat <- function(dist2centers, n=2){
 }
 
 
-
-
+trapz <- function (x, y) 
+{
+  idx = 2:length(x)
+  res <- as.double((x[idx] - x[idx - 1]) %*% (y[idx] + y[idx - 1]))/2
+  
+  return(res)
+}

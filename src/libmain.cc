@@ -1,3 +1,4 @@
+#include <R_ext/Rdynload.h>
 
 #include <Rinternals.h>
 #include <R_ext/Random.h>

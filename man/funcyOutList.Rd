@@ -54,4 +54,10 @@ class(res)
 summary(res)
 }
 
+\references{
+    Christina Yassouridis and Dominik Ernst and Friedrich Leisch. 
+    Generalization, Combination and Extension of Functional Clustering Algorithms: 
+    The R Package funcy. Journal of Statistical Software. 85 (9). 1--25. 2018
+    }
+    
 \keyword{classes}

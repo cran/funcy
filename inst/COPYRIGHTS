@@ -1,11 +1,3 @@
-SUPPLEMENTARY PACKAGE
-In order to use method "pace" in regFuncy, the additional package funcyOctave must be installed.
-funcyOctave is an interface to the MATLAB package PACE conducting a functional principal component analysis by conditional estimation (PACE).
-It can be downloaded from the website:
-
-http://statistik.boku.ac.at/download/
-
-
 COPYRIGHT STATUS
 
 Some of this code comes from existing algorithms. All authors give permission to include their code into the package.

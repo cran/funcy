@@ -15,7 +15,6 @@ importFrom("fields", "stationary.cov")#FSCM
 importFrom("calibrate", "textxy")#plotFSCM
 importFrom("cluster", "pam")
 importFrom("sm", "h.select", "sm.regression")
-importFrom("caTools", "trapz")
 importFrom("plyr", "rbind.fill")
 
 

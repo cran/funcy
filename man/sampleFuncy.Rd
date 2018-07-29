@@ -76,8 +76,8 @@ sampleFuncy(obsNr=100, k=4, timeNr=20, timeNrMax=NULL,
   \eqn{x-1}
   }
   If \code{reg}=\code{TRUE} all curves are
-evaluated on the same time points. If \code{reg}=\code{FALSE} evaluation place
-and number can differ for each curve.
+  evaluated on the same time points. If \code{reg}=\code{FALSE} evaluation place 
+  and number can differ for each curve.
 }
 
 \value{
@@ -98,6 +98,7 @@ and number can differ for each curve.
 \seealso{
   \code{\link{funcit}}
 }
+
 \examples{
 ##sample a regular dataset
 set.seed(2705)
@@ -108,8 +109,12 @@ plotFuncy(ds)
 set.seed(2705)
 ds <- sampleFuncy(obsNr=100, k=4, timeNrMin=3, timeNrMax=10, reg=FALSE)
 plotFuncy(ds, lty=1)
-
 }
 
-
+\references{
+    Christina Yassouridis and Dominik Ernst and Friedrich Leisch. 
+    Generalization, Combination and Extension of Functional Clustering Algorithms: 
+    The R Package funcy. Journal of Statistical Software. 85 (9). 1--25. 2018
+    }
+    
 \keyword{datasets}

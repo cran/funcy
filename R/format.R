@@ -199,17 +199,18 @@ regFuncy <- function(data,
                    result <- res$yreg
                    time <- res$time
                }
-           },
-           "pace"={
-               isAvailable <- search()
-               if(! ("package:funcyOctave" %in% isAvailable))
-                   stop("Please install and load package funcyOctave to use this method.")
-               
-               sparseFPCA <- get("sparseFPCA", mode="function")
-               res <- sparseFPCA(data, time)
-               time <- res$time
-               result <- res$data
            }
+           # ,
+           # "pace"={
+           #     isAvailable <- search()
+           #     if(! ("package:funcyOctave" %in% isAvailable))
+           #         stop("Please install and load package funcyOctave to use this method.")
+           #     
+           #     sparseFPCA <- get("sparseFPCA", mode="function")
+           #     res <- sparseFPCA(data, time)
+           #     time <- res$time
+           #     result <- res$data
+           # }
            )
            if(plot){
                matplot(time, result, type='l', main="Regularized data")

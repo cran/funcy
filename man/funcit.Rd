@@ -179,25 +179,30 @@ For a detailed description of the methods please see the references.
 	 
 
 \references{
+    Christina Yassouridis and Dominik Ernst and Friedrich Leisch. 
+    Generalization, Combination and Extension of Functional Clustering Algorithms: 
+    The R Package funcy. Journal of Statistical Software. 85 (9). 1--25. 2018
   \describe{
     \item{"fitfclust":}{Gareth James and Catherine A. Sugar. Clustering for Sparsely
- Sampled Functional Data. Journal of the American Statistical
- Association. 98 (462). 297--408. 2003}
-    \item{"distFPCA":}{Jie Peng and Hans-Georg Mueller. Distance-based clustering of sparsely observed stochastic processes, with applications to online auctions. The Annals
- of Applied Statistics. 2 (3). 1056--1077, 2008}
- \item{"iterSubspace":}{Chiou Jeng-Min and Pai-Ling Li. Functional clustering and
- identifying substructures of longitudinal data. Journal of the
- Royal Statistical Society: Series B. 69 (4). 679--699. 2007}
- \item{"waveclust":}{Madison Giacofci and Sophie Lambert-Lacroix and Guillemette Marot
- and Franck Picard. Wavelet-based clustering for mixed-effects
-  functional models in high dimension. Biometrics. 69. 31--40. 2011}
- \item{"fscm":}{Nicoleta Serban and Huijing Jiang.Clustering Random Curves Under Spatial Interdependence With Application to Service Accessibility. Technometrics. 54 (2). 108--119. 2012 }
- \item{"funclust":}{Julien Jacques and Cristian Preda. Funclust: a curves clustering
- method using functional random variables density
- approximation. Neurocomputing. 112. 164–171. 2013}
- \item{"funHDDC":}{Charles Bouveyron and Julien and Jacques. Model-based clustering
- of time series in group-specific functional subspaces. Advances
- in Data Analysis and Classification. 5 (4). 281--300. 2011}
+    Sampled Functional Data. Journal of the American Statistical
+    Association. 98 (462). 297--408. 2003}
+    \item{"distFPCA":}{Jie Peng and Hans-Georg Mueller. Distance-based clustering of 
+    sparsely observed stochastic processes, with applications to online auctions. The 
+    Annals of Applied Statistics. 2 (3). 1056--1077, 2008}
+    \item{"iterSubspace":}{Chiou Jeng-Min and Pai-Ling Li. Functional clustering and 
+    identifying substructures of longitudinal data. Journal of the 
+    Royal Statistical Society: Series B. 69 (4). 679--699. 2007}
+    \item{"waveclust":}{Madison Giacofci and Sophie Lambert-Lacroix and Guillemette Marot 
+    and Franck Picard. Wavelet-based clustering for mixed-effects 
+    functional models in high dimension. Biometrics. 69. 31--40. 2011}
+    \item{"fscm":}{Nicoleta Serban and Huijing Jiang.Clustering Random Curves Under 
+    Spatial Interdependence With Application to Service Accessibility. 
+    Technometrics. 54 (2). 108--119. 2012 }
+    \item{"funclust":}{Julien Jacques and Cristian Preda. Funclust: a curves clustering
+    method using functional random variables density approximation. Neurocomputing. 112. 164–171. 2013}
+    \item{"funHDDC":}{Charles Bouveyron and Julien and Jacques. Model-based clustering
+    of time series in group-specific functional subspaces. Advances
+    in Data Analysis and Classification. 5 (4). 281--300. 2011}
     }
 
 }

@@ -1,0 +1,19 @@
+bibentry(bibtype = "Article",
+  title        = "Generalization, Combination and Extension of Functional Clustering Algorithms: The {R} Package {funcy}",
+  author       = c(person(given = "Christina",
+                          family = "Yassouridis",
+                          email = "chris.yassou@gmail.com"),
+                   person(given = "Dominik",
+                          family = "Ernst"),
+                   person(given = "Friedrich",
+                          family = "Leisch")),
+  journal      = "Journal of Statistical Software",
+  year         = "2018",
+  volume       = "85",
+  number       = "9",
+  pages        = "1--25",
+  doi          = "10.18637/jss.v085.i09",
+
+  header       = "To cite funcy in publications use:"
+)
+
