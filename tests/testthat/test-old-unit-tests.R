@@ -9,7 +9,7 @@ silent <- function(expr) {
 }
 
 
-methods <- "ALL"
+methods <- c("fitfclust", "distclust", "iterSubspace", "funHDDC", "fscm", "waveclust")
 k <- 5
 set.seed(3804)
 ds <- sampleFuncy(obsNr = 100, timeNr = 20, reg = TRUE, k = k, sd = 0.4)
@@ -46,10 +46,16 @@ test_that("Making an irregular data set regular", {
   res2 <- silent(funcit(methods = methods, seed = 2506, data = data, k = 4))    
   cl <- lapply(res2@models, class)
   
+  # expected <- structure(
+  #   c("funcyOutMbc-fitfclust", "funcyOut", "funcyOut-iterSubspace", 
+  #     "funcyOutMbc", "funcyOutMbc", "funcyOutMbc-fscm", "funcyOutMbc"
+  #   ), .Names = c("fitfclust", "distclust", "iterSubspace", "funclust", 
+  #                 "funHDDC", "fscm", "waveclust"))
+  
   expected <- structure(
     c("funcyOutMbc-fitfclust", "funcyOut", "funcyOut-iterSubspace", 
-      "funcyOutMbc", "funcyOutMbc", "funcyOutMbc-fscm", "funcyOutMbc"
-    ), .Names = c("fitfclust", "distclust", "iterSubspace", "funclust", 
+      "funcyOutMbc", "funcyOutMbc-fscm", "funcyOutMbc"
+    ), .Names = c("fitfclust", "distclust", "iterSubspace", 
                   "funHDDC", "fscm", "waveclust"))
   
   expect_equal(object = unlist(cl), expected = expected)

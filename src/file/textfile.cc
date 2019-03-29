@@ -247,7 +247,7 @@ char TextTokenizer::Skip_(ArrayList<char> *token) {
 }
 
 void TextTokenizer::UndoNextChar_(ArrayList<char> *token) {
-  char c;
+  char c=-1;
   token->PopBackInit(&c);
   if (c != 0) { /* don't put EOF back on the stream */
     Unget_(c);

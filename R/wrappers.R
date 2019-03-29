@@ -174,79 +174,79 @@ iterSubspaceWrapper <- function(data,
 }
 
 
-funclustWrapper <- function(data, 
-														k,
-														reg,
-														regTime,
-														funcyCtrlMbc,
-                            nbInit=5,
-														nbIterInit=50, ...){
-
-    if(!reg)
-        stop("This method does not work on sparse data!")
-    baseType <- funcyCtrlMbc@baseType
-    if(baseType=="eigenbasis")
-        stop("This base type is not implemented yet.")
-    if(!is.null(funcyCtrlMbc@seed))
-        warning("It is not possible to set a seed for method funclust.")
-
-    ##input
-    dimBase <- funcyCtrlMbc@dimBase
-    thd <- funcyCtrlMbc@thd
-    epsilon <- funcyCtrlMbc@eps
-    nbIteration <- funcyCtrlMbc@maxit
-    hard <- funcyCtrlMbc@hard
-    fixedDimension <- rep(funcyCtrlMbc@redDim, k)
-    increaseDimension <- funcyCtrlMbc@flexDim
-
-    ##evaluation
-    ptm <- proc.time()
-    
-    res <- formatFuncy(data, regTime=regTime,  format="Format3")
-    data <- t(res$Yin); t_all <- res$t_all
-    baseObj <- makeBasis(baseType, t_all, nbasis=dimBase)$bObj
-    fd <- Data2fd(data, argvals=t_all, basisobj=baseObj);
-    res <- 
-    	Funclustering::funclust(fd=fd, 
-    													K=k, 
-    													thd=thd, 
-    													increaseDimension=increaseDimension, 
-    													hard=hard, 
-    													fixedDimension=fixedDimension, 
-    													nbInit=nbInit,
-    													nbIterInit=nbIterInit, 
-    													nbIteration=nbIteration,
-    													epsilon=epsilon, ...)
-    
-    sysTime <- proc.time()-ptm
-
-    clout <- label2lowerk(res$cls)
-    
-    ##funcyOut
-    out <- new("funcyOutMbc")
-    out@methodName <- "funclust"
-    out@kOut <- clout$k
-    out@time <- t_all
-    out@dimBaseOut <- dimBase
-    out@cluster <- clout$cluster
-    centers <- sapply(res$meanList[[1]], function(x)
-        eval.fd(t_all, x))[,as.numeric(names(table(res$cls)))]
-    out@centers <- cbind(centers)
-    out@props <- round(as.numeric(res$proportions),4)
-    out@dist2centers <- dist2centers(data, out@centers)
-    out@cldist=makeClMat(out@dist2centers)
-    out@calcTime <- sysTime 
-    ##funcyOutMbc
-    out@groupDimBase <- res$dimensions
-    out@probs<-res$tik
-    out@prms <- list(NA)
-    out@AIC <- res$aic
-    out@BIC <- res$bic
-    out@logLik <- -res$loglikelihood
-    out@nrIter <- as.integer(NA)
-    
-    return(out)
-}
+# funclustWrapper <- function(data, 
+# 														k,
+# 														reg,
+# 														regTime,
+# 														funcyCtrlMbc,
+#                             nbInit=5,
+# 														nbIterInit=50, ...){
+# 
+#     if(!reg)
+#         stop("This method does not work on sparse data!")
+#     baseType <- funcyCtrlMbc@baseType
+#     if(baseType=="eigenbasis")
+#         stop("This base type is not implemented yet.")
+#     if(!is.null(funcyCtrlMbc@seed))
+#         warning("It is not possible to set a seed for method funclust.")
+# 
+#     ##input
+#     dimBase <- funcyCtrlMbc@dimBase
+#     thd <- funcyCtrlMbc@thd
+#     epsilon <- funcyCtrlMbc@eps
+#     nbIteration <- funcyCtrlMbc@maxit
+#     hard <- funcyCtrlMbc@hard
+#     fixedDimension <- rep(funcyCtrlMbc@redDim, k)
+#     increaseDimension <- funcyCtrlMbc@flexDim
+# 
+#     ##evaluation
+#     ptm <- proc.time()
+#     
+#     res <- formatFuncy(data, regTime=regTime,  format="Format3")
+#     data <- t(res$Yin); t_all <- res$t_all
+#     baseObj <- makeBasis(baseType, t_all, nbasis=dimBase)$bObj
+#     fd <- Data2fd(data, argvals=t_all, basisobj=baseObj);
+#     res <- 
+#     	Funclustering::funclust(fd=fd, 
+#     													K=k, 
+#     													thd=thd, 
+#     													increaseDimension=increaseDimension, 
+#     													hard=hard, 
+#     													fixedDimension=fixedDimension, 
+#     													nbInit=nbInit,
+#     													nbIterInit=nbIterInit, 
+#     													nbIteration=nbIteration,
+#     													epsilon=epsilon, ...)
+#     
+#     sysTime <- proc.time()-ptm
+# 
+#     clout <- label2lowerk(res$cls)
+#     
+#     ##funcyOut
+#     out <- new("funcyOutMbc")
+#     out@methodName <- "funclust"
+#     out@kOut <- clout$k
+#     out@time <- t_all
+#     out@dimBaseOut <- dimBase
+#     out@cluster <- clout$cluster
+#     centers <- sapply(res$meanList[[1]], function(x)
+#         eval.fd(t_all, x))[,as.numeric(names(table(res$cls)))]
+#     out@centers <- cbind(centers)
+#     out@props <- round(as.numeric(res$proportions),4)
+#     out@dist2centers <- dist2centers(data, out@centers)
+#     out@cldist=makeClMat(out@dist2centers)
+#     out@calcTime <- sysTime 
+#     ##funcyOutMbc
+#     out@groupDimBase <- res$dimensions
+#     out@probs<-res$tik
+#     out@prms <- list(NA)
+#     out@AIC <- res$aic
+#     out@BIC <- res$bic
+#     out@logLik <- -res$loglikelihood
+#     out@nrIter <- as.integer(NA)
+#     
+#     return(out)
+# }
 
 
 funHDDCWrapper <- function(data, 
@@ -350,7 +350,7 @@ fscmWrapper <- function(data,
 												location=NULL,
 												scale=FALSE,
                         knn=5, 
-												useCode="C", 
+												useCode="R", 
 												verbose=FALSE){
     if(!reg)
         stop("This method does not work on sparse data!")

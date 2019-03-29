@@ -1,22 +1,26 @@
 <!-- NEWS.md is generated from NEWS.Rmd. Please edit that file -->
 
 
-funcy version 1.0.0
+funcy version 1.0.1
 ===================
 
 -------
 
-* R/format.R:
- 
-For function regFuncy, method "pace" is not available any longer. 
-"Pace" was dependent (via an interface funcyOctave) on the R package "RcppOctave" which had been removed from 
-CRAN.
+* funcit.Rd
+    * "distFPCA" was changed to "distclust". This was a bug in the help file.
+    * "funclust" was removed from examples since its depends on R package "Funclustering" which has been archieved. 
 
-* R/functions.R:
-Removed import of trapz function from caTools since the package it is scheduled for archival.
+* funcyOUtList.Rd
+    * "funclust" was removed from examples since its depends on R package "Funclustering" which has been archieved. 
 
-* Unit tests added with testthat
+* rI Methods.Rd
+    * "funclust" was removed from examples since its depends on R package "Funclustering" which has been archieved.
 
-* added CITATION of JSS paper
+* test-old-unit-test.R
+    * "funclust" was removed from unit tests since its depends on R package "Funclustering" which has been archieved. 
 
-* added citations of JSS paper in Rd files
+* xecute.R
+    * warning for methods = "funclust" saying that funclust is currently not available on CRAN. 
+
+* DESCRIPTION
+    * Funclustering was removed from suggests . 

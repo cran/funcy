@@ -477,6 +477,8 @@ namespace ot__private {
    public:
     enum { IS_PRINTER = 0 };
 
+    void nil() {}
+
     template<typename T>
     Unstructor(T *obj) {
       OT__TraverseObject(obj, this);
@@ -651,6 +653,8 @@ namespace ot__private {
    public:
     enum { IS_PRINTER = 0 };
 
+    void nil() {}
+
     template<typename T>
     Destructor(T *obj) {
       /* Optimized for faster case */
@@ -780,6 +784,8 @@ namespace ot__private {
       }
     }
 
+    void nil() {}
+
     template<typename T>
     void ElemOf(const T *array) {}
     template<typename T>
@@ -868,6 +874,8 @@ namespace ot__private {
 
    public:
     enum { IS_PRINTER = 0 };
+
+    void nil() {}
 
     template<typename T>
     Aliaser(T *obj) {
@@ -1057,6 +1065,8 @@ namespace ot__private {
 
    public:
     enum { IS_PRINTER = 0 };
+
+    void nil() {}
 
     template<typename T>
     Relocator(char *block, const T *orig) {

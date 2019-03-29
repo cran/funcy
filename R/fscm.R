@@ -88,6 +88,7 @@ fscm <- function(data, k, reg, regTime, funcyCtrlMbc, fpcCtrl,
         AIC <- BIC <- NA
     
     }else if(useCode=="C"){
+
         temps <- tempfile()
         dir.create(temps)
         

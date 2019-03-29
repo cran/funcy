@@ -108,15 +108,26 @@ funcit <- function(data,  k,
     }
     ##Method 4-----------
     if("funclust" %in% usedMethods){
-    	if(!requireNamespace("Funclustering"))
-    		stop("Please install package 'Funclustering' to use method 'funclust'.")
-    	
-        indx <- match("funclust",usedMethods)
-        RES[[indx]] <-
-            parallelFct(funclustWrapper(data=data, k=k, 
-                                        reg=reg, regTime=regTime,
-                                        funcyCtrlMbc=funcyCtrl,
-                                        ...))
+      
+      .warn_once <- local({
+        not.warned.yet <- TRUE
+        function(x){
+          if(not.warned.yet){
+            warning("Funclustering is currently not available on CRAN.")
+            not.warned.yet <<- FALSE
+          }
+        }
+      })
+      
+    # 	if(!requireNamespace("Funclustering"))
+    # 		stop("Please install package 'Funclustering' to use method 'funclust'.")
+    # 	
+    #     indx <- match("funclust",usedMethods)
+    #     RES[[indx]] <-
+    #         parallelFct(funclustWrapper(data=data, k=k, 
+    #                                     reg=reg, regTime=regTime,
+    #                                     funcyCtrlMbc=funcyCtrl,
+    #                                     ...))
     }
     ##Method 5-----------
     if("funHDDC" %in% usedMethods){

@@ -545,6 +545,7 @@
    public: \
     C() { \
       ot__private::Unstructor ot__unstructor(this); \
+      ot__unstructor.nil(); \
       OT__DefaultConstruct(this); \
     } \
    private:
@@ -563,6 +564,7 @@
    public: \
     ~C() { \
       ot__private::Destructor<false> ot__destructor(this); \
+      ot__destructor.nil(); \
     } \
    private:
 
@@ -584,6 +586,7 @@
    public: \
     C(const C &src) { \
       ot__private::Copier<false> ot__copier(this, &src); \
+      ot__copier.nil(); \
     } \
     ASSIGN_VIA_COPY_CONSTRUCTION(C) \
    private:
@@ -606,6 +609,7 @@
     __attribute__((deprecated)) \
     C(const C &src) { \
       ot__private::Copier<false> ot__copier(this, &src); \
+      ot__copier.nil(); \
     } \
     ASSIGN_VIA_RECURSION_SAFE_COPY_CONSTRUCTION(C) \
    private:
@@ -853,10 +857,12 @@
     void InitAlias(const C &src) { \
       mem::Copy(this, &src); \
       ot__private::Aliaser ot__aliaser(this); \
+      ot__aliaser.nil(); \
     } \
     void InitSteal(C *src) { \
       mem::Copy(this, src); \
       ot__private::Aliaser ot__aliaser(src); \
+      ot__aliaser.nil(); \
     } \
     bool IsAlias() { \
       return OT__IsAlias(this); \
@@ -1591,6 +1597,7 @@ namespace ot {
   inline void InitCopy(T *dest, const T &src) {
     //DEBUG_INIT_OK(dest);
     ot__private::Copier<false> ot__copier(dest, &src);
+    ot__copier.nil();
   }
 
 
@@ -1698,6 +1705,7 @@ namespace ot {
     //DEBUG_INIT_OK(dest);
     ot__private::Copier<true>
         ot__copier(dest, reinterpret_cast<const T *>(block));
+    ot__copier.nil();
   }
 
 
@@ -1719,6 +1727,7 @@ namespace ot {
     //DEBUG_WARN_MSG_IF(block == reinterpret_cast<const char *>(orig),
 	//"In-place SemiCopy may leak memory; probably incorrect.");
     ot__private::Relocator<false, true> ot__relocator(block, orig);
+    ot__relocator.nil();
     return reinterpret_cast<T *>(block);
   }
   template<typename T>
@@ -1757,6 +1766,7 @@ namespace ot {
     //DEBUG_WARN_MSG_IF(block == reinterpret_cast<const char *>(orig),
     //    "In-place SemiFreeze may leak memory; use SemiFreezeDestruct.");
     ot__private::Relocator<true, false> ot__relocator(block, orig);
+    ot__relocator.nil();
   }
   template<typename T>
   void SemiFreeze(char *block, const char *orig) {
@@ -1790,6 +1800,7 @@ namespace ot {
   template<typename T>
   inline void SemiDestruct(T *obj) {
     ot__private::Destructor<true> ot__destructor(obj);
+    ot__destructor.nil();
   }
   template<typename T>
   inline void SemiDestruct(char *block) {
@@ -1808,6 +1819,7 @@ namespace ot {
   inline char *SemiFreezeDestruct(T *obj) {
     ot__private::Relocator<true, true>
         ot__relocator(reinterpret_cast<char *>(obj), obj);
+    ot__relocator.nil();
     return reinterpret_cast<char *>(obj);
   }
   template<typename T>
@@ -1929,6 +1941,7 @@ namespace ot {
   template<typename T>
   inline T *CopyConstruct(T *dest, const T *src, size_t elems = 1) {
     ot__private::Copier<false> ot__copier(dest, src, elems);
+    ot__copier.nil();
     return dest;
   }
 
@@ -1943,6 +1956,7 @@ namespace ot {
   inline T *RepeatConstruct(T *array, const T &init, size_t elems) {
     for (size_t i = 0; i < elems; ++i) {
       ot__private::Copier<false> ot__copier(array + i, &init);
+      ot__copier.nil();
     }
     return array;
   }

@@ -1,6 +1,6 @@
-7d52cc2221f5cd2877a3dbdc98fd9ff1 *DESCRIPTION
+4baa368ec5b61a7065f79527f61f02cb *DESCRIPTION
 95aca10033395f839291342027358bff *NAMESPACE
-95fe78a4b1d3d15042d906690fcfbb95 *NEWS.md
+7d1c01e91e09296293578741f5b3f537 *NEWS.md
 9fee47e3d6af3aa26a519a683ec9e187 *R/Rfscm.R
 e54f37f0f9f765186e9625034ec05b15 *R/classes.R
 6b72227f3994be5d6cf44b8a08028fc6 *R/classesCurvclust.R
@@ -8,7 +8,7 @@ e54f37f0f9f765186e9625034ec05b15 *R/classes.R
 b2e4dffd19aa45b0cdd6aa4596205d8b *R/distclust.R
 bb751ed18ce235b22a11ab452dac71fe *R/fitfclust.R
 d03a087cb3ff5463975049d5362293dc *R/format.R
-349c01e040899946332453a7c8cd13fc *R/fscm.R
+1ff5990d3a139aa748b27fa354d26b77 *R/fscm.R
 15ce5c42504ebe2d73d51c10f9de511d *R/funPrinComp.R
 a8a0b7604a01ae8f1ef62adf375f24db *R/functions.R
 1829dd9ca79c82f072e623f23d668ba0 *R/iterSubspace.R
@@ -18,8 +18,8 @@ f348fad0fe522eb8bc359fe307db2348 *R/plotFSCM.R
 84f0949a56c5a6aa6db0677242ad392e *R/sampleSet.R
 a5e016f5ecdc14cbc989cdde475fce42 *R/smoothers.R
 fddb6ad70bf2a17b7e4c77c7ba84b662 *R/utils.R
-b43727811b70cd1e5850970ea00d6613 *R/wrappers.R
-1044789f3d1270d719d1419af72e5e15 *R/xecute.R
+688061d47a3a0973a5552de3d1539619 *R/wrappers.R
+f262f43b5d195b11ea36ba386ef170e5 *R/xecute.R
 2c429be887e19be0f92bff8b04e79367 *data/bones.RData
 fc43de1162123d39ab8ca97e354bbb5b *data/electricity.RData
 8c169f23706175335eed808d7a737c86 *data/genes.RData
@@ -34,11 +34,11 @@ c74779460357ed90460e419d03ccb702 *man/accordance.Rd
 497f19f2b31468b28832f08967019def *man/formatFuncy.Rd
 b15ddd0a48368e8b0a023b25eb71226c *man/fpcCtrl-class.Rd
 bfbd14d48392e2b527fd9c9935640307 *man/fpca.Rd
-6c441449947c1bb5d6b6f676b35874d4 *man/funcit.Rd
+1fa0c1d369dcb821004e452a41165bd0 *man/funcit.Rd
 97c8dc733750d24ea0e6aa7477d4a6a6 *man/funcyCtrl-class.Rd
 ed4944d48aca45015bb9af322bb87ce0 *man/funcyOut-class.Rd
 90e55df25396ca856121cbf10315049f *man/funcyOutList-methods.Rd
-b9e074f37acb0c6baaa6b7293d8b6f0c *man/funcyOutList.Rd
+98787e753b0e87507876a61893b4aea9 *man/funcyOutList.Rd
 474b3609692999e42c94a47c8b7b4c5a *man/genes.Rd
 b5f661274cb5da06bd55c82a61ed9bd6 *man/getUniCl.Rd
 5cafeacbed318ce621474e90f264484d *man/label2lowerk.Rd
@@ -46,7 +46,7 @@ b5f661274cb5da06bd55c82a61ed9bd6 *man/getUniCl.Rd
 50eaef2c003897aec8d4b340af338741 *man/makeCommonTime.Rd
 b40c14b36e80cef71ff8c375899e20a4 *man/plot.Rd
 1af2fe3c4379f9ed95d1fe3da7e53fe9 *man/plotFuncy.Rd
-000b7c5ecc13392e68f123ade97baa4c *man/rIMethods.Rd
+76b4b2cd7e72545ef884783cf5339cb6 *man/rIMethods.Rd
 cd985eed439669208ddc3625ac3f1b94 *man/regFuncy.Rd
 e0867d14ca8b55dd411a3aa85c2fad4e *man/relabel.Rd
 6056d8ecd34ca5b28b24e065896ece73 *man/sampleFuncy.Rd
@@ -58,7 +58,7 @@ feafaed9443325ae2d10a99da73a38d7 *src/Makevars.win
 a7f07f64f4837917ffbfb854f63e2454 *src/base/cc.cc
 8ac4a5b35237561638f7f9cb121760f1 *src/base/cc.h
 cfdf8616b71489ad8bdc79331a93900c *src/base/ccmem.cc
-1d070a10de2a71a71d2db504e8123541 *src/base/ccmem.h
+128f820a9b1698058cc9f8b81d1501cf *src/base/ccmem.h
 59d02767203a75fb0b64ecdee4dcd9da *src/base/common.c
 0ce233b754b46181c28bd4c0c0b3e412 *src/base/common.h
 d412176f545a6a9b3d168149d62e79f8 *src/base/compiler.h
@@ -67,8 +67,8 @@ e1aa27622e9c82a90359feffcd73dfc5 *src/base/debug.c
 6c4de1000562c5d098bac308840b34bd *src/base/deprecated.h
 93cbfd7381cf62a02e4c6f0da2603904 *src/base/fortran.h
 5c83408c6a40e9f2f07e3ec94be61e24 *src/base/otrav.cc
-bf2f2aba6652d81ab9d5bf6ce286fa65 *src/base/otrav.h
-86bc02b87ef57dc65d503bb4dcde3c2a *src/base/otrav_impl.h
+e3be64e51c0a409f30fbfa7d9dda5ea7 *src/base/otrav.h
+26345e005dfa18c3193107d43b7763ed *src/base/otrav_impl.h
 1e8faecd7b25344c320bc141dfb8f9e5 *src/base/test.h
 f311f4998b1efd1667e06ced5da8b50c *src/col/arraylist.h
 9bd81680af10e0ba21b29a26136c042f *src/col/col.cc
@@ -82,7 +82,7 @@ ef5f5259060e3fdfe02af0d6c435ccb8 *src/col/rangeset.h
 d99014c1665dca0fe2ad7492c7c5905f *src/data/dataset.cc
 49edf4ece0678408cd7115ed6f52ef28 *src/data/dataset.h
 e98d3f77372f4d2068ee251100ea1d36 *src/fastlib/fastlib.h
-fe674fd41632d78ecde7ea7632047f24 *src/file/textfile.cc
+7a17f3afc7da5dccadfe25f2c6091ef5 *src/file/textfile.cc
 06ffb0eb7265e5b372aa2b88dc772dd3 *src/file/textfile.h
 015058ed1e98a71cf0f2ee616c08c5ff *src/fscm.cc
 72947321dd88d40b591a59afed7110df *src/fscm.h
@@ -108,5 +108,5 @@ f7d81386ee1ce7f3abe5ffa14dcdc898 *src/par/grain.h
 4643a8e16c2821a3c4ead6cdced936a0 *src/par/task.h
 ece3afa589718b96f096fb7e4d01b01c *src/par/thread.h
 13d52ed2cc4d29215bc268adb149908b *tests/testthat.R
-832c943745e877c1451d252e6c7969f4 *tests/testthat/test-funHDDC-automatically-decrease-k.R
-e2234e71cc6e63fd549dfc8ca56b20a8 *tests/testthat/test-old-unit-tests.R
+6d319d53032c7b69a399be6b2126c1ba *tests/testthat/Rplots.pdf
+6ab8f0ab96d7657378a13c93682d246b *tests/testthat/test-old-unit-tests.R

@@ -48,6 +48,8 @@
 
 #include <new>
 
+extern "C" void Rf_error(const char *, ...);
+
 namespace mem__private {
   const size_t BIG_BAD_BUF_SIZE = 64;
 
@@ -92,12 +94,16 @@ namespace mem {
   /** Fills an element with BIG_BAD_NUMBER. */
   template<typename T>
   inline T *Poison(T *ptr) {
+    /*
     if (sizeof(T) <= mem__private::BIG_BAD_BUF_SIZE) {
       return reinterpret_cast<T *>(
           ::memcpy(ptr, mem__private::BIG_BAD_BUF, sizeof(T)));
     } else {
       return PoisonBytes(ptr, sizeof(T));
     }
+    */
+    Rf_error("not implemented %d", __LINE__);
+    return NULL;
   }
 
   /** Fills memory with BIG_BAD_NUMBER, measured in bytes. */
@@ -142,6 +148,8 @@ namespace mem {
   /** Allocates a (debug) poisoned element. */
   template<typename T>
   inline T *Alloc() {
+    Rf_error("not implemented %d", __LINE__);
+
     T *array = reinterpret_cast<T *>(::malloc(sizeof(T)));
     //MEM__DEBUG_MEMORY(array);
     return DebugPoisonBytes(array);
@@ -160,6 +168,8 @@ namespace mem {
   /** Allocates a bit-zerod array, measured in bytes. */
   template<typename T>
   inline T *AllocZeroBytes(size_t bytes) {
+    Rf_error("not implemented %d", __LINE__);
+
     T *array = reinterpret_cast<T *>(::calloc(bytes, 1));
     //MEM__DEBUG_MEMORY(array);
     return array;
@@ -167,15 +177,18 @@ namespace mem {
   /** Allocates a bit-zerod array, measured in elements. */
   template<typename T>
   inline T *AllocZero(size_t elems = 1) {
-    T *array = reinterpret_cast<T *>(::calloc(elems, sizeof(T)));
+    //T *array = reinterpret_cast<T *>(::calloc(elems, sizeof(T)));
     //MEM__DEBUG_MEMORY(array);
-    return array;
+    Rf_error("not implemented %d", __LINE__);
+    return NULL;
   }
 
   /** Bit-copies from src to dest, measured in bytes. */
   template<typename T, typename U>
   inline T *CopyBytes(T *dest, const U *src, size_t bytes) {
-    return reinterpret_cast<T *>(::memcpy(dest, src, bytes));
+    void *vd = reinterpret_cast<void*>(dest);
+    const void *vs = reinterpret_cast<const void*>(src);
+    return reinterpret_cast<T *>(::memcpy(vd, vs, bytes));
   }
   /** Bit-copies from src to dest, measured in elements. */
   template<typename V, typename T, typename U>
@@ -228,9 +241,17 @@ namespace mem {
    */
   template<typename T>
   inline T *ReallocBytes(T *array, size_t bytes) {
-    array = reinterpret_cast<T *>(::realloc(array, bytes));
+    void *va = reinterpret_cast<void*>(array);
+    array = reinterpret_cast<T *>(::realloc(va, bytes));
     //MEM__DEBUG_MEMORY(array);
     return array;
+    /*
+    T* newarray = new T[bytes/sizeof(T)];
+    std::copy_n
+    delete[] array;
+    Rf_error("not implemented %d", __LINE__);
+    return NULL;
+    */
   }
   /**
    * Resizes allocated memory, measured in elements.
@@ -288,6 +309,7 @@ namespace mem {
   }
   template<typename V, typename T, typename U>
   inline void Swap(T *a, U *b) {
+    /*
     if (sizeof(V) <= mem__private::SWAP_BUF_SIZE * 2) {
       char buf[sizeof(V)];
 
@@ -297,6 +319,8 @@ namespace mem {
     } else {
       SwapBytes(a, b, sizeof(V));
     }
+    */
+    Rf_error("not implemented %d", __LINE__);
   }
   template<typename T>
   inline void Swap(T *a, T *b) {

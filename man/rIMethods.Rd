@@ -44,10 +44,10 @@ Christina Yassouridis
 \examples{
 set.seed(1234)
 ds <- sampleFuncy(obsNr=80, timeNr=20, reg=TRUE, k=4, sd=.4)
-res1 <- funcit(methods=1:4, data=Data(ds), k=4, clusters=Cluster(ds))
+res1 <- funcit(methods=1:3, data=Data(ds), k=4, clusters=Cluster(ds))
 
 cls <- Cluster(res1)
-rIMethods(methodNames=c("method1","method2","method3","method4"),cls=cls, trueCluster=Cluster(ds))
+rIMethods(methodNames=c("method1","method2","method3"),cls=cls, trueCluster=Cluster(ds))
 }
 
 \keyword{Rand index}

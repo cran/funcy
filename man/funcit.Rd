@@ -27,7 +27,7 @@ funcit(data, k, methods=c("fitfclust","distclust", "iterSubspace",
     \describe{
       \item{"fitfclust":}{Model based cluster algorithm - based on a functional
 	  mixed mixture model. Allows irregular measurements, eigenbasis possible.}
-	\item{"distFPCA":}{
+	\item{"distclust":}{
 	Cluster algorithm - based on a distance measure. Allows irregular
 	measurements, eigenbasis possible.}
       \item{"iterSubspace":}{Model based cluster algorithm - based on a subspace
@@ -186,7 +186,7 @@ For a detailed description of the methods please see the references.
     \item{"fitfclust":}{Gareth James and Catherine A. Sugar. Clustering for Sparsely
     Sampled Functional Data. Journal of the American Statistical
     Association. 98 (462). 297--408. 2003}
-    \item{"distFPCA":}{Jie Peng and Hans-Georg Mueller. Distance-based clustering of 
+    \item{"distclust":}{Jie Peng and Hans-Georg Mueller. Distance-based clustering of 
     sparsely observed stochastic processes, with applications to online auctions. The 
     Annals of Applied Statistics. 2 (3). 1056--1077, 2008}
     \item{"iterSubspace":}{Chiou Jeng-Min and Pai-Ling Li. Functional clustering and 
@@ -217,7 +217,7 @@ ds <- sampleFuncy(obsNr=50, k=4, timeNr=8, reg=TRUE)
 
 ##Cluster the functions with all available methods. 
 res <- funcit(data=Data(ds), clusters=Cluster(ds),
-              methods=c(1,2,3,4), seed=2404,
+              methods=c(1,2,3), seed=2404,
               k=4)
 summary(res)
 Cluster(res)
@@ -251,7 +251,7 @@ clusters <- genes$clusters
 
 ##Cluster the functions with all available methods. 
 res <- funcit(data=data, clusters=clusters,
-              methods=1:7, seed=2404,
+              methods=c(1:7)[-4], seed=2404,
               k=4)
 summary(res)
 Cluster(res)
